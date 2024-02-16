@@ -1,3 +1,4 @@
 # Summary
 
-- [Chapter 1](./chapter_1.md)
+- [Welcome to IRISS](./scripts/iriss-00.md)
+- [Setting Up](./scripts/iriss-01.md)
