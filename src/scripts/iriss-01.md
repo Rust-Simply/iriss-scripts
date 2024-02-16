@@ -117,6 +117,28 @@ The easiest way I've found to install GCC is via MSYS2
 
 However, this... isn't great. If anyone knows of an easier way to get it, please please comment below.
 
+=== New way ===
+
+Hi, Daniel from the future here!
+
+I found an easier way! I had previously tried package managers for this install step but wasn't happy with the install,
+and more importantly, uninstall processes.
+
+While researching a Database called SurrealDB I found another Windows package manager called Scoop, which is easier to
+use. To get it, head over to their website and copy the installation steps into Powershell.
+
+Once installed, we just type scoop install main/gcc
+
+We can see that its installed properly straight after by typing gcc --version
+
+Thats it, and we can skip a solid 5 minutes of unnecessary work!
+
+Lets move on to Development Environments!
+
+=== End new way ===
+
+=== Old way ===
+
 In the mean time, lets do this
 
 First, we're going to grab the installer from msys2 dot org 
@@ -172,6 +194,9 @@ The first time I tried this I honestly nearly cried
 If you haven't done so already, its a good idea to restart your computer before moving on
 
 Once you're back we'll set up a development environment
+
+=== End Old Way ===
+
 
 The Development Environment
 ---------------------------
