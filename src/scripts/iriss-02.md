@@ -338,7 +338,7 @@ vice versa.
 
 For example, we could turn our `actual` variable into a String by creating a new String from that data.
 
-We can get a reference to the string slice inside of that data on the heap
+And we can get a reference to a string slice from inside the string. 
 
 ====
 
@@ -350,39 +350,17 @@ let name_ref = name_on_heap.as_str();  // This is a &str pointing to a sequence 
 #}
 ```
 
-That said, they can be compared to each other (this actually goes for any data type in Rust so long as someone has told
-Rust how to do the comparison, which for `&str` and `String`, someone has).
+Despite the type difference between actual and input, they can be compared to each other.
 
-Let's return to our program one last time. Below I've written out the full program and added an `if`/`else` statement.
+In fact, Rust lets you compare any two types so long as someone has told Rust how to do the comparison, which, for 
+Strings and sting slices, someone has.
 
-`if`/`else` is a form of control flow. We put an expression inside the "if" that evaluates to either true or false, in
-this  case we're asking if `input` is equal to `actual`. If it is, then the execution continues inside the if block
-(the bit between the curly brackets), if it's not true, then instead execution continues inside the else block.
+Let's return to our program one last time and we'll add a branch to our code.
 
-```rust,noplayground
-fn main() {
-    let actual = "blue";
-    
-    println!("Welcome to the guessing game!");
-    println!("I have chosen a color red, green or blue");
-    
-    println!("Enter your guess: red, green or blue");
-    let input = std::io::stdin()
-            .lines()
-            .next()
-            .expect("No input was read")
-            .expect("There was an error when reading the input");
-            
-    println!("Your guess was {input}");
-    println!("The color I chose was {actual}");
-    
-    if input == actual {
-        println!("you win!");
-    } else {
-        println!("you lose!);
-    }
-}
-```
+`if`/`else` is a form of flow control that allows us to do one thing if the expression we put in the "if" evaluates to
+true, and something else if it doesn't.
+
+So "if" input is equal to actual, we'll print "you win", else, we'll print "you lose"
 
 To Review:
 ----------
@@ -399,70 +377,51 @@ Today we learned specifically about the Stack and Heap:
 We also learned a bit about `Option` and `Result` which we will go into more in the next chapter, and future chapters
 too.
 
-Finally, we learned that we can control the flow of execution with `if`, however, this isn't the only way we can effect
+Finally, we touched on controlling the flow of execution with `if`, however, this isn't the only way we can effect
 the flow, and we'll talk more about this in a couple of chapters.
-
-Next time we're going to look more at data types; what the basic types are, how we create new types, and how we can
-merge types together.
 
 Bonus
 -----
 
-You don't need to do this but if you want to make your `actual` value random(ish), and turn this into a proper game,
-then you could do it like this:
+This has nothing to do with today's topic and I'm not going to go deep on anything but... I couldn't leave you with a
+guessing game that isn't really a game.
 
-```rust,noplayground
-#fn main() {
-    let colors = ["red", "green", "blue"];
-    let time = std::time::UNIX_EPOCH
-        .elapsed()
-        .expect("Call the doctor, time went backwards")
-        .as_millis() as usize; // We only need the least significant bits so this is safe
-    let actual = colors[time % colors.len()];
-#    
-#    println!("Welcome to the guessing game!");
-#    println!("I have chosen a color red, green or blue");
-#    
-#    println!("Enter your guess: red, green or blue");
-#    let input = std::io::stdin()
-#            .lines()
-#            .next()
-#            .expect("No input was read")
-#            .expect("There was an error when reading the input");
-#            
-#    println!("Your guess was {input}");
-#    println!("The color I chose was {actual}");
-#    
-#    if input == actual {
-#        println!("you win!");
-#    } else {
-#        println!("you lose!);
-#    }
-#}
-```
+If we want to randomise the "actual" value we can create an array of all possible values.
 
-First we create an array of string slices for each possible value. Arrays are of known size at build time, for example,
-this one contains three string slice references, therefore its size is 3x whatever the size of a reference is. This
-means it's Sized, therefore does exist on the stack. We'll talk more about dynamic (therefore Unsized) collections in
-the next chapter.
+An Array is a list of things of the same type, seperated by commas and surrounded with square brackets. 
 
-To fake randomness we're going to take the time at the Unix Epoch (the 1st of January 1970) and find the `Duration` of
-time that has elapsed since then. Asking how much time has passed _since_ another point in time is fallible because you
-might be asking about a time in the future, this means we have to deal with a `Result`. This _shouldn't_ ever actually
-return an error, but even when you're absolutely sure, there's no harm leaving a little message in the `.expect()` for
-anyone else who happens to be looking at the code... it's even ok to get a little silly about it, so long as you're
-being useful.
+Arrays are Sized, but they can not have their size changed at runtime (there are other types for that).
 
-`.as_millis` turns the duration into a 128bit integer (`u128`), but collections (like our array) are index with a
-`usize`. The exact length in bits of a `usize` depends on the target system you're building for (usually 64bits but not
-always). Because 128bits is longer than 64bits we need to shrink it down. `as usize` will truncate the most significant
-bits. This _can_ mean your number changes, but we don't actually care for our purposes, we just want a nice big number
-that is different each time we run the program. I left myself a comment (using `//` you can write things that aren't
-code), so that if I wonder why I did this in the future, I'll know.
+We can then fake randomness by getting a big number that will change every time we run the program... like the time.
 
-Finally, we pick a random color from our colors array by dividing the time in milliseconds since the 1st of January 1970
-by the length of the array (3) and getting the remainder. You can do all of this with the remainder `%` operator. This
-gives us a number between 0 and 2 inclusive, so we use that number as the index in our array using the square brackets.
+The unix epoch was midnight on the first of January 1970, we can find out how much time has passed since then and then
+get that time in milliseconds.
 
-This leaves us with one of the string slice references from the array, which one will depend on the exact time when you
-run the game.
+We need to do a quick type conversion, which we'll talk about next time, this just lets us use the number of 
+microseconds to access the array. This conversion is lossy but it doesn't matter in this case.
+
+Finally we can find the remainder after dividing by the length of the array by using the remainder operator
+
+This gives us a random(ish) index into the array. 
+
+Now when you run the program, you won't know what the actual color is!
+
+Next time
+---------
+
+Next time we're going to look more at data types.
+
+We'll look at the primitive or scalar types
+
+How we can create complex types with enums and structs
+
+How we can make more flexible types with gennerics
+
+And I'll introduce some of the built in collection types
+
+If that interests you, don't forget to like and subscribe
+
+In the meantime, have a play with your program
+
+And I'll see you next time
+
