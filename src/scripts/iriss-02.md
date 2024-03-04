@@ -7,10 +7,13 @@ Preamble
 When you create a program, how does it remember things? Last time, we created a variable and put our name
 inside it. Where was our name stored?
 
-Jumping into memory already might seem unusual. A lot of programming tutorials in any language would like to get you
-writing code before you have to worry about such things. However, I think right off the bat we have a wonderful
-opportunity to talk about how memory works in Rust and, because memory is so important to how Rust works, learning this
-will simplify everything else going forward.
+Jumping into memory already might seem unusual. 
+
+A lot of programming tutorials in any language would like to get you writing code before you have to worry about such
+things. 
+
+However, I think right off the bat we have a wonderful opportunity to talk about how memory works in Rust and, because
+memory is so important to how Rust works, learning this will simplify everything else going forward.
 
 Today, we're going to make an extremely simple program and use that as the basis to explain how Rust remembers.
 
@@ -66,25 +69,27 @@ The type of data describes a number of things but mainly, how that data is repre
 
 For example, is the data a string (like "blue"), or a number, or a boolean that represent true or false.
 
-As you can see, my editor has written colon and str after actual. This isn't part of the text, it's just there to show
-me the "type" of the variable.
+As you can see, my editor has written colon ampersand str after actual. This isn't part of the text, it's just there to
+show me the "type" of the variable.
 
 This means that the variable `actual` contains a "reference" (represented by the `&`) to a "string slice" (represented
 by `str`). We'll talk about why the variable only contains a reference and not the data itself later. You could, if you
-like, manually write this `let actual: &str = "blue"` yourself, however, it's generally better to let Rust infer the
-type, and only write it yourself if either Rust is unable to decide (because it could be multiple things) or if you want
-to use something different.
+like, manually write this yourself, however, it's generally better to let Rust infer the
+type, and only write it yourself if either Rust is unable to decide (because it could be multiple things) or in the case
+that Rust has a default type, you want to use something different.
 
 Anyway, back to the program: let's output the color so that we can see the program is working ok
 
 Great... but not much of a game is it, you don't even have time to guess before you're told what it is.
 
-Before we tell the user what the actual number was lets ask them to guess.
+Before we tell the user what the actual color was lets ask them to guess.
 
 In order to get some user input, we need to read from the terminal.
 
-When the program runs in the terminal, we can ask the user to type things, regardless of whether you are on Windows,
-Mac or Linux, this input is passed into the program through a stream of data called `stdin` (standard in).
+When the program runs in the terminal, we can ask the user to type things. 
+
+Regardless of whether you are on Windows, Mac or Linux, this input is passed into the program through a stream of data
+called standard in.
 
 Rust comes with a "standard library", the name is unrelated to the stream, they both just happen to be "standard"
 
@@ -101,23 +106,25 @@ If we weren't using the `println!` macro, this is where we'd have to come to wri
 a stream called `stdout` (standard out). `println!` is a nice little wrapper that makes writing to stdout pretty
 trivial.
 
-> For completion's sake I should mention there is one more stream called `stderr` (standard error). This is also an
-> output stream that we can use to separate "good" output that is relevant to the normal use of the program to really
-> any other kind of output, whether that be errors or just information not directly relevant to the main output.
->
-> `stderr` is really useful for things like logging, which we'll talk about in the future, but if you want to quickly
-> write something to this stream you can use `eprintln!` and `eprint!` the same way we use `println!` and `print!`
+For completion's sake I should mention that, in addition to standard in and standard out, there is one more stream
+called standard error. This is also an output stream that we can use to separate informational output that is not
+part of the normal use of the program, whether that be errors or just information not directly relevant to the main
+output.
 
-So, we get stdin using `std::io::stdin()`, this is a function call (we'll talk about functions in a couple of chapters),
+`stderr` is really useful for things like logging, which we'll talk about in the future, but if you want to quickly
+write something to this stream you can use `eprintln!` and `eprint!` the same way we use `println!` and `print!`
+
+So, we get stdin using `std::io::stdin()`, this is a function call (we'll talk about functions in a couple of videos),
 that returns something called a "handle" that we can use for temporary access to the input stream.
-
 
 The double colons just tell Rust that we're looking for something inside a module. We'll cover modules in detail later,
 including how, why and when to make our own, as well as better ways to access them, but since we only need to write
 this line once, this is the easiest way to do it.
 
-We could store the result of `stdin()` in a variable, however, we only use this once, and then we're done with it, so,
-off the back of the function call, we can call immediately call `.lines()`. 
+We could store the result of `stdin()` in a variable, however, we only use this handle once, and then we're done with
+it.
+
+So, off the back of the function call, we can call immediately call `.lines()`. 
 
 This is a method (a special type of function that belongs specifically to some other thing, in this case it belongs to
 the handle for stdin).
@@ -130,9 +137,10 @@ Wait wait wait, what are those `expect`s about?!
 `expect()` is, I would say, the second-worst way you could handle something going wrong in your program. 
 
 This is not "idiomatic" and you absolutely should not use this in anything except the most throw away software as it
-will immediately cause the program to stop and spew a lot of information at the user. In the future we'll talk about
-things going wrong and how to better handle them, however, as this program is just for you, I think you'll cope for
-now. 😊
+will immediately cause the program to stop and spew a lot of information at the user. 
+
+In the future we'll talk about things going wrong and how to better handle them, however, as this program is just for
+you, I think you'll cope for now. 😊
 
 That doesn't explain what these lines are doing, or why there are two of them though. The reason for this is that there
 are two possible ways `.lines()` might not work.
@@ -150,28 +158,38 @@ For example, in another language we might ask for a string and get `"red"` or `n
 
 "red" is a string but null is not... what happens if you try to use the returned value as if it was a string?
 
-In languages with this behaviour, at the point where the data is used, not where it was generated, so you make sure to
-always check that your data is what it's supposed to be, which, the language isn't making an effort to remind you to do.
+In languages with this behaviour might produce and error at the point where the data is used, not where it was
+generated, so you have to make sure to always check that your data is what it's supposed to be, which, the language 
+isn't making an effort to remind you to do.
 
 Obviously many people think this ambiguity is bad, including Tony Hoare, arguably the "inventor" of this  behavior, who
 has called it his "billion-dollar mistake".
 
-Rust does not allow you to use types like this interchangeably, i.e. data can not be a string or null as these types are
-not compatible. In Rust, we use a kind of container type to get around this called `Option`. 
+Rust does not allow you to use types like this interchangeably, so data can not be a string or null as these types are
+not compatible. 
 
-Importantly, when a function returns an `Option` type you, the programmer, must check to see if it contains something,
-and then extract the thing if it's there.
+In Rust, we use a kind of container type to get around this called `Option`.
+
+Option is an enum meaning its value is one of a set number of variants, in this case the variant is either Some or None
+
+If the variant of the Option is Some then it contains our value, otherwise it does not.
+
+Importantly, when a function returns an `Option` type you, the programmer, must check to see if it contains 
+Some data and then extract the data if it's there.
 
 There are a number of ways to do this and `.expect` is one of the worst ways to do this. It will attempt to extract the
-data if its there, or stop the program abruptly with the provided error message if it's not. We'll talk about better
-ways to handle this in the future.
+data if its there, or stop the program abruptly with the provided error message if it's not. 
+
+We'll talk about better ways to handle this in the future.
 
 For the time being we're going to just say we can't deal with it not being there, we don't want to continue running the
 program, and we want the program to stop. 
 
 We use `.expect("message")` to say, if this is nothing, we are giving up, stop the program and print our message 
-(plus a few other useful bits) to the `stderr` (see above). You can see why this behaviour is typically undesirable but
-that we can allow it for this example, at least until we learn how to deal with `Option` properly.
+(plus a few other useful bits) to the `stderr`.
+
+You can see why this behaviour is typically undesirable but, we can allow it for this example, at least until we
+learn how to deal with `Option` properly.
 
 The second expect is a bit different:
 
@@ -226,7 +244,7 @@ To understand this, we have to talk a little bit about how our program runs.
 ### The Stack
 
 In Rust (and many languages in fact), programs are made up of functions; small, independent bits of code. In our
-program we only have one function for now, which is `main`, but this still applies. 
+program we only have one function for now, which is `main`, but this next bit still applies. 
 
 When we run our program, the operating system assigns some memory for the program to run in, called "the stack".
 
@@ -236,7 +254,7 @@ that's the exact size of everything that function needs to remember.
 For example, imagine the following program with the functions main, f1 and f2. 
 
 When the program is initialized the operating system assigns some memory for the stack, then, all the memory required to
-store all the variables in `main` (which it in this example is 4 addresses) is blocked off.
+store all the variables in `main` (which in this example is 4 addresses) is blocked off.
 
 Then, as `main` runs, it calls the `f1` function which requires two more addresses. A new block with space for those
 variables is put on top of the stack
@@ -262,13 +280,13 @@ until later.
 Anything that lives inside a variable goes on the stack, and anything on the stack must be of known size when the
 program is compiled. 
 
-In Rust, we have a specific name for this "Sized". Things like numbers, characters, booleans and even tuples are Sized,
-but a string of characters is not, it is "Unsized".
+In Rust, we have a specific name for this "Sized". Things like numbers, characters, and booleans are Sized, but a
+string of characters is not, it is "Unsized".
 
 So where does our data live if not inside the variables?
 
 Returning to the top, you'll remember that our `actual` variable has the type `&str`. The ampersand tells us the value
-is a reference to another type, that type being the "str" which what we call a string slice.
+is a reference, and the "str" tells us that it's a reference to a string slice.
 
 A reference is something that points to where some actual data is,
 
@@ -289,7 +307,7 @@ string literal wherever it is in the executable file.
 Our `input`, however, is very different, we don't know what's going to be in here at all at compile time. 
 
 In order to store the data that the user gives us, we still need to put it in memory somewhere, but it can't live on the
-stack.
+stack on in the binary.
 
 Instead, we use another kind of memory called "the Heap".
 
@@ -306,8 +324,7 @@ because everything about the location of that data is Sized, we can store it in 
 
 Some other important differences between the Stack and the Heap. 
 
-The Stack is more limited in size, you should try to avoid storing large amounts of data here (even if the size is
-known). 
+The Stack is more limited in size, you should try to avoid storing large amounts of data here
 
 Creating memory on the Heap takes longer than creating it on the Stack, this is because you have to communicate your
 requirements to the operating system and wait for it to get back to you with that allocation. 
@@ -326,8 +343,8 @@ Most importantly, ownership tells the program when to clean up the data.
 
 When an `&str` is no longer needed, the reference is cleaned up, but the data still exists.
 
-When a `String` is no longer needed, not only is the reference cleaned up, but memory is returned to the operating
-systems control, freeing it up for something else to use.
+When a `String` is no longer needed, not only is the reference cleaned up, but memory where the string data was sored is
+also returned to the operating systems control, freeing it up for something else to use.
 
 It's important to note though that `&str` and `String` are different types.
 
@@ -336,11 +353,11 @@ The data they reference is formatted the same way in memory, but they are not in
 Later, when we discuss functions, you'll see that if a function requires a `String` you can not pass it a `&str` and
 vice versa.
 
+However, you can trivially convert between them
+
 For example, we could turn our `actual` variable into a String by creating a new String from that data.
 
-And we can get a reference to a string slice from inside the string. 
-
-====
+And we can get a reference to a string slice from inside the string.
 
 ```rust
 #fn main() {
@@ -355,7 +372,7 @@ Despite the type difference between actual and input, they can be compared to ea
 In fact, Rust lets you compare any two types so long as someone has told Rust how to do the comparison, which, for 
 Strings and sting slices, someone has.
 
-Let's return to our program one last time and we'll add a branch to our code.
+Let's return to our program one last time, and we'll add a branch to our code.
 
 `if`/`else` is a form of flow control that allows us to do one thing if the expression we put in the "if" evaluates to
 true, and something else if it doesn't.
@@ -372,18 +389,18 @@ Today we learned specifically about the Stack and Heap:
 - The Heap is where we can store things regardless of whether we know their size at compile time (Sized and Unsized).
   We can store large amounts of data here but getting access to this memory initially is a tiny be slower.
 
-- You can reference data with `&` if you don't want ownership of the data, but you do want to access it.
+- You can reference data if you don't want ownership of the data, but you do want to access it.
 
-We also learned a bit about `Option` and `Result` which we will go into more in the next chapter, and future chapters
+We also learned a bit about `Option` and `Result` which we will go into more in the next video, and future videos
 too.
 
 Finally, we touched on controlling the flow of execution with `if`, however, this isn't the only way we can effect
-the flow, and we'll talk more about this in a couple of chapters.
+the flow, and we'll talk more about this in a couple of videos.
 
 Bonus
 -----
 
-This has nothing to do with today's topic and I'm not going to go deep on anything but... I couldn't leave you with a
+This has nothing to do with today's topic, and I'm not going to go deep on anything but... I couldn't leave you with a
 guessing game that isn't really a game.
 
 If we want to randomise the "actual" value we can create an array of all possible values.
@@ -397,10 +414,10 @@ We can then fake randomness by getting a big number that will change every time 
 The unix epoch was midnight on the first of January 1970, we can find out how much time has passed since then and then
 get that time in milliseconds.
 
-We need to do a quick type conversion, which we'll talk about next time, this just lets us use the number of 
-microseconds to access the array. This conversion is lossy but it doesn't matter in this case.
+We need to do a quick type conversion, which we'll talk about next time, this just lets us use the number of
+milliseconds to access the array. This conversion is could truncate the data, but it doesn't matter in this case.
 
-Finally we can find the remainder after dividing by the length of the array by using the remainder operator
+Finally, we can find the remainder after dividing by the length of the array by using the remainder operator
 
 This gives us a random(ish) index into the array. 
 
@@ -415,7 +432,7 @@ We'll look at the primitive or scalar types
 
 How we can create complex types with enums and structs
 
-How we can make more flexible types with gennerics
+How we can make more flexible types with generics
 
 And I'll introduce some of the built in collection types
 
