@@ -203,7 +203,7 @@ which is 16bit so the `size` in `usize` and `isize` becomes `16`.
 
 #### Which integer is right for you?
 
-You might think the obvious thing to do would be to use the largest possible number
+You might think the obvious thing to do would be to use the largest possible integer types.
 
 For example, you can fit pretty much every whole number you could possibly need into `i128`, so why use anything else?
 
@@ -268,14 +268,14 @@ In the bonus section of the last video, we got the number of milliseconds that h
 of January 1970, and then immediately used `as usize`:
 ((Show code))
 
-The reason for this is the number of milliseconds since that date is approximately one thousand seven hundred billion 
+The reason for this is the number of milliseconds since that date is approximately one trillion, seven hundred billion 
 and is returned as a `u128`.
 
 We wanted to use this as part of a calculation to work out an index into an array and indexes in arrays are always
 `usize`.
 
 If you were to compile this program on a 32bit architecture, then the number of milliseconds
-is greater than what would fit into a `usize` which would be a mere just over four billion.
+is greater than what would fit into a `usize` which would be just over four billion.
 
 When we use `as` it simply takes the number, whatever it is and tries to cram it into the size of the type in 
 `as <type>`.
@@ -340,6 +340,8 @@ where is the `fsize`?
 Actually, 32bit architectures are usually designed to support 64bit floating point numbers just fine, the difference
 between `f32` and `f64` is that regardless of architecture, `f32` is about 30% faster, and `f64` is more "fine grain".
 
+To decide which to use you just need to decide between speed and accuracy
+
 ### Characters
 
 In Rust, we have a special type that represents a single character called `char` 
@@ -347,7 +349,7 @@ In Rust, we have a special type that represents a single character called `char`
 I say char, some people say car, unlike stud though I'm not changing my ways on this one, I'm on old man dying on a 
 weird hill, deal with it
 
-It is always 4 bytes (32bits) in size and can be any valid "unicode scalar value" (which is to say, any character in 
+Char is always 4 bytes (32bits) in size and can be any valid "unicode scalar value" (which is to say, any character in 
 unicode that's not a control character). 
 
 In Rust a character is always written between single quotes, whereas string literals are always written between double
@@ -362,7 +364,7 @@ We usually use characters in relation to finding things inside strings.
 
 You can also turn strings into a collection of characters and vice versa, however it's important to note that a
 character inside a string may not take up 4 bytes (for example, english letters and numbers only take 1 byte) because
-of how strings are encoded, however, once turned into a character, it will take up four bytes.
+of how strings are encoded, however, once turned into a character, they will take up four bytes.
 
 ### Boolean
 
@@ -427,8 +429,9 @@ slices, the reference not only contains a pointer to the underlying data, but al
 the form ampersand square brackets T where `T` is the type of every item in the array.
 
 ((Show code))
-You can access elements inside the array directly by using an index value between square brackets. In Rust, indexing
-starts at 0.
+You can access elements inside the array directly by using an index value between square brackets. 
+
+In Rust, indexing starts at 0 and the type of the index is always a `usize`.
 
 ### Tuples
 
@@ -478,7 +481,7 @@ its descendents.
 ((Show code))
 We'll talk more about modules later, however, to make the fields of a struct public, you can simply mark them as `pub`.
 
-You don't have to make every field public though, if you'd some parts of the struct to be public and others to be
+You don't have to make every field public though, if you'd like some parts of the struct to be public and others to be
 private.
 
 ((Show code))
@@ -507,7 +510,7 @@ Many programing languages have this concept of enums, but what makes Rust enums 
 can additionally contain values. 
 
 We've already talked about two such enums `Option` and `Result` which are two of the most important and widely used
-types in the entire ecosystem, and we'll talk more about them in the Generic Types section later. 
+types in the entire ecosystem, and we'll talk more about them when we talk about Generic Types shortly. 
 
 ((Show code))
 As an example though, enums variants can be structured in either a tuple stype or a struct style:
@@ -525,20 +528,25 @@ We've talked a bit about Option and how Rust uses it to represent Some value or 
 ((Show code))
 Option is an enum with two variants, it is literally just this:
 
-Note that after the name of the enum we have `<T>`. The triangle brackets express that this enum has a type (or types)
-that can be decided later, the `T` is a marker for that type. 
+Note that after the name of the enum we have `T` in triangle brackets.
+
+The triangle brackets express that this enum has a type (or types) that can be decided later, the `T` is a marker for
+that type.
 
 ((Show code))
 For example, say we want to create a type that represents either a single character, or nothing.
 
-When we specify the value as some character, Rust can infer the type.
+We can use the generic Option type to build Option char.
 
-If it's None though, we'd have to specifically tell the compiler what the type is as it could be anything.
+When we specify the value as some character, Rust can infer that type.
+
+If it's None though, we'd have to specifically tell the compiler what the type is either through a type annotation or
+other means.
 
 Normally when accessing the variants of an enum, you must use the name followed by the variant eg Option colon colon
 Some R, however Option and Result are so ubiquitous that their variants are globally accessible in any Rust code.
 
-Another generic we've covered before is Result which usually represents either the success or failure of a function.
+Result is another generic we've covered before. which usually represents either the success or failure of a function.
 
 ((Show code))
 It has two types that can be decided later `T`, which should represent what type of data you expected to get back, and
@@ -551,7 +559,7 @@ the fully described Result type as the return type of the function, which is how
 Though, you wouldn't typically use a String as an Error type, and we'll talk more about that when we get to Error 
 handling later.
 
-When we start talking about adding functionality to traits, we'll also talk about how you can restrict what types are
+When we start talking about adding functionality to types, we'll also talk about how you can restrict what types are
 allowed to be used in generics through the use of trait bounds.
 
 Conclusion
@@ -564,13 +572,13 @@ The main thing we're still missing is ownership and traits, but we'll come to th
 The main things to remember are:
 - We have our primitive types that represent binary data. There's a lot of choice here, but that's a good thing!
 - We can represent more complex types with compound types
-- We can "fill in the blank" type using generics
+- We can do the type equivalent "fill in the blank" using generics
 - We talked a bit about two of the most common generics
   - Option (representing something or nothing)
   - and Result (representing a successful value or an error)
 
 In the next video we're going to talk about controlling the flow of our program with branches and loops as well as
-pattern matching which and expressions, two of my favourite features of this language!
+pattern matching and expressions, two of my favourite features of this language!
 
 If that interests you, don't forget to like and subscribe 
 

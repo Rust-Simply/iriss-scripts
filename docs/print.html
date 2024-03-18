@@ -890,7 +890,7 @@ also tell it what instruction set to compile for, if you want to build it on one
 <p>However, if you were to compile for, say, a Cortex M zero microprocessor, then the instruction set would likely be <code>Thumb-1</code>
 which is 16bit so the <code>size</code> in <code>usize</code> and <code>isize</code> becomes <code>16</code>.</p>
 <h4 id="which-integer-is-right-for-you"><a class="header" href="#which-integer-is-right-for-you">Which integer is right for you?</a></h4>
-<p>You might think the obvious thing to do would be to use the largest possible number</p>
+<p>You might think the obvious thing to do would be to use the largest possible integer types.</p>
 <p>For example, you can fit pretty much every whole number you could possibly need into <code>i128</code>, so why use anything else?</p>
 <p>There's two things to think about, first, what is the intended use of the number and, second, what is the architecture
 of the machine you're running on?</p>
@@ -933,12 +933,12 @@ later, but I wanted to quickly go over some code from the last video.</p>
 <p>In the bonus section of the last video, we got the number of milliseconds that had passed since midnight on the 1st
 of January 1970, and then immediately used <code>as usize</code>:
 ((Show code))</p>
-<p>The reason for this is the number of milliseconds since that date is approximately one thousand seven hundred billion 
+<p>The reason for this is the number of milliseconds since that date is approximately one trillion, seven hundred billion 
 and is returned as a <code>u128</code>.</p>
 <p>We wanted to use this as part of a calculation to work out an index into an array and indexes in arrays are always
 <code>usize</code>.</p>
 <p>If you were to compile this program on a 32bit architecture, then the number of milliseconds
-is greater than what would fit into a <code>usize</code> which would be a mere just over four billion.</p>
+is greater than what would fit into a <code>usize</code> which would be just over four billion.</p>
 <p>When we use <code>as</code> it simply takes the number, whatever it is and tries to cram it into the size of the type in 
 <code>as &lt;type&gt;</code>.</p>
 <p>When going from a larger size to a smaller size (in this case, from <code>u128</code> to the equivalent of <code>u32</code>) it simply cuts
@@ -984,11 +984,12 @@ a 32bit architecture should use an <code>f32</code> and a 64bit architecture sho
 where is the <code>fsize</code>?</p>
 <p>Actually, 32bit architectures are usually designed to support 64bit floating point numbers just fine, the difference
 between <code>f32</code> and <code>f64</code> is that regardless of architecture, <code>f32</code> is about 30% faster, and <code>f64</code> is more &quot;fine grain&quot;.</p>
+<p>To decide which to use you just need to decide between speed and accuracy</p>
 <h3 id="characters"><a class="header" href="#characters">Characters</a></h3>
 <p>In Rust, we have a special type that represents a single character called <code>char</code> </p>
 <p>I say char, some people say car, unlike stud though I'm not changing my ways on this one, I'm on old man dying on a 
 weird hill, deal with it</p>
-<p>It is always 4 bytes (32bits) in size and can be any valid &quot;unicode scalar value&quot; (which is to say, any character in 
+<p>Char is always 4 bytes (32bits) in size and can be any valid &quot;unicode scalar value&quot; (which is to say, any character in 
 unicode that's not a control character). </p>
 <p>In Rust a character is always written between single quotes, whereas string literals are always written between double
 quotes.
@@ -999,7 +1000,7 @@ scalar value&quot;.</p>
 <p>We usually use characters in relation to finding things inside strings. </p>
 <p>You can also turn strings into a collection of characters and vice versa, however it's important to note that a
 character inside a string may not take up 4 bytes (for example, english letters and numbers only take 1 byte) because
-of how strings are encoded, however, once turned into a character, it will take up four bytes.</p>
+of how strings are encoded, however, once turned into a character, they will take up four bytes.</p>
 <h3 id="boolean"><a class="header" href="#boolean">Boolean</a></h3>
 <p>There is only one boolean type in Rust: <code>bool</code>. It represents <code>true</code> or <code>false</code>.</p>
 <p>We often get boolean values through the use of comparisons between values. For example is a equal to b, or is c greater
@@ -1039,8 +1040,8 @@ When referenced as an array slice, you do not need to specify the size because, 
 slices, the reference not only contains a pointer to the underlying data, but also contains the size. We write this in
 the form ampersand square brackets T where <code>T</code> is the type of every item in the array.</p>
 <p>((Show code))
-You can access elements inside the array directly by using an index value between square brackets. In Rust, indexing
-starts at 0.</p>
+You can access elements inside the array directly by using an index value between square brackets. </p>
+<p>In Rust, indexing starts at 0 and the type of the index is always a <code>usize</code>.</p>
 <h3 id="tuples"><a class="header" href="#tuples">Tuples</a></h3>
 <p>Tuples are similar to arrays in that they are a collection of items, however, each item in the collection can be a
 different type. </p>
@@ -1073,7 +1074,7 @@ structs have a concept of &quot;visibility&quot;. </p>
 its descendents. </p>
 <p>((Show code))
 We'll talk more about modules later, however, to make the fields of a struct public, you can simply mark them as <code>pub</code>.</p>
-<p>You don't have to make every field public though, if you'd some parts of the struct to be public and others to be
+<p>You don't have to make every field public though, if you'd like some parts of the struct to be public and others to be
 private.</p>
 <p>((Show code))
 Named fields work pretty much the same as tuple structs except instead of having a numbered field, its named.</p>
@@ -1092,7 +1093,7 @@ Enums are for when you want to represent one of a finite number of possible valu
 <p>Many programing languages have this concept of enums, but what makes Rust enums especially awesome is that the variants
 can additionally contain values. </p>
 <p>We've already talked about two such enums <code>Option</code> and <code>Result</code> which are two of the most important and widely used
-types in the entire ecosystem, and we'll talk more about them in the Generic Types section later. </p>
+types in the entire ecosystem, and we'll talk more about them when we talk about Generic Types shortly. </p>
 <p>((Show code))
 As an example though, enums variants can be structured in either a tuple stype or a struct style:</p>
 <p>In terms of memory usage, on the stack an enum will take up as much space as its largest variant, regardless of which
@@ -1102,15 +1103,18 @@ variant it actually is.</p>
 <p>We've talked a bit about Option and how Rust uses it to represent Some value or None. </p>
 <p>((Show code))
 Option is an enum with two variants, it is literally just this:</p>
-<p>Note that after the name of the enum we have <code>&lt;T&gt;</code>. The triangle brackets express that this enum has a type (or types)
-that can be decided later, the <code>T</code> is a marker for that type. </p>
+<p>Note that after the name of the enum we have <code>T</code> in triangle brackets.</p>
+<p>The triangle brackets express that this enum has a type (or types) that can be decided later, the <code>T</code> is a marker for
+that type.</p>
 <p>((Show code))
 For example, say we want to create a type that represents either a single character, or nothing.</p>
-<p>When we specify the value as some character, Rust can infer the type.</p>
-<p>If it's None though, we'd have to specifically tell the compiler what the type is as it could be anything.</p>
+<p>We can use the generic Option type to build Option char.</p>
+<p>When we specify the value as some character, Rust can infer that type.</p>
+<p>If it's None though, we'd have to specifically tell the compiler what the type is either through a type annotation or
+other means.</p>
 <p>Normally when accessing the variants of an enum, you must use the name followed by the variant eg Option colon colon
 Some R, however Option and Result are so ubiquitous that their variants are globally accessible in any Rust code.</p>
-<p>Another generic we've covered before is Result which usually represents either the success or failure of a function.</p>
+<p>Result is another generic we've covered before. which usually represents either the success or failure of a function.</p>
 <p>((Show code))
 It has two types that can be decided later <code>T</code>, which should represent what type of data you expected to get back, and
 <code>E</code>, which will be the type of the Error.</p>
@@ -1119,7 +1123,7 @@ We'll talk more about functions in a later video, but in order to explain Result
 the fully described Result type as the return type of the function, which is how we'd typically use this enum...</p>
 <p>Though, you wouldn't typically use a String as an Error type, and we'll talk more about that when we get to Error 
 handling later.</p>
-<p>When we start talking about adding functionality to traits, we'll also talk about how you can restrict what types are
+<p>When we start talking about adding functionality to types, we'll also talk about how you can restrict what types are
 allowed to be used in generics through the use of trait bounds.</p>
 <h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
 <p>That is (almost) everything you need to know about types! </p>
@@ -1128,7 +1132,7 @@ allowed to be used in generics through the use of trait bounds.</p>
 <ul>
 <li>We have our primitive types that represent binary data. There's a lot of choice here, but that's a good thing!</li>
 <li>We can represent more complex types with compound types</li>
-<li>We can &quot;fill in the blank&quot; type using generics</li>
+<li>We can do the type equivalent &quot;fill in the blank&quot; using generics</li>
 <li>We talked a bit about two of the most common generics
 <ul>
 <li>Option (representing something or nothing)</li>
@@ -1137,7 +1141,7 @@ allowed to be used in generics through the use of trait bounds.</p>
 </li>
 </ul>
 <p>In the next video we're going to talk about controlling the flow of our program with branches and loops as well as
-pattern matching which and expressions, two of my favourite features of this language!</p>
+pattern matching and expressions, two of my favourite features of this language!</p>
 <p>If that interests you, don't forget to like and subscribe </p>
 <p>Between now and then, why not try experimenting with your own types!</p>
 <p>And I'll see you next time</p>
