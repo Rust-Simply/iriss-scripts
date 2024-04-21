@@ -18,7 +18,7 @@ My name is Daniel, welcome to IRISS.
 There are two main ways of controlling flow: branching and looping
 
 Before we get into that though, lets talk about two of Rusts coolest features, which will come up a lot later,
-patterns, and how blocks are also expressions are-expressions.
+patterns, and how blocks are also expressions.
 
 ## Patterns
 
@@ -44,13 +44,14 @@ However, it might be better in the context of your program to name them somethin
 
 We can rename the variables using colons, like naming x to width and y to height: [[]]
 
-Unfortunately, you can not extract data from Enums this way as the value of an Enum is one of a set of, not only values,
+Unfortunately, you can't extract data from Enums this way as the value of an Enum is one of a set of, not only values,
 but potentially subtypes or shapes or however you'd like to describe them.
 
-Take for example the humble Options: [[]]
+Take for example the humble Option: [[]]
 
-How can we extract a char from Option char if we don't know whether the variable is Some or None... well,
-actually, we'll come to that soon. 🙂
+How can we extract a char from Option char if 5we don't know whether the variable is Some or None... 
+
+well, actually, we'll come to that soon.
 
 ## Blocks are Expressions
 
@@ -75,7 +76,7 @@ In this admittedly contrived example, we create the variables a and b and add th
 ---
 
 Some cool things to note:
-- a and b only exist within the code block
+- a and b only exist within the code block, they're not accessible after
 - the lines with let have semicolons
 - the line with the expression a + b does not
 - c will be equal to the evaluation of the code block, which itself is equal to the result of a + b
@@ -84,7 +85,6 @@ Some cool things to note:
 Why is this so cool? Because branches, loops and even functions all use code blocks!
 
 ## If
-
 
 The most basic form of branching is the if statement.
 
@@ -131,7 +131,7 @@ In the line `if let Some(c) = maybe_yuki` we are pattern matching on the Option,
 
 Within the block (and only within the block), the variable C has the value from inside the Some variant of the Option.
 
-This may be easier to observe with our own enum type. Imagine the following: [[]]
+This may be easier to observe with our own enum type: [[]]
 
 Again, this example is contrived, there are better ways to do this.
  
@@ -158,8 +158,6 @@ Let's look at our Vector example again: [[]]
 First of all, you can see that this pattern is _much_ cleaner than having a lot of `if let`s. 
 
 We could also use match as an expression: [[]]
-
-(This gets even more exciting when we get into functions)
 
 What happens if we add another variant to the enum though? Well, that `match` statement will see that not every case is
 handled, and cause an error. [[]]
@@ -200,7 +198,7 @@ the loop.
 
 In this example, we run a loop until we find some cool number (note the use of if let), then break with that value.
 
-The Type of found is an `u64` and by breaking with that value, the Type of the whole loop becomes `u64` too! [[]]
+The Type of found is a `u64` and by breaking with that value, the Type of the whole loop becomes `u64` too! [[]]
 
 ---
 
@@ -250,12 +248,12 @@ What's really cool though is that you can do all the tricks we've learned above,
 A very common reason for looping in software is because we want to loop over every item in a collection and perform the
 same set of instructions for each. 
 
-This is where `for ... in ...` comes in.
+This is where we'd use `for ... in ...`.
 
 For In allows you to step through an `Iterator`, or anything that implements `IntoIterator`, both of which we'll talk
-more about in a later chapter. 
+more about in a later video. 
 
-Simply put though, this lets us step over each item in a collection, stream or series of data, or series!
+Simply put though, this lets us step over each item in a collection, stream or series of data
 
 Here's an example where we step over every item in an array [[]]
 
@@ -324,8 +322,8 @@ and lifetimes.
 
 Don't panic, I think... hope... I've got a great way to explain this one to you.
 
-If that sounds interesting, don't forget to life and subscribe
+If that sounds interesting, don't forget to like and subscribe
 
-Don't forget to do your homework, if you have any questions, drop me a comment!
+And don't forget to do your homework, if you have any questions, drop me a comment!
 
 And I'll see you next time.
