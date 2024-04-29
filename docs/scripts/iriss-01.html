@@ -194,7 +194,7 @@ description below.</p>
 to skip to the parts of the video that are appropriate for you.</p>
 <h3 id="mac-and-linux"><a class="header" href="#mac-and-linux">Mac and Linux</a></h3>
 <p>Setting up Rust on Mac and Linux is exactly the same process... exactly the same, except for this one thing.</p>
-<p>Before we begin, on Mac, you'll need to make sure you have xcode build tools. </p>
+<p>Before we begin, on Mac, you'll need to make sure you have xcode build tools.</p>
 <p>Do that by opening up a terminal window and typing xcode dash select dash dash install</p>
 <p>My Mac already has xcode's tools installed, if you don't have it, but this takes a good 20 minutes, so be patient and
 come back when its done.</p>
@@ -226,7 +226,7 @@ grab a cup of tea.</p>
 <h4 id="rust-up"><a class="header" href="#rust-up">Rust up</a></h4>
 <p>Now that we've got the build tools we can get the rust installer which we get from rustup dot rs</p>
 <p>Download rustup-init.exe</p>
-<p>When we run this we're given the option to customize the installation. </p>
+<p>When we run this we're given the option to customize the installation.</p>
 <p>I'm not going to do that so I'll choose 1.</p>
 <p>Once this is complete we can check that everything is working ok by opening a terminal (either cmd or powershell) and
 running cargo version</p>
@@ -253,7 +253,7 @@ use. To get it, head over to their website and copy the installation steps into 
 <p>=== End new way ===</p>
 <p>=== Old way ===</p>
 <p>In the mean time, lets do this</p>
-<p>First, we're going to grab the installer from msys2 dot org </p>
+<p>First, we're going to grab the installer from msys2 dot org</p>
 <p>and then run that</p>
 <p>MSYS2 is a little bit fussy about where you install it so if in doubt just pop it where it wants to be</p>
 <p>I'm going to install mine to the D drive in programs slash msys2</p>
@@ -263,10 +263,10 @@ use. To get it, head over to their website and copy the installation steps into 
 <p>This allows Windows to use anything installed there from anywhere else</p>
 <p>First lets open the location where we installed it</p>
 <p>Then open the ucrt64 directory, then bin</p>
-<p>Copy the full address to the bin directory, you can do this by right clicking the address bar and clicking &quot;Copy
-Address&quot;</p>
+<p>Copy the full address to the bin directory, you can do this by right clicking the address bar and clicking "Copy
+Address"</p>
 <p>Next we need to update the system path.</p>
-<p>Go to your start menu and search for &quot;environment&quot;, then click &quot;Edit the system environment variables&quot;</p>
+<p>Go to your start menu and search for "environment", then click "Edit the system environment variables"</p>
 <p>This, weirdly, doesn't take you straight to environment variables, but there is a button to do that at the bottom of
 this screen.</p>
 <p>Select Path, then hit edit</p>
@@ -288,7 +288,7 @@ I'm personally a big fan of the IntelliJ ecosystem.</p>
 <p>If you've already found the tools for you and they have good Rust support, there's no wrong answer here, use whatever
 makes you happy.</p>
 <p>If you're new to software engineering though, and not looking to fork out potentially hundreds on tooling, I recommend
-Visual Studio Code. </p>
+Visual Studio Code.</p>
 <p>It's free, it's perhaps the most widely used and supported editor today, and can be greatly extended through plugins.</p>
 <p>It's the editor I'll be using throughout this series as I believe it will be the most familiar to people.</p>
 <p>Lets go to code dot visualstudio dot com to download it</p>
@@ -303,7 +303,7 @@ complete, type hints, show documentation, allow symbol editing and will just gen
 <h3 id="codelldb"><a class="header" href="#codelldb">CodeLLDB</a></h3>
 <p>This is the tool that's going to give us software engineering super powers</p>
 <p>Sometimes you can be working on code and its not doing what you expect</p>
-<p>&quot;Happens to everyone all of the time, no need to worry&quot;</p>
+<p>"Happens to everyone all of the time, no need to worry"</p>
 <p>Wouldn't it be cool to just step over each line of code as it runs and see exactly whats happening</p>
 <p>LLDB will let us do that</p>
 <p>We'll cover how it works in a bit, for now lets just grab it</p>
@@ -337,7 +337,7 @@ collaboration</p>
 <p>Inside we'll see we can already see some code</p>
 <p>Before I go through it all, lets run the program</p>
 <p>For now we can do this from the terminal which we can access inside Code</p>
-<p>Pro Tip for new Visual Studio Code users, if you want to do something and aren't sure how, you can hold Control (or 
+<p>Pro Tip for new Visual Studio Code users, if you want to do something and aren't sure how, you can hold Control (or
 Command on Macs) Shift and hit P</p>
 <p>This brings up a little search bar you can use to find what you want in this case a terminal</p>
 <p>Sometimes you might have to scroll a little to find the exact right thing but recently used things will filter to the
@@ -352,9 +352,9 @@ manually</p>
 <p>First we have this <code>fn main() {</code></p>
 <p>In Rust, fn is how we describe a function and a function is basically just a little chunk of code</p>
 <p>We'll talk more about functions in a future video</p>
-<p>The next bit &quot;main&quot; is the name of the funciton</p>
+<p>The next bit "main" is the name of the funciton</p>
 <p>We can usually call functions anything we like but when we create an executable program, one that can be run on its own,
-we need a function called &quot;main&quot; to be the start point</p>
+we need a function called "main" to be the start point</p>
 <p>The parentheses after the name of the function is where we normally put parameters</p>
 <p>Parameters are how we pass data into a function, but we don't pass data into the main function so this is empty</p>
 <p>The curly bracket that opens on this line has a matching closing curly bracket that denotes where the function ends,
@@ -381,7 +381,7 @@ name put an equals sign after and then the value</p>
 <p>Quite nicely this reads as let name equal Daniel</p>
 <p>Another quick note: if your name does not use American English characters, this type of string in Rust is UTF-8 by
 default and your name should be fine, however, your operating system might not be so when it writes it our, your milage
-may vary. </p>
+may vary.</p>
 <p>For example, my Mac is fine with my cats name, Yuki, but Windows, not so much</p>
 <p>Anyway, we're going to modify our print line now to include the variable</p>
 <p>There are a number of ways we can achieve this but the idiomatic way to do this is to use curly brackets and put the
@@ -401,8 +401,8 @@ whole series, but you did it and that's awesome, I'm legitimately proud of you</
 <p>Next time we're going to make a slightly more advanced program by taking a bit of input and doing some comparisons</p>
 <p>This way we can get a better feel for how Rust looks and feels.</p>
 <p>If thats interesting to you, don't forget to like and subscribe</p>
-<p>In the meantime, seriously, well done, take some time to reflect on your achievement, </p>
-<p>You're now an official Rustacean </p>
+<p>In the meantime, seriously, well done, take some time to reflect on your achievement,</p>
+<p>You're now an official Rustacean</p>
 <p>And I'll see you next time!</p>
 
                     </main>

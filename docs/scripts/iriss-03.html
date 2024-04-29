@@ -186,7 +186,7 @@ description below.</p>
 <h2 id="what-is-a-type"><a class="header" href="#what-is-a-type">What is a Type</a></h2>
 <p>In programming a Type describes what kind of data or values can be used in a particular circumstance</p>
 <p>In Rust, we use Types to describe variables, parameters, properties or anywhere else you can have a value, so that the
-compiler knows what the data at that point will look like inside the running program, and how it will behave. </p>
+compiler knows what the data at that point will look like inside the running program, and how it will behave.</p>
 <p>This can include where in memory the data lives, how it's represented in memory, and what functionality can be assigned
 to the data (though we'll cover that last part in a few videos time).</p>
 <h2 id="primitive-types"><a class="header" href="#primitive-types">Primitive Types</a></h2>
@@ -199,8 +199,8 @@ a <em>lot</em> of primitive types.</p>
 handle on?</p>
 <p>Here we go (((Show chart)))</p>
 <p>This is how many primitive types there are in Rust! And yes, as scary as it is, you will completely understand this in
-just a few minutes! </p>
-<p>First and most importantly, forget this chart for now, there's really only five categories that we actually care about 
+just a few minutes!</p>
+<p>First and most importantly, forget this chart for now, there's really only five categories that we actually care about
 (((Show chart)))</p>
 <p>integers, floating points, characters, booleans and string slices</p>
 <p>We'll go over each of these individually, explain how they work, their variations and what you might use them for.</p>
@@ -224,8 +224,8 @@ starting at 0:</p>
 <li>ten to the power of three is a thousand</li>
 <li>etcetera</li>
 </ul>
-<p>Electronics, and by extension computers, can only really cope reliably with things that are <code>on</code> or <code>off</code> though. </p>
-<p>How do you count with only on or off? Well, what if instead of having ten possible values in each column (0-9 or base 
+<p>Electronics, and by extension computers, can only really cope reliably with things that are <code>on</code> or <code>off</code> though.</p>
+<p>How do you count with only on or off? Well, what if instead of having ten possible values in each column (0-9 or base
 10), we only have two (0-1 or base 2). This is binary.</p>
 <p>In binary our columns are a bit different:</p>
 <ul>
@@ -239,9 +239,9 @@ starting at 0:</p>
 <p>If we mark those columns as one's and the others as zeros we get one one zero one</p>
 <p>Sometimes when we want to write something in binary and be explicit that that is the system we're using we might write:
 oh B one one oh one.</p>
-<p>The oh B at the start makes it clear that a number like ob B one one oh one represents &quot;thirteen&quot; and not &quot;one thousand
-one hundred and one&quot;.</p>
-<p>Each 1 or 0 is a <em><strong>b</strong></em>inary dig<em><strong>it</strong></em>, which is where we get the term &quot;bit&quot;.</p>
+<p>The oh B at the start makes it clear that a number like ob B one one oh one represents "thirteen" and not "one thousand
+one hundred and one".</p>
+<p>Each 1 or 0 is a <em><strong>b</strong></em>inary dig<em><strong>it</strong></em>, which is where we get the term "bit".</p>
 <p>Eight bits is a byte, and can represent the numbers from zero to two hundred and fifty-five, again, I'm not expecting
 anyone to be able to <em>read</em> this.</p>
 <p>The reason why a byte is eight bits has a lot of history, but it basically comes down to character encoding: with 7
@@ -259,11 +259,11 @@ also use underscores to space numbers for legibility.</p>
 <h3 id="integers"><a class="header" href="#integers">Integers</a></h3>
 <p>Now that you've had that primer on binary, I bet those twelve different integer types are starting to make a lot more
 sense!</p>
-<p>The most basic number type in Rust is the <code>u8</code>. </p>
-<p>This is an <em>unsigned</em> integer (represented by the <code>u</code>) that is 8 bits in length. </p>
-<p>Unsigned means that the number can only be positive (it does not have a negative sign). </p>
-<p>You might have already guessed, but this is one byte, and can hold the numbers 0 to two hundred and fifty-five. </p>
-<p>A byte like this can be used for all sorts of things, though one common example is as part of a color. </p>
+<p>The most basic number type in Rust is the <code>u8</code>.</p>
+<p>This is an <em>unsigned</em> integer (represented by the <code>u</code>) that is 8 bits in length.</p>
+<p>Unsigned means that the number can only be positive (it does not have a negative sign).</p>
+<p>You might have already guessed, but this is one byte, and can hold the numbers 0 to two hundred and fifty-five.</p>
+<p>A byte like this can be used for all sorts of things, though one common example is as part of a color.</p>
 <p>We often represent colors as 8 bits of red, 8 bits of green, 8 bits of blue and sometimes 8 bits of transparency.</p>
 <p><code>i8</code> is an integer that can represent both positive and negative numbers (i.e. it's signed).</p>
 <p>It also only uses 8 bits of data but instead of going from 0 to two hundred and fifty-five, it goes from negative
@@ -272,8 +272,8 @@ one hundred and twenty-eight to positive one hundred and twenty-seven.</p>
 two's complement.</p>
 <p>Two's complement, however, is complicated, and we don't think like computers.</p>
 <p>The easiest way to visualise it is the left most column is the negative version of itself, and all other numbers are the
-same. </p>
-<p>So, the number negative one hundred and twenty-five can be represented as one zero zero zero - zero zero one one. 
+same.</p>
+<p>So, the number negative one hundred and twenty-five can be represented as one zero zero zero - zero zero one one.
 ((Show table))</p>
 <p>ie, the number contains one lot of negative one hundred and twenty-eight, one positive two and one positive one.</p>
 <p>Negative one hundred and twenty-eight, plus two, plus one gives us negative one hundred and twenty-five.</p>
@@ -291,14 +291,14 @@ same. </p>
 <p>In this case, the <code>size</code> is also acting as the number of bits, however, unlike the other integer types, the size of
 <code>size</code> is variable.</p>
 <p>Rust is a compiled language, meaning that the code you write in Rust is transformed into instructions that a CPU can
-understand. </p>
-<p>CPUs are all different, but they typically follow some given &quot;architecture&quot;. </p>
-<p>For example, if you're watching this on a Windows or Linux desktop, the architecture of your CPU is <em>probably</em> <code>x86_64</code>. </p>
+understand.</p>
+<p>CPUs are all different, but they typically follow some given "architecture".</p>
+<p>For example, if you're watching this on a Windows or Linux desktop, the architecture of your CPU is <em>probably</em> <code>x86_64</code>.</p>
 <p>If you're watching this on a Mac or a mobile phone, then the architecture is <em>probably</em> <code>arm64</code>.</p>
 <p>When you compile Rust it will compile into an instruction set for the architecture your machine uses, though you can
 also tell it what instruction set to compile for, if you want to build it on one architecture but run it on another.</p>
 <p><code>x86_64</code> and <code>arm64</code> are both 64bit architectures, so when you build for these machines, the <code>size</code> in <code>usize</code> and
-<code>isize</code> becomes <code>64</code>. </p>
+<code>isize</code> becomes <code>64</code>.</p>
 <p>However, if you were to compile for, say, a Cortex M zero microprocessor, then the instruction set would likely be <code>Thumb-1</code>
 which is 16bit so the <code>size</code> in <code>usize</code> and <code>isize</code> becomes <code>16</code>.</p>
 <h4 id="which-integer-is-right-for-you"><a class="header" href="#which-integer-is-right-for-you">Which integer is right for you?</a></h4>
@@ -345,16 +345,16 @@ later, but I wanted to quickly go over some code from the last video.</p>
 <p>In the bonus section of the last video, we got the number of milliseconds that had passed since midnight on the 1st
 of January 1970, and then immediately used <code>as usize</code>:
 ((Show code))</p>
-<p>The reason for this is the number of milliseconds since that date is approximately one trillion, seven hundred billion 
+<p>The reason for this is the number of milliseconds since that date is approximately one trillion, seven hundred billion
 and is returned as a <code>u128</code>.</p>
 <p>We wanted to use this as part of a calculation to work out an index into an array and indexes in arrays are always
 <code>usize</code>.</p>
 <p>If you were to compile this program on a 32bit architecture, then the number of milliseconds
 is greater than what would fit into a <code>usize</code> which would be just over four billion.</p>
-<p>When we use <code>as</code> it simply takes the number, whatever it is and tries to cram it into the size of the type in 
+<p>When we use <code>as</code> it simply takes the number, whatever it is and tries to cram it into the size of the type in
 <code>as &lt;type&gt;</code>.</p>
 <p>When going from a larger size to a smaller size (in this case, from <code>u128</code> to the equivalent of <code>u32</code>) it simply cuts
-off the front of the data, leaving the least significant bits. 
+off the front of the data, leaving the least significant bits.
 ((Show program))</p>
 <h3 id="floating-points"><a class="header" href="#floating-points">Floating Points</a></h3>
 <p>We've covered twelve different ways of storing whole numbers in Rust, but there are only two ways of storing numbers
@@ -367,7 +367,7 @@ with decimal points: <code>f32</code> and <code>f64</code>.</p>
 </ul>
 <p>They're called floating point because the decimal point can move around.</p>
 <p>Your immediate thought here might be that you should use <code>f32</code> on 32bit systems, and <code>f64</code> on 64bit systems, but
-actually this isn't the way to think about these numbers, and I literally only discovered this while writing this 
+actually this isn't the way to think about these numbers, and I literally only discovered this while writing this
 chapter of the book!</p>
 <p>To explain, floating points are not perfectly accurate. The bits of a floating point number are broken into parts:</p>
 <ul>
@@ -376,17 +376,17 @@ chapter of the book!</p>
 <li>and a fraction</li>
 </ul>
 <p>Without going into too much detail on floating points this gives us a way of expressing very large numbers and very
-small numbers but not every number in between </p>
+small numbers but not every number in between</p>
 <p>(after all, there are an infinite number of numbers between zero and one).</p>
-<p>Imagine using a floating point number to represent money. </p>
+<p>Imagine using a floating point number to represent money.</p>
 <p>Someone comes into a store to buy an item that costs five hundred and twenty dollars and four cents.</p>
 <p>Somehow they have a coupon for five hundred and twenty dollars and two cents.</p>
 <p>The remainder that they need to pay is 2 cents, right?
 ((Show code))</p>
 <hr />
 <p>If we expressed this in code using floating point numbers we don't get a perfect two cents!</p>
-<p>Instead, if the currency you're representing uses &quot;hundredths&quot; for its minor currency like USD or GBP, then you can
-(and maybe should) represent the total number of that, eg of cents for dollars or pennies for pounds, using integers 
+<p>Instead, if the currency you're representing uses "hundredths" for its minor currency like USD or GBP, then you can
+(and maybe should) represent the total number of that, eg of cents for dollars or pennies for pounds, using integers
 instead.</p>
 <p>So when should you use floats?</p>
 <p>Floating point numbers are great for more abstract mathematics where perfect precisions isn't strictly necessary, for
@@ -395,21 +395,21 @@ example, vectors, matrices and quaternions which are often used in applications 
 a 32bit architecture should use an <code>f32</code> and a 64bit architecture should prefer an <code>f64</code>... but if that's the case,
 where is the <code>fsize</code>?</p>
 <p>Actually, 32bit architectures are usually designed to support 64bit floating point numbers just fine, the difference
-between <code>f32</code> and <code>f64</code> is that regardless of architecture, <code>f32</code> is about 30% faster, and <code>f64</code> is more &quot;fine grain&quot;.</p>
+between <code>f32</code> and <code>f64</code> is that regardless of architecture, <code>f32</code> is about 30% faster, and <code>f64</code> is more "fine grain".</p>
 <p>To decide which to use you just need to decide between speed and accuracy</p>
 <h3 id="characters"><a class="header" href="#characters">Characters</a></h3>
-<p>In Rust, we have a special type that represents a single character called <code>char</code> </p>
-<p>I say char, some people say car, unlike stud though I'm not changing my ways on this one, I'm on old man dying on a 
+<p>In Rust, we have a special type that represents a single character called <code>char</code></p>
+<p>I say char, some people say car, unlike stud though I'm not changing my ways on this one, I'm on old man dying on a
 weird hill, deal with it</p>
-<p>Char is always 4 bytes (32bits) in size and can be any valid &quot;unicode scalar value&quot; (which is to say, any character in 
-unicode that's not a control character). </p>
+<p>Char is always 4 bytes (32bits) in size and can be any valid "unicode scalar value" (which is to say, any character in
+unicode that's not a control character).</p>
 <p>In Rust a character is always written between single quotes, whereas string literals are always written between double
 quotes.
 ((Show Code))</p>
 <p>You can use any valid unicode character whether that's the upper or lowercase english letters A-Z, numbers 0-9, white
-space characters, word characters from languages like Chinese and Japanese, emoji, or anything else that's a &quot;unicode
-scalar value&quot;.</p>
-<p>We usually use characters in relation to finding things inside strings. </p>
+space characters, word characters from languages like Chinese and Japanese, emoji, or anything else that's a "unicode
+scalar value".</p>
+<p>We usually use characters in relation to finding things inside strings.</p>
 <p>You can also turn strings into a collection of characters and vice versa, however it's important to note that a
 character inside a string may not take up 4 bytes (for example, english letters and numbers only take 1 byte) because
 of how strings are encoded, however, once turned into a character, they will take up four bytes.</p>
@@ -418,8 +418,8 @@ of how strings are encoded, however, once turned into a character, they will tak
 <p>We often get boolean values through the use of comparisons between values. For example is a equal to b, or is c greater
 than d, etcetera.</p>
 <p>Boolean values are usually reserved for <code>if</code> statements, and this is a good thing to look out for as finding it else
-where <em>might</em> be a sign that the code isn't written in the best way. </p>
-<p>For example, functions almost never need a boolean parameter, this is usually a sign that you should have written two 
+where <em>might</em> be a sign that the code isn't written in the best way.</p>
+<p>For example, functions almost never need a boolean parameter, this is usually a sign that you should have written two
 functions.</p>
 <h3 id="string-slices"><a class="header" href="#string-slices">String slices</a></h3>
 <p>Our old friend the string slice!</p>
@@ -431,7 +431,7 @@ same as its length in characters.</p>
 <p>The character that represents my cat's name has a length of 3 bytes when encoded as a str, but the str is only one
 character long.</p>
 <p>Its also worth remembering that when you turn a string into characters, each of those characters will take up 4 bytes
-of memory, even though inside the string they might have only taken up one byte ((Show code)) </p>
+of memory, even though inside the string they might have only taken up one byte ((Show code))</p>
 <p>(again, don't worry about the code here its just to show the size):</p>
 <p>The size of a string slice depends on what's in it, which is why you won't see it on the stack (string slices live in
 either the compiled output as string literals, or on the Heap inside a String).</p>
@@ -452,19 +452,19 @@ When referenced as an array slice, you do not need to specify the size because, 
 slices, the reference not only contains a pointer to the underlying data, but also contains the size. We write this in
 the form ampersand square brackets T where <code>T</code> is the type of every item in the array.</p>
 <p>((Show code))
-You can access elements inside the array directly by using an index value between square brackets. </p>
+You can access elements inside the array directly by using an index value between square brackets.</p>
 <p>In Rust, indexing starts at 0 and the type of the index is always a <code>usize</code>.</p>
 <h3 id="tuples"><a class="header" href="#tuples">Tuples</a></h3>
 <p>Tuples are similar to arrays in that they are a collection of items, however, each item in the collection can be a
-different type. </p>
-<p>This adds some flexibility but also some restrictions. </p>
+different type.</p>
+<p>This adds some flexibility but also some restrictions.</p>
 <p>For example, you can iterate over each item in an array, but not a tuple.</p>
 <p>((Show code))
 Tuples are written between brackets, and are only considered the same type if the types inside the tuple match.</p>
 <p>((Show code))
 Another difference from arrays is how you access a single item in the tuple, which you do with a dot, followed by
 the number element you want. Again, this starts from 0.</p>
-<p>There is a zero length tuple that is Rust's way to represent nothing, we call it the Unit Type. </p>
+<p>There is a zero length tuple that is Rust's way to represent nothing, we call it the Unit Type.</p>
 <p>It's zero bytes, does not exist on the stack at runtime, and unlike other languages with types like <code>null</code> or <code>void</code>,
 can not be used interchangeably with other types.</p>
 <p>You might use this type in conjunction with generics which we'll come to in a bit.</p>
@@ -479,11 +479,11 @@ can not be used interchangeably with other types.</p>
 </ul>
 <p>As we just covered tuples, lets quickly talk about tuple structs.</p>
 <p>((Show code))
-They look a bit like they're simply &quot;named&quot; tuples, and indeed they can be accessed the same way:</p>
+They look a bit like they're simply "named" tuples, and indeed they can be accessed the same way:</p>
 <p>Similar to tuples, this kind of struct can be accessed with a <code>.</code> and a numbered value, <em>however</em> unlike tuples,
-structs have a concept of &quot;visibility&quot;. </p>
-<p>Unless explicitly marked as public the fields of a struct are only accessible in the module in which it is defined, or 
-its descendents. </p>
+structs have a concept of "visibility".</p>
+<p>Unless explicitly marked as public the fields of a struct are only accessible in the module in which it is defined, or
+its descendents.</p>
 <p>((Show code))
 We'll talk more about modules later, however, to make the fields of a struct public, you can simply mark them as <code>pub</code>.</p>
 <p>You don't have to make every field public though, if you'd like some parts of the struct to be public and others to be
@@ -495,24 +495,24 @@ Named fields work pretty much the same as tuple structs except instead of having
 defined in.</p>
 <p>((Show code))
 Unit structs are an interesting case that you probably won't find much use for until we get into more advanced Rust and
-some of the cooler patterns and idioms that we use. </p>
+some of the cooler patterns and idioms that we use.</p>
 <p>Like the Unit Type, a Unit Struct has no value and no size. They're most commonly used as a marker, but you can also add
 functionality to them via traits.</p>
 <h3 id="enums"><a class="header" href="#enums">Enums</a></h3>
 <p>((Show code))
-Enums are for when you want to represent one of a finite number of possible values. </p>
+Enums are for when you want to represent one of a finite number of possible values.</p>
 <p>For example say we want to represent the colors of a traffic light which can only be red, amber or green.</p>
 <p>Many programing languages have this concept of enums, but what makes Rust enums especially awesome is that the variants
-can additionally contain values. </p>
+can additionally contain values.</p>
 <p>We've already talked about two such enums <code>Option</code> and <code>Result</code> which are two of the most important and widely used
-types in the entire ecosystem, and we'll talk more about them when we talk about Generic Types shortly. </p>
+types in the entire ecosystem, and we'll talk more about them when we talk about Generic Types shortly.</p>
 <p>((Show code))
 As an example though, enums variants can be structured in either a tuple stype or a struct style:</p>
 <p>In terms of memory usage, on the stack an enum will take up as much space as its largest variant, regardless of which
 variant it actually is.</p>
 <h2 id="generic-types"><a class="header" href="#generic-types">Generic Types</a></h2>
-<p>Generics in Rust allow the creation of entirely new types at compile time by combining types together. </p>
-<p>We've talked a bit about Option and how Rust uses it to represent Some value or None. </p>
+<p>Generics in Rust allow the creation of entirely new types at compile time by combining types together.</p>
+<p>We've talked a bit about Option and how Rust uses it to represent Some value or None.</p>
 <p>((Show code))
 Option is an enum with two variants, it is literally just this:</p>
 <p>Note that after the name of the enum we have <code>T</code> in triangle brackets.</p>
@@ -533,18 +533,18 @@ It has two types that can be decided later <code>T</code>, which should represen
 <p>((Show code))
 We'll talk more about functions in a later video, but in order to explain Result in context, the following example shows
 the fully described Result type as the return type of the function, which is how we'd typically use this enum...</p>
-<p>Though, you wouldn't typically use a String as an Error type, and we'll talk more about that when we get to Error 
+<p>Though, you wouldn't typically use a String as an Error type, and we'll talk more about that when we get to Error
 handling later.</p>
 <p>When we start talking about adding functionality to types, we'll also talk about how you can restrict what types are
 allowed to be used in generics through the use of trait bounds.</p>
 <h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
-<p>That is (almost) everything you need to know about types! </p>
+<p>That is (almost) everything you need to know about types!</p>
 <p>The main thing we're still missing is ownership and traits, but we'll come to those when we talk about functions.</p>
 <p>The main things to remember are:</p>
 <ul>
 <li>We have our primitive types that represent binary data. There's a lot of choice here, but that's a good thing!</li>
 <li>We can represent more complex types with compound types</li>
-<li>We can do the type equivalent &quot;fill in the blank&quot; using generics</li>
+<li>We can do the type equivalent "fill in the blank" using generics</li>
 <li>We talked a bit about two of the most common generics
 <ul>
 <li>Option (representing something or nothing)</li>
@@ -554,7 +554,7 @@ allowed to be used in generics through the use of trait bounds.</p>
 </ul>
 <p>In the next video we're going to talk about controlling the flow of our program with branches and loops as well as
 pattern matching and expressions, two of my favourite features of this language!</p>
-<p>If that interests you, don't forget to like and subscribe </p>
+<p>If that interests you, don't forget to like and subscribe</p>
 <p>Between now and then, why not try experimenting with your own types!</p>
 <p>And I'll see you next time</p>
 

@@ -177,9 +177,9 @@
 <h2 id="preamble"><a class="header" href="#preamble">Preamble</a></h2>
 <p>When you create a program, how does it remember things? Last time, we created a variable and put our name
 inside it. Where was our name stored?</p>
-<p>Jumping into memory already might seem unusual. </p>
+<p>Jumping into memory already might seem unusual.</p>
 <p>A lot of programming tutorials in any language would like to get you writing code before you have to worry about such
-things. </p>
+things.</p>
 <p>However, I think right off the bat we have a wonderful opportunity to talk about how memory works in Rust and, because
 memory is so important to how Rust works, learning this will simplify everything else going forward.</p>
 <p>Today, we're going to make an extremely simple program and use that as the basis to explain how Rust remembers.</p>
@@ -193,27 +193,27 @@ from the official Rust book. Start by opening your terminal and navigating to wh
 just like last time, then we'll create a new project with:</p>
 <pre><code class="language-shell">cargo new guessing-game
 </code></pre>
-<p>Then we'll open the project go to the file <code>src/main.rs</code>. As before we'll see the same &quot;hello, world&quot; program:</p>
+<p>Then we'll open the project go to the file <code>src/main.rs</code>. As before we'll see the same "hello, world" program:</p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
-    println!(&quot;Hello, world!&quot;);
+    println!("Hello, world!");
 }</code></pre></pre>
 <p>Let's quickly change our hello world message to something that welcomes us to the game.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
-</span>    println!(&quot;Welcome to the guessing game!&quot;);
+</span>    println!("Welcome to the guessing game!");
 <span class="boring">}</span></code></pre></pre>
 <p>And add another print line that tells the user what to expect</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
-</span><span class="boring">    println!(&quot;Welcome to the guessing game!&quot;);
-</span>    println!(&quot;I have chosen a color red, green or blue, can you guess which?&quot;);
+</span><span class="boring">    println!("Welcome to the guessing game!");
+</span>    println!("I have chosen a color red, green or blue, can you guess which?");
 <span class="boring">}</span></code></pre></pre>
-<p>Let's pick a color that the user has to guess, I'm going to pick &quot;blue&quot; but feel free to pick your favourite</p>
-<p>Before we move on, I want to talk about the &quot;type&quot; of the data we've just created.</p>
-<p>We're going to cover types properly in the next video, but I want to quickly point some things out. </p>
-<p>The type of data describes a number of things but mainly, how that data is represented in memory and how it can be used. </p>
-<p>For example, is the data a string (like &quot;blue&quot;), or a number, or a boolean that represent true or false.</p>
+<p>Let's pick a color that the user has to guess, I'm going to pick "blue" but feel free to pick your favourite</p>
+<p>Before we move on, I want to talk about the "type" of the data we've just created.</p>
+<p>We're going to cover types properly in the next video, but I want to quickly point some things out.</p>
+<p>The type of data describes a number of things but mainly, how that data is represented in memory and how it can be used.</p>
+<p>For example, is the data a string (like "blue"), or a number, or a boolean that represent true or false.</p>
 <p>As you can see, my editor has written colon ampersand str after actual. This isn't part of the text, it's just there to
-show me the &quot;type&quot; of the variable.</p>
-<p>This means that the variable <code>actual</code> contains a &quot;reference&quot; (represented by the <code>&amp;</code>) to a &quot;string slice&quot; (represented
+show me the "type" of the variable.</p>
+<p>This means that the variable <code>actual</code> contains a "reference" (represented by the <code>&amp;</code>) to a "string slice" (represented
 by <code>str</code>). We'll talk about why the variable only contains a reference and not the data itself later. You could, if you
 like, manually write this yourself, however, it's generally better to let Rust infer the
 type, and only write it yourself if either Rust is unable to decide (because it could be multiple things) or in the case
@@ -222,14 +222,14 @@ that Rust has a default type, you want to use something different.</p>
 <p>Great... but not much of a game is it, you don't even have time to guess before you're told what it is.</p>
 <p>Before we tell the user what the actual color was lets ask them to guess.</p>
 <p>In order to get some user input, we need to read from the terminal.</p>
-<p>When the program runs in the terminal, we can ask the user to type things. </p>
+<p>When the program runs in the terminal, we can ask the user to type things.</p>
 <p>Regardless of whether you are on Windows, Mac or Linux, this input is passed into the program through a stream of data
 called standard in.</p>
-<p>Rust comes with a &quot;standard library&quot;, the name is unrelated to the stream, they both just happen to be &quot;standard&quot;</p>
-<p>We can access the standard library as a module called <code>std</code>. I pronounce this S T D, but I think most people say &quot;stud&quot;
+<p>Rust comes with a "standard library", the name is unrelated to the stream, they both just happen to be "standard"</p>
+<p>We can access the standard library as a module called <code>std</code>. I pronounce this S T D, but I think most people say "stud"
 and I should really start doing that.</p>
 <p>Modules in Rust are a way of grouping up other bits of code such as functions, data types and even other modules.</p>
-<p>We'll talk about them more in a future video. </p>
+<p>We'll talk about them more in a future video.</p>
 <p>Inside of this is another module called <code>io</code> that deals with input and output.</p>
 <p>If we weren't using the <code>println!</code> macro, this is where we'd have to come to write things out to the terminal too, via
 a stream called <code>stdout</code> (standard out). <code>println!</code> is a nice little wrapper that makes writing to stdout pretty
@@ -241,71 +241,71 @@ output.</p>
 <p><code>stderr</code> is really useful for things like logging, which we'll talk about in the future, but if you want to quickly
 write something to this stream you can use <code>eprintln!</code> and <code>eprint!</code> the same way we use <code>println!</code> and <code>print!</code></p>
 <p>So, we get stdin using <code>std::io::stdin()</code>, this is a function call (we'll talk about functions in a couple of videos),
-that returns something called a &quot;handle&quot; that we can use for temporary access to the input stream.</p>
+that returns something called a "handle" that we can use for temporary access to the input stream.</p>
 <p>The double colons just tell Rust that we're looking for something inside a module. We'll cover modules in detail later,
 including how, why and when to make our own, as well as better ways to access them, but since we only need to write
 this line once, this is the easiest way to do it.</p>
 <p>We could store the result of <code>stdin()</code> in a variable, however, we only use this handle once, and then we're done with
 it.</p>
-<p>So, off the back of the function call, we can call immediately call <code>.lines()</code>. </p>
+<p>So, off the back of the function call, we can call immediately call <code>.lines()</code>.</p>
 <p>This is a method (a special type of function that belongs specifically to some other thing, in this case it belongs to
 the handle for stdin).</p>
 <p><code>.lines()</code> returns an iterator, allowing us to iterate (or step through) each line one at a time. We get the next line
 by calling <code>.next()</code> on the iterator.</p>
 <p>Wait wait wait, what are those <code>expect</code>s about?!</p>
-<p><code>expect()</code> is, I would say, the second-worst way you could handle something going wrong in your program. </p>
-<p>This is not &quot;idiomatic&quot; and you absolutely should not use this in anything except the most throw away software as it
-will immediately cause the program to stop and spew a lot of information at the user. </p>
+<p><code>expect()</code> is, I would say, the second-worst way you could handle something going wrong in your program.</p>
+<p>This is not "idiomatic" and you absolutely should not use this in anything except the most throw away software as it
+will immediately cause the program to stop and spew a lot of information at the user.</p>
 <p>In the future we'll talk about things going wrong and how to better handle them, however, as this program is just for
 you, I think you'll cope for now. 😊</p>
 <p>That doesn't explain what these lines are doing, or why there are two of them though. The reason for this is that there
 are two possible ways <code>.lines()</code> might not work.</p>
 <p>The first expect then:</p>
-<pre><code class="language-rust ignore">.expect(&quot;No input was read&quot;)</code></pre>
+<pre><code class="language-rust ignore">.expect("No input was read")</code></pre>
 <p>When we call <code>.next()</code> on any iterator, there either is something next or there isn't. In some languages this concept of
 something or nothing might be represented as either the data you wanted or <code>null</code>.</p>
-<p>For example, in another language we might ask for a string and get <code>&quot;red&quot;</code> or <code>null</code>. </p>
-<p>&quot;red&quot; is a string but null is not... what happens if you try to use the returned value as if it was a string?</p>
+<p>For example, in another language we might ask for a string and get <code>"red"</code> or <code>null</code>.</p>
+<p>"red" is a string but null is not... what happens if you try to use the returned value as if it was a string?</p>
 <p>In languages with this behaviour might produce and error at the point where the data is used, not where it was
-generated, so you have to make sure to always check that your data is what it's supposed to be, which, the language 
+generated, so you have to make sure to always check that your data is what it's supposed to be, which, the language
 isn't making an effort to remind you to do.</p>
-<p>Obviously many people think this ambiguity is bad, including Tony Hoare, arguably the &quot;inventor&quot; of this  behavior, who
-has called it his &quot;billion-dollar mistake&quot;.</p>
+<p>Obviously many people think this ambiguity is bad, including Tony Hoare, arguably the "inventor" of this  behavior, who
+has called it his "billion-dollar mistake".</p>
 <p>Rust does not allow you to use types like this interchangeably, so data can not be a string or null as these types are
-not compatible. </p>
+not compatible.</p>
 <p>In Rust, we use a kind of container type to get around this called <code>Option</code>.</p>
 <p>Option is an enum meaning its value is one of a set number of variants, in this case the variant is either Some or None</p>
 <p>If the variant of the Option is Some then it contains our value, otherwise it does not.</p>
-<p>Importantly, when a function returns an <code>Option</code> type you, the programmer, must check to see if it contains 
+<p>Importantly, when a function returns an <code>Option</code> type you, the programmer, must check to see if it contains
 Some data and then extract the data if it's there.</p>
 <p>There are a number of ways to do this and <code>.expect</code> is one of the worst ways to do this. It will attempt to extract the
-data if its there, or stop the program abruptly with the provided error message if it's not. </p>
+data if its there, or stop the program abruptly with the provided error message if it's not.</p>
 <p>We'll talk about better ways to handle this in the future.</p>
 <p>For the time being we're going to just say we can't deal with it not being there, we don't want to continue running the
-program, and we want the program to stop. </p>
-<p>We use <code>.expect(&quot;message&quot;)</code> to say, if this is nothing, we are giving up, stop the program and print our message 
+program, and we want the program to stop.</p>
+<p>We use <code>.expect("message")</code> to say, if this is nothing, we are giving up, stop the program and print our message
 (plus a few other useful bits) to the <code>stderr</code>.</p>
 <p>You can see why this behaviour is typically undesirable but, we can allow it for this example, at least until we
 learn how to deal with <code>Option</code> properly.</p>
 <p>The second expect is a bit different:</p>
 <p>If the Option we got from <code>.next()</code> contains something instead of nothing, it <em>still</em> doesn't necessarily mean we read
 the users input correctly, reading data from standard in is itself fallible.</p>
-<p>Fallibility, the nature that something may go wrong, in programming is another thing we've traditionally handled very 
+<p>Fallibility, the nature that something may go wrong, in programming is another thing we've traditionally handled very
 badly.</p>
-<p>A common way to deal with this in other languages is to stop executing and &quot;throw&quot; an error.</p>
-<p>The problem with throwing errors is that it breaks the flow of execution. </p>
+<p>A common way to deal with this in other languages is to stop executing and "throw" an error.</p>
+<p>The problem with throwing errors is that it breaks the flow of execution.</p>
 <p>Normally code is executed one line after another but once an error is thrown, the next thing to get executed after the
-throw is not obvious, it's going to be wherever the error is &quot;caught&quot;... if it's &quot;caught&quot;.</p>
+throw is not obvious, it's going to be wherever the error is "caught"... if it's "caught".</p>
 <p>Sometimes you may not even realise that some code you've written could throw an error because you've called someone
 else's code, and they didn't make it obvious that their code could fail.</p>
 <p>Rust does away with this with another enum type called <code>Result</code>.</p>
 <p>If your function can fail, it must return a Result type.</p>
 <p>Like with <code>Option</code>, <code>Result</code> is its own type that contains either the data we wanted, or an error.</p>
 <p>The idiomatic way to handle Result types depends on what you're trying to do; could you recover from an error and keep
-the program running, how do we want to report the error back to the user, etc. </p>
-<p>Using <code>expect</code> will, again, cause the program to immediately stop with the error message sent to standard error, and 
+the program running, how do we want to report the error back to the user, etc.</p>
+<p>Using <code>expect</code> will, again, cause the program to immediately stop with the error message sent to standard error, and
 again, you can see why this is typically extremely undesirable.</p>
-<p>For now, we'll make do with the two expects, and we have a working program. </p>
+<p>For now, we'll make do with the two expects, and we have a working program.</p>
 <p>There is an actual color, the user guesses a color, and we print both to the screen.</p>
 <h2 id="memory"><a class="header" href="#memory">Memory</a></h2>
 <p>To the meat of our today's video then.</p>
@@ -317,11 +317,11 @@ you could easily miss it.</p>
 <p>To understand this, we have to talk a little bit about how our program runs.</p>
 <h3 id="the-stack"><a class="header" href="#the-stack">The Stack</a></h3>
 <p>In Rust (and many languages in fact), programs are made up of functions; small, independent bits of code. In our
-program we only have one function for now, which is <code>main</code>, but this next bit still applies. </p>
-<p>When we run our program, the operating system assigns some memory for the program to run in, called &quot;the stack&quot;.</p>
+program we only have one function for now, which is <code>main</code>, but this next bit still applies.</p>
+<p>When we run our program, the operating system assigns some memory for the program to run in, called "the stack".</p>
 <p>Functions can call other functions and each time we go into a new function we create a new block of memory on the stack
 that's the exact size of everything that function needs to remember.</p>
-<p>For example, imagine the following program with the functions main, f1 and f2. </p>
+<p>For example, imagine the following program with the functions main, f1 and f2.</p>
 <p>When the program is initialized the operating system assigns some memory for the stack, then, all the memory required to
 store all the variables in <code>main</code> (which in this example is 4 addresses) is blocked off.</p>
 <p>Then, as <code>main</code> runs, it calls the <code>f1</code> function which requires two more addresses. A new block with space for those
@@ -332,47 +332,47 @@ top of the stack.</p>
 <code>main</code> comes to an end and our program closes and all memory is freed.</p>
 <p>You can see that the amount of memory a function needs is very important, but... how long is a piece of string? <em>shake</em>
 How much space does a string take in memory?</p>
-<p>Our three colors, &quot;red&quot;, &quot;blue&quot; and &quot;green&quot; are 3 characters, 4 characters and 5 characters respectively. </p>
+<p>Our three colors, "red", "blue" and "green" are 3 characters, 4 characters and 5 characters respectively.</p>
 <p>How much memory should we assign on the stack? What about the users input?</p>
 <p>Is that 3 characters, 4 characters or the complete works of Shakespeare?</p>
 <p>How much memory each function will require is decided at build time, and we don't know what the user is going to write
 until later.</p>
 <p>Anything that lives inside a variable goes on the stack, and anything on the stack must be of known size when the
-program is compiled. </p>
-<p>In Rust, we have a specific name for this &quot;Sized&quot;. Things like numbers, characters, and booleans are Sized, but a
-string of characters is not, it is &quot;Unsized&quot;.</p>
+program is compiled.</p>
+<p>In Rust, we have a specific name for this "Sized". Things like numbers, characters, and booleans are Sized, but a
+string of characters is not, it is "Unsized".</p>
 <p>So where does our data live if not inside the variables?</p>
 <p>Returning to the top, you'll remember that our <code>actual</code> variable has the type <code>&amp;str</code>. The ampersand tells us the value
-is a reference, and the &quot;str&quot; tells us that it's a reference to a string slice.</p>
+is a reference, and the "str" tells us that it's a reference to a string slice.</p>
 <p>A reference is something that points to where some actual data is,</p>
 <p>this is very handy when you want to tell something about some data without having to give it the actual data.</p>
-<p>When you manually write a string between double quotes <code>&quot;like this&quot;</code>, it's called a &quot;string literal&quot;.</p>
-<p>This applies to our variable as well as every time we've used in a <code>println!</code>. </p>
+<p>When you manually write a string between double quotes <code>"like this"</code>, it's called a "string literal".</p>
+<p>This applies to our variable as well as every time we've used in a <code>println!</code>.</p>
 <p>String literals are hard coded into the binary file that we create when we compile the program (in our case, that's the
-executable file that gets run) </p>
-<p>A &quot;string slice&quot; can be any part of a string stored somewhere else, so it can be characters 0 to 3 (b, l, u, e) of our 
+executable file that gets run)</p>
+<p>A "string slice" can be any part of a string stored somewhere else, so it can be characters 0 to 3 (b, l, u, e) of our
 string literal wherever it is in the executable file.</p>
 <h3 id="the-heap"><a class="header" href="#the-heap">The Heap</a></h3>
-<p>Our <code>input</code>, however, is very different, we don't know what's going to be in here at all at compile time. </p>
+<p>Our <code>input</code>, however, is very different, we don't know what's going to be in here at all at compile time.</p>
 <p>In order to store the data that the user gives us, we still need to put it in memory somewhere, but it can't live on the
 stack on in the binary.</p>
-<p>Instead, we use another kind of memory called &quot;the Heap&quot;.</p>
-<p>At any point while the program is running, we can ask the operating system to allow us to access some amount of memory. </p>
+<p>Instead, we use another kind of memory called "the Heap".</p>
+<p>At any point while the program is running, we can ask the operating system to allow us to access some amount of memory.</p>
 <p>We still need to know how much memory we need, but now we only need to know how much memory at runtime.</p>
 <p>This memory comes from the Heap.</p>
-<p>In the heap, we can store &quot;Unsized&quot; data (as well as Sized which can be useful under certain circumstances) and, then
+<p>In the heap, we can store "Unsized" data (as well as Sized which can be useful under certain circumstances) and, then
 because everything about the location of that data is Sized, we can store it in a variable on the stack.</p>
 <p><code>String</code> does not contain the data, but does know where the data is.</p>
-<p>Some other important differences between the Stack and the Heap. </p>
+<p>Some other important differences between the Stack and the Heap.</p>
 <p>The Stack is more limited in size, you should try to avoid storing large amounts of data here</p>
 <p>Creating memory on the Heap takes longer than creating it on the Stack, this is because you have to communicate your
-requirements to the operating system and wait for it to get back to you with that allocation. </p>
+requirements to the operating system and wait for it to get back to you with that allocation.</p>
 <p>This doesn't take so long that you're going to notice... unless you do it a lot.</p>
 <p>This is all great, but why is one of them <code>&amp;str</code> and one of them <code>String</code> if both of them are just references to data
-stored elsewhere? </p>
-<p>This actually comes down to &quot;ownership&quot;. We'll go into ownership in more detail later in a later chapter but at a very
+stored elsewhere?</p>
+<p>This actually comes down to "ownership". We'll go into ownership in more detail later in a later chapter but at a very
 high level a reference to a string slice does not own the string data.</p>
-<p>Whereas a capital S string owns, and therefore has full control over the data. </p>
+<p>Whereas a capital S string owns, and therefore has full control over the data.</p>
 <p>Most importantly, ownership tells the program when to clean up the data.</p>
 <p>When an <code>&amp;str</code> is no longer needed, the reference is cleaned up, but the data still exists.</p>
 <p>When a <code>String</code> is no longer needed, not only is the reference cleaned up, but memory where the string data was sored is
@@ -385,17 +385,17 @@ vice versa.</p>
 <p>For example, we could turn our <code>actual</code> variable into a String by creating a new String from that data.</p>
 <p>And we can get a reference to a string slice from inside the string.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
-</span>let name = &quot;Daniel&quot;;                   // This is a &amp;str pointing at a sequence of bytes in the executable
-let name_on_heap = String::from(name); // This requests memory from the operating system then copies &quot;Daniel&quot; into it
+</span>let name = "Daniel";                   // This is a &amp;str pointing at a sequence of bytes in the executable
+let name_on_heap = String::from(name); // This requests memory from the operating system then copies "Daniel" into it
 let name_ref = name_on_heap.as_str();  // This is a &amp;str pointing to a sequence of bytes on the heap
 <span class="boring">}</span></code></pre></pre>
 <p>Despite the type difference between actual and input, they can be compared to each other.</p>
-<p>In fact, Rust lets you compare any two types so long as someone has told Rust how to do the comparison, which, for 
+<p>In fact, Rust lets you compare any two types so long as someone has told Rust how to do the comparison, which, for
 Strings and sting slices, someone has.</p>
 <p>Let's return to our program one last time, and we'll add a branch to our code.</p>
-<p><code>if</code>/<code>else</code> is a form of flow control that allows us to do one thing if the expression we put in the &quot;if&quot; evaluates to
+<p><code>if</code>/<code>else</code> is a form of flow control that allows us to do one thing if the expression we put in the "if" evaluates to
 true, and something else if it doesn't.</p>
-<p>So &quot;if&quot; input is equal to actual, we'll print &quot;you win&quot;, else, we'll print &quot;you lose&quot;</p>
+<p>So "if" input is equal to actual, we'll print "you win", else, we'll print "you lose"</p>
 <h2 id="to-review"><a class="header" href="#to-review">To Review:</a></h2>
 <p>Today we learned specifically about the Stack and Heap:</p>
 <ul>
@@ -417,8 +417,8 @@ the flow, and we'll talk more about this in a couple of videos.</p>
 <h2 id="bonus"><a class="header" href="#bonus">Bonus</a></h2>
 <p>This has nothing to do with today's topic, and I'm not going to go deep on anything but... I couldn't leave you with a
 guessing game that isn't really a game.</p>
-<p>If we want to randomise the &quot;actual&quot; value we can create an array of all possible values.</p>
-<p>An Array is a list of things of the same type, seperated by commas and surrounded with square brackets. </p>
+<p>If we want to randomise the "actual" value we can create an array of all possible values.</p>
+<p>An Array is a list of things of the same type, seperated by commas and surrounded with square brackets.</p>
 <p>Arrays are Sized, but they can not have their size changed at runtime (there are other types for that).</p>
 <p>We can then fake randomness by getting a big number that will change every time we run the program... like the time.</p>
 <p>The unix epoch was midnight on the first of January 1970, we can find out how much time has passed since then and then
@@ -426,7 +426,7 @@ get that time in milliseconds.</p>
 <p>We need to do a quick type conversion, which we'll talk about next time, this just lets us use the number of
 milliseconds to access the array. This conversion is could truncate the data, but it doesn't matter in this case.</p>
 <p>Finally, we can find the remainder after dividing by the length of the array by using the remainder operator</p>
-<p>This gives us a random(ish) index into the array. </p>
+<p>This gives us a random(ish) index into the array.</p>
 <p>Now when you run the program, you won't know what the actual color is!</p>
 <h2 id="next-time"><a class="header" href="#next-time">Next time</a></h2>
 <p>Next time we're going to look more at data types.</p>
