@@ -10,6 +10,10 @@ When a computer tells me I'm doing well at my job because I made a test pass tho
 
 A good test makes sure that the thing we're building does what we think it should do.
 
+This series has a free accompanying book, in which you can find all the details for this tutorial, check the description below.
+
+My name is Daniel, welcome to IRISS.
+
 ## Intro
 
 Anecdotally I recently interviewed at a company where I professed my love of tests, and they told me flatly they don't write tests, they "move fast". 
