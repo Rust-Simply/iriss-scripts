@@ -36,7 +36,7 @@ Not only should you have more of them, but they will provide the greatest feelin
 
 ### End-to-End Tests
 
-E2E tests are designed to make sure that the user of the software you've created can complete full user journeys
+End to End tests are designed to make sure that the user of the software you've created can complete full user journeys
 
 For example, can the user open, edit and save a file in a desktop application or can a user add an item to a shopping cart and checkout of an ecommerce store.
 
@@ -50,25 +50,23 @@ This would include things like databases or other data stores, web apis, library
 
 Integration tests are also used if your software produces a public API.
 
-You write tests to check that people using your software in its more natural state.
-
-Because of the communication component to these tests, these tests are also quite slow.
+Because of the communication component to these tests, these tests are also quite slow but you should use more of them than end-to-end tests.
 
 ### Unit Tests
 
 Unit tests test a single unit of functionality. 
 
-These tests are the simplest, fastest and should make up the bulk of your testing.
+These tests are the simplest and the fastest and should make up the bulk of your testing.
 
 These tests are so important, that it is best practice to write them before you write the code you're going to test.
 
-For this book, we're only going to cover Unit Tests. 
+For this video series, we're only going to cover Unit Tests. 
 
 That isn't to say that Integration Tests and End-to-End Tests aren't important, they absolutely are, and there are many good guides out there.
 
 But, it is to say, that Unit Tests are _so_ important, that they significantly impact how we communicate about Rust code.
 
-This is particularly important for documentation which we'll talk about in the next video.
+This is particularly important for documentation which we'll talk more about that in the next video.
 
 ## Introduction to Modules
 
@@ -83,17 +81,17 @@ You could think of it like a physical container, though you can nest any number 
 The contents of the module are private to that module unless explicitly marked as public with the `pub` keyword.
 
 We define a module with the `mod` keyword and a name. There are then three ways to define what's inside that module:
-1. With a directory named the same thing as the module which contains the file `mod.rs`, eg `my_module/mod.rs`
-2. With a file in the same directory named the same thing as the module, eg `my_module.rs`
-3. Inside curly brackets, eg `mod my_module { ... }`
+1. With a directory named the same thing as the module which contains the file `mod.rs`
+2. With a file in the same directory named the same thing as the module
+3. Inside curly brackets
 
-If the module exposes anything publicly, you can then reference them with the path to the module and the name of the thing you're referencing separate by double colons. 
+If the module exposes anything publicly, you can then reference those things with the path to the module and the name of the thing you're referencing separate by double colons. 
 
 Sound familiar?
 
-It should, this is how we've been accessing Rust's standard library. For example, the `stdin` function is inside the `io` module, which itself is available inside the `std` library.
+It should, this is how we've been accessing Rust's standard library. For example, the `stdin` function is inside the `io` module, which itself is available inside the `std` library module.
 
-We access that function using `std::io::stdin()`. 
+We access that function using stud :: io:: standard in. 
 
 We can also use the `use` keyword to simplify this a bit, for example, we can "use stud io standard-in"
 
@@ -111,9 +109,9 @@ First we start by creating a module to test these functions in the same file as 
 
 As long as nothing in the `tests` module is used in your main program it shouldn't appear in your final binary, however, this isn't good enough. 
 
-There's a risk we might make a mistake of course, but ever without that, the module will still be processed by the compiler in order to do things like type checking.
+There's a risk we might make a mistake of course, but even without that, the module will still be processed by the compiler in order to do things like type checking.
 
-We only care about this module when we're running our tests and Rust provides us a way to tell the compiler that too, the `cfg` attribute.
+We only care about this module when we're running our tests and Rust provides us a way to tell the compiler that too, the configuration attribute `cfg`.
 
 Attributes are one of Rusts many meta programming tools which we'll cover more in the future at increasing difficulty levels.
 
@@ -141,11 +139,11 @@ The `assert!()` macro takes either one or two parameters.
 
 The first parameter which is not optional is a boolean value, or something that evaluates to a boolean.
 
-If this boolean is false, then the assertion will cause a panic, and the test will fail (unless it's expected to panic, more on that later).
+If this boolean is false, then the assertion will cause a panic, and the test will fail.
 
 The second, optional parameter allows us to annotate the assertion, which can help us more easily determine which (if any) assertion failed in a test.
 
-This is great as we create more thorough tests with more assertions. 
+This is awesome when we create more thorough tests with more assertions. 
 
 You will find that people don't use this as much, I'm guilty of this too, but I do recommend making an effort to describe each specific assertion. 
 
@@ -162,29 +160,29 @@ There are a couple of restrictions with the assert macros.
 
 Values used must implement `PartialEq` and `Debug`. 
 
-Most built in types already implement both, and we'll talk about how to implement them for your own types in the Traits chapter.
+Most built in types already implement both, and we'll talk about how to implement them for your own types in the Traits video.
 
-There are more assert macros available, but these
+To run tests in our project we use `cargo test`. 
 
-To run tests in our project we use `cargo test`. In the case of the above we should see the this
+When we do that for this test, we should see the this.
 
 ----
 
 This top bit is a summary of all the tests, then we get a breakdown of each test that failed.
 
-You can see that we get both the line where the test failed as well as our failure message.
+You can see that we get both the line where the test failed in addition to our failure message.
 
-This is why a lot of people skip the message, but it can still be useful to help provide context
+The line number is why a lot of people skip the message, but it can still be useful to help provide context before we need to look up the line.
 
 ## Testing our code
 
-Let's move on to writing our actual tests, we'll start with "split_at".
+Let's move on to writing our actual tests, we'll start with `split_at`.
 
 Before we can write a test, `split_at` is not part of the `tests` module, so we need to make it available inside.
 
 We can do that with the `use` statement in one of two ways, either `use super::split_at` or `use super::*`.
 
-The `super` keyword simply means the module above this one, which for your unit tests should be the module to you're writing tests for. 
+The `super` keyword simply means the module above this one, which for your unit tests should be the module you're writing tests for. 
 
 We can either bring just the one function in, or we can bring in everything available in that scope.
 
@@ -200,11 +198,11 @@ So we can expect the left side of the split to be "Hel",
 
 and the right side to be "lo world!"
 
-I've added some context to our asserts so we can quickly see if anything went wrong.
+I've added some context to our asserts, so we can quickly see if anything went wrong.
 
-But when we run cargo test, everything passes, which is great!
+But when we run `cargo test`, everything passes, which is great!
 
-But because we're working with strings, we should check strings that only contain ascii characters.
+But because we're working with strings, we should check strings that contain more than just ascii characters.
 
 Let's write another test for `split_at`. 
 
@@ -218,15 +216,15 @@ In the test, I wrote that I expect the result to be the first 3 characters, but 
 
 The Japanese character "ko" is 3 bytes in length, which is why its the only character thats returned.
 
-If we asked for two bytes instead, this function would panic and crash our program.
+If we asked for two bytes instead, the split would fall inside a character and this function would panic and crash our program.
 
-Regardless, from the name "split at" I think number of characters is the right behaviour here, so lets fix our function.
+Regardless, from the name `split_at` I think number of characters is the right behaviour here, so lets fix our function.
 
 Don't worry too much about this too much yet, we're going to cover iterators in a future video but to explain the fix:
 
-`.chars()` returns an iterator over each character.
+`.chars()` returns an iterator over each character in the string.
 
-We then use `.take()` to only take (at most) the number of of characters we wanted to split at.
+We then use `.take()` to only take (at most) the number of characters we wanted to split at.
 
 We then `.map()` over each character and get its size in bytes, which turns the character into a usize number.
 
@@ -236,7 +234,7 @@ This turns the length in chars into a new length in bytes and will be correct re
 
 This is now safe to use to create our sub slices as the byte count won't fall inside a character.
 
-We no longer need to check the bounds of split_at either, because the maximum size will be the full length of the string even if split_at was longer than the string.
+We no longer need to check the bounds of `split_at` either, because the maximum size will be the full length of the string even if split_at was longer than the string.
 
 Let's rerun our tests...and now this test works too!
 
@@ -256,9 +254,9 @@ But... what if I told you: we just did all of this backwards 😲
 
 Hopefully, you're eager to write a load of code and then write a load of tests, but wait!
 
-As we alluded to at the top of chapter, and again halfway through, the point of tests isn't to test that your code does what you think it does, it's to make sure it does what it's supposed to do.
+As we alluded to at the beginning of the video, and again halfway through, the point of tests isn't to test that your code does what you think it does, it's to make sure it does what it's supposed to do.
 
-As our split_at function showed, its a good idea to decide what you think that function should do before you write it.
+As our `split_at` function showed, its a good idea to decide what you think that function should do before you write it.
 
 The best way to achieve this is to work out what your code is supposed to do, then write the test, then write the code.
 
@@ -268,7 +266,7 @@ We'll create a function that checks if a given string is a palindrome (a word th
 
 We'll start by writing our test.
 
-We'll check whether the function identifies "kayak" and "racecar" are flagged as palindromes, and "wood" is not.
+We'll check whether the function flags "kayak" and "racecar" as palindromes, and flags "wood" as not a palindrome.
 
 Before we can run the test, Rusts type system won't let us compile the program without the function existing.
 
@@ -288,7 +286,7 @@ We'll clone this iterator and reverse it to get a second iterator that goes back
 
 Again, don't worry too much about the hows and whys of iterators yet, just go with it.
 
-We can zip the two iterators together, and each element inside them.
+We can zip the two iterators together, and ccompare each element inside them.
 
 If every element in each iterator is equal to the other, then the word is the same forwards and backwards.
 
@@ -308,7 +306,7 @@ Hi Indra, sorry to interrupt, could you review my code?
 
 Looks good to me but while race car is a palindrome, its two words, not one.
 
-Ah, right you. Thanks for that.
+Ah, right you are. Thanks for that.
 
 [Exit right]
 
@@ -330,15 +328,7 @@ We only need to update the forward iterator because the effect of the filter is 
 
 Our tests pass again.
 
-All good now Indra?
-
-"All good"
-
-So we push that out to production and we're done!
-
-"Daniel, hey Daniel"
-
-Ah, one sec
+Lets go back to the review
 
 [Exit left]
 
@@ -346,13 +336,11 @@ Ah, one sec
 
 [Enter right]
 
-Hi Gargi what's up?
+Hi Indra, how does it look now?
 
-Gargi: One of our customers complained, her name is Anna but your code says that's not a palindrome.
+I should have thought of this earlier, but names like Anna are also Palindromes, we should check for that.
 
-Ah, I think I know what went wrong, I'll get that fixed now.
-
-Indra: Has anyone ever told you two you sound very similar
+Good idea, be right back.
 
 [Looks gag?]
 
@@ -382,12 +370,12 @@ You may need to rely on external crates for more nuanced control of unicode char
 
 For Test Driven Development, the main thing I want to emphasize is that at each stage:
 - we think about what we want to achieve
-- write or modify a test
+- write or modify a test to represent that expectation
 - then work on the functionality until the test passes
 
-## How many tests should a good test writer write if a good test writer could write good tests?
+## How many tests?
 
-The perennial of questions when it comes to testing: How many tests should you write?
+The perennial of questions when it comes to testing: How many tests should a good test writer write if a good test writer could write good tests?
 
 The important thing here is "coverage".
 
@@ -442,7 +430,7 @@ Homework
 
 We've already let on how you can solve last chapters homework
 
-We only needed one lifetime to represent the link between the input string slice and the string slice inside our vector.
+We only needed one lifetime to represent the link between the input string slice and the string slices inside our vector.
 
 ---
 
@@ -453,20 +441,22 @@ Because we have control of the vector in this example we can make sure we create
 
 This is useful as when you create a new Vector in Rust it has a default size, and any time you try to add an item to a vector that is already full, Rust will allocate the memory for a new larger vector in the background, copy the data from the old location to the new location, then free the memory in the old location.
 
+This is very time-consuming.
+
 ---
 
-For the homework in this chapter, I would like you to write the tests for, and then implement the code for the following requirements in this order:
+For the homework this time, I would like you to write the tests for, and then implement the code for the following requirements in this order:
 
 1. Create a function that will reverse the words in an English sentence.
 2. If the string started with a capital letter, it should still start with a capital after the words are reversed.
 3. If the string starts or ends with whitespace, it should be removed (trimmed) from the returned String.
-4. If the string contains more than one sentence, the function should return an error (though for now, that error can be the unit type `()`).
+4. If the string contains more than one sentence, the function should return an error, though for now, that error can be the unit type.
 
 ---
 
 Your function will need to allocate memory and should probably have a header like this.
 
-I've linked to the documentation for String and Result in the description of the video.
+I've linked to the documentation for String and Result in the description of the video which should help.
 
 # Going forward
 

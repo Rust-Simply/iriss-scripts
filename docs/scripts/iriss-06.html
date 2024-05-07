@@ -192,23 +192,22 @@
 <p>It's a pyramid to indicate that, although all tests are important, those lower down the pyramid should be laying the foundation for the others.</p>
 <p>Not only should you have more of them, but they will provide the greatest feeling of safety and security.</p>
 <h3 id="end-to-end-tests"><a class="header" href="#end-to-end-tests">End-to-End Tests</a></h3>
-<p>E2E tests are designed to make sure that the user of the software you've created can complete full user journeys</p>
+<p>End to End tests are designed to make sure that the user of the software you've created can complete full user journeys</p>
 <p>For example, can the user open, edit and save a file in a desktop application or can a user add an item to a shopping cart and checkout of an ecommerce store.</p>
 <p>End-to-End tests are the slowest form of test and lack depth, but they help add confidence that everything works together.</p>
 <h3 id="integration-tests"><a class="header" href="#integration-tests">Integration Tests</a></h3>
 <p>Integration tests check that the code you control works correctly with code that your program depends on that you don't control.</p>
 <p>This would include things like databases or other data stores, web apis, library apis, etc.</p>
 <p>Integration tests are also used if your software produces a public API.</p>
-<p>You write tests to check that people using your software in its more natural state.</p>
-<p>Because of the communication component to these tests, these tests are also quite slow.</p>
+<p>Because of the communication component to these tests, these tests are also quite slow but you should use more of them than end-to-end tests.</p>
 <h3 id="unit-tests"><a class="header" href="#unit-tests">Unit Tests</a></h3>
 <p>Unit tests test a single unit of functionality.</p>
-<p>These tests are the simplest, fastest and should make up the bulk of your testing.</p>
+<p>These tests are the simplest and the fastest and should make up the bulk of your testing.</p>
 <p>These tests are so important, that it is best practice to write them before you write the code you're going to test.</p>
-<p>For this book, we're only going to cover Unit Tests.</p>
+<p>For this video series, we're only going to cover Unit Tests.</p>
 <p>That isn't to say that Integration Tests and End-to-End Tests aren't important, they absolutely are, and there are many good guides out there.</p>
 <p>But, it is to say, that Unit Tests are <em>so</em> important, that they significantly impact how we communicate about Rust code.</p>
-<p>This is particularly important for documentation which we'll talk about in the next video.</p>
+<p>This is particularly important for documentation which we'll talk more about that in the next video.</p>
 <h2 id="introduction-to-modules"><a class="header" href="#introduction-to-modules">Introduction to Modules</a></h2>
 <p>Unlike many languages, in Rust, tests live with the code that they're testing.</p>
 <p>To explain this we need to talk about how code in Rust is organised with Modules.</p>
@@ -217,14 +216,14 @@
 <p>The contents of the module are private to that module unless explicitly marked as public with the <code>pub</code> keyword.</p>
 <p>We define a module with the <code>mod</code> keyword and a name. There are then three ways to define what's inside that module:</p>
 <ol>
-<li>With a directory named the same thing as the module which contains the file <code>mod.rs</code>, eg <code>my_module/mod.rs</code></li>
-<li>With a file in the same directory named the same thing as the module, eg <code>my_module.rs</code></li>
-<li>Inside curly brackets, eg <code>mod my_module { ... }</code></li>
+<li>With a directory named the same thing as the module which contains the file <code>mod.rs</code></li>
+<li>With a file in the same directory named the same thing as the module</li>
+<li>Inside curly brackets</li>
 </ol>
-<p>If the module exposes anything publicly, you can then reference them with the path to the module and the name of the thing you're referencing separate by double colons.</p>
+<p>If the module exposes anything publicly, you can then reference those things with the path to the module and the name of the thing you're referencing separate by double colons.</p>
 <p>Sound familiar?</p>
-<p>It should, this is how we've been accessing Rust's standard library. For example, the <code>stdin</code> function is inside the <code>io</code> module, which itself is available inside the <code>std</code> library.</p>
-<p>We access that function using <code>std::io::stdin()</code>.</p>
+<p>It should, this is how we've been accessing Rust's standard library. For example, the <code>stdin</code> function is inside the <code>io</code> module, which itself is available inside the <code>std</code> library module.</p>
+<p>We access that function using stud :: io:: standard in.</p>
 <p>We can also use the <code>use</code> keyword to simplify this a bit, for example, we can "use stud io standard-in"</p>
 <p>Then we can use standard in without having to use the full path to the module each time.</p>
 <h2 id="test-modules"><a class="header" href="#test-modules">Test Modules</a></h2>
@@ -233,8 +232,8 @@
 <p>I've renamed them a bit, so we can have all of them in one file.</p>
 <p>First we start by creating a module to test these functions in the same file as the functions exist</p>
 <p>As long as nothing in the <code>tests</code> module is used in your main program it shouldn't appear in your final binary, however, this isn't good enough.</p>
-<p>There's a risk we might make a mistake of course, but ever without that, the module will still be processed by the compiler in order to do things like type checking.</p>
-<p>We only care about this module when we're running our tests and Rust provides us a way to tell the compiler that too, the <code>cfg</code> attribute.</p>
+<p>There's a risk we might make a mistake of course, but even without that, the module will still be processed by the compiler in order to do things like type checking.</p>
+<p>We only care about this module when we're running our tests and Rust provides us a way to tell the compiler that too, the configuration attribute <code>cfg</code>.</p>
 <p>Attributes are one of Rusts many meta programming tools which we'll cover more in the future at increasing difficulty levels.</p>
 <p>For now, the <code>cfg</code> attribute allows us to tell the Rust Compiler (<code>rustc</code>) <em>when</em> we want to compile something.</p>
 <p>There are many, many ways to use conditional compilation, but for tests its pretty simple, we only want the module compiled when we're building tests.</p>
@@ -248,9 +247,9 @@
 <p>Here's a test that won't pass.</p>
 <p>The <code>assert!()</code> macro takes either one or two parameters.</p>
 <p>The first parameter which is not optional is a boolean value, or something that evaluates to a boolean.</p>
-<p>If this boolean is false, then the assertion will cause a panic, and the test will fail (unless it's expected to panic, more on that later).</p>
+<p>If this boolean is false, then the assertion will cause a panic, and the test will fail.</p>
 <p>The second, optional parameter allows us to annotate the assertion, which can help us more easily determine which (if any) assertion failed in a test.</p>
-<p>This is great as we create more thorough tests with more assertions.</p>
+<p>This is awesome when we create more thorough tests with more assertions.</p>
 <p>You will find that people don't use this as much, I'm guilty of this too, but I do recommend making an effort to describe each specific assertion.</p>
 <p>The people you work with, as well as future you, will appreciate the effort.</p>
 <hr />
@@ -262,18 +261,18 @@
 </ul>
 <p>There are a couple of restrictions with the assert macros.</p>
 <p>Values used must implement <code>PartialEq</code> and <code>Debug</code>.</p>
-<p>Most built in types already implement both, and we'll talk about how to implement them for your own types in the Traits chapter.</p>
-<p>There are more assert macros available, but these</p>
-<p>To run tests in our project we use <code>cargo test</code>. In the case of the above we should see the this</p>
+<p>Most built in types already implement both, and we'll talk about how to implement them for your own types in the Traits video.</p>
+<p>To run tests in our project we use <code>cargo test</code>.</p>
+<p>When we do that for this test, we should see the this.</p>
 <hr />
 <p>This top bit is a summary of all the tests, then we get a breakdown of each test that failed.</p>
-<p>You can see that we get both the line where the test failed as well as our failure message.</p>
-<p>This is why a lot of people skip the message, but it can still be useful to help provide context</p>
+<p>You can see that we get both the line where the test failed in addition to our failure message.</p>
+<p>The line number is why a lot of people skip the message, but it can still be useful to help provide context before we need to look up the line.</p>
 <h2 id="testing-our-code"><a class="header" href="#testing-our-code">Testing our code</a></h2>
-<p>Let's move on to writing our actual tests, we'll start with "split_at".</p>
+<p>Let's move on to writing our actual tests, we'll start with <code>split_at</code>.</p>
 <p>Before we can write a test, <code>split_at</code> is not part of the <code>tests</code> module, so we need to make it available inside.</p>
 <p>We can do that with the <code>use</code> statement in one of two ways, either <code>use super::split_at</code> or <code>use super::*</code>.</p>
-<p>The <code>super</code> keyword simply means the module above this one, which for your unit tests should be the module to you're writing tests for.</p>
+<p>The <code>super</code> keyword simply means the module above this one, which for your unit tests should be the module you're writing tests for.</p>
 <p>We can either bring just the one function in, or we can bring in everything available in that scope.</p>
 <p>The idiom here is to <code>use super::*</code> as it will bring in everything that needs testing, and hopefully even if it brings in things you aren't using it won't pollute the test module too much.</p>
 <hr />
@@ -281,25 +280,25 @@
 <p>and we'll split at 3.</p>
 <p>So we can expect the left side of the split to be "Hel",</p>
 <p>and the right side to be "lo world!"</p>
-<p>I've added some context to our asserts so we can quickly see if anything went wrong.</p>
-<p>But when we run cargo test, everything passes, which is great!</p>
-<p>But because we're working with strings, we should check strings that only contain ascii characters.</p>
+<p>I've added some context to our asserts, so we can quickly see if anything went wrong.</p>
+<p>But when we run <code>cargo test</code>, everything passes, which is great!</p>
+<p>But because we're working with strings, we should check strings that contain more than just ascii characters.</p>
 <p>Let's write another test for <code>split_at</code>.</p>
 <p>It's exactly the same but we've used "Hello World" in Japanese... hopefully, let me know if I got it wrong in the comments.</p>
 <p>Now when we run the tests, this test fails.</p>
 <p>This is where testing gets really nuanced, we need to test our expectations of the behaviour, not necessarily that the code did what we programmed it to.</p>
 <p>In the test, I wrote that I expect the result to be the first 3 characters, but last week, I mentioned this would return a length in bytes.</p>
 <p>The Japanese character "ko" is 3 bytes in length, which is why its the only character thats returned.</p>
-<p>If we asked for two bytes instead, this function would panic and crash our program.</p>
-<p>Regardless, from the name "split at" I think number of characters is the right behaviour here, so lets fix our function.</p>
+<p>If we asked for two bytes instead, the split would fall inside a character and this function would panic and crash our program.</p>
+<p>Regardless, from the name <code>split_at</code> I think number of characters is the right behaviour here, so lets fix our function.</p>
 <p>Don't worry too much about this too much yet, we're going to cover iterators in a future video but to explain the fix:</p>
-<p><code>.chars()</code> returns an iterator over each character.</p>
-<p>We then use <code>.take()</code> to only take (at most) the number of of characters we wanted to split at.</p>
+<p><code>.chars()</code> returns an iterator over each character in the string.</p>
+<p>We then use <code>.take()</code> to only take (at most) the number of characters we wanted to split at.</p>
 <p>We then <code>.map()</code> over each character and get its size in bytes, which turns the character into a usize number.</p>
 <p>Finally we <code>.sum()</code> the iterator which adds every number in the iterator together.</p>
 <p>This turns the length in chars into a new length in bytes and will be correct regardless of what size in bytes those characters are.</p>
 <p>This is now safe to use to create our sub slices as the byte count won't fall inside a character.</p>
-<p>We no longer need to check the bounds of split_at either, because the maximum size will be the full length of the string even if split_at was longer than the string.</p>
+<p>We no longer need to check the bounds of <code>split_at</code> either, because the maximum size will be the full length of the string even if split_at was longer than the string.</p>
 <p>Let's rerun our tests...and now this test works too!</p>
 <hr />
 <p>Let's quickly write the tests for <code>split_around</code> and <code>split_around_many</code>.</p>
@@ -309,13 +308,13 @@
 <p>But... what if I told you: we just did all of this backwards 😲</p>
 <h2 id="test-driven-development"><a class="header" href="#test-driven-development">Test Driven Development</a></h2>
 <p>Hopefully, you're eager to write a load of code and then write a load of tests, but wait!</p>
-<p>As we alluded to at the top of chapter, and again halfway through, the point of tests isn't to test that your code does what you think it does, it's to make sure it does what it's supposed to do.</p>
-<p>As our split_at function showed, its a good idea to decide what you think that function should do before you write it.</p>
+<p>As we alluded to at the beginning of the video, and again halfway through, the point of tests isn't to test that your code does what you think it does, it's to make sure it does what it's supposed to do.</p>
+<p>As our <code>split_at</code> function showed, its a good idea to decide what you think that function should do before you write it.</p>
 <p>The best way to achieve this is to work out what your code is supposed to do, then write the test, then write the code.</p>
 <p>This is called Test Driven Development. Let's try it out!</p>
 <p>We'll create a function that checks if a given string is a palindrome (a word that's the same forwards and backwards).</p>
 <p>We'll start by writing our test.</p>
-<p>We'll check whether the function identifies "kayak" and "racecar" are flagged as palindromes, and "wood" is not.</p>
+<p>We'll check whether the function flags "kayak" and "racecar" as palindromes, and flags "wood" as not a palindrome.</p>
 <p>Before we can run the test, Rusts type system won't let us compile the program without the function existing.</p>
 <p>We don't want to write the functionality yet so we'll create the function header and use the <code>todo!()</code> macro</p>
 <p><code>todo()!</code> is a handy little marker that we use to say we are intending to deal with this soon.</p>
@@ -325,7 +324,7 @@
 <p>Like earlier, we'll get an iterator for each character in the string.</p>
 <p>We'll clone this iterator and reverse it to get a second iterator that goes backwards through the string.</p>
 <p>Again, don't worry too much about the hows and whys of iterators yet, just go with it.</p>
-<p>We can zip the two iterators together, and each element inside them.</p>
+<p>We can zip the two iterators together, and ccompare each element inside them.</p>
 <p>If every element in each iterator is equal to the other, then the word is the same forwards and backwards.</p>
 <hr />
 <p>Now when we run our tests they pass.</p>
@@ -335,7 +334,7 @@
 <p>[Enter right]</p>
 <p>Hi Indra, sorry to interrupt, could you review my code?</p>
 <p>Looks good to me but while race car is a palindrome, its two words, not one.</p>
-<p>Ah, right you. Thanks for that.</p>
+<p>Ah, right you are. Thanks for that.</p>
 <p>[Exit right]</p>
 <hr />
 <p>[Enter left]</p>
@@ -346,18 +345,13 @@
 <p>That'll deal with whitespace and any other punctuation too.</p>
 <p>We only need to update the forward iterator because the effect of the filter is cloned.</p>
 <p>Our tests pass again.</p>
-<p>All good now Indra?</p>
-<p>"All good"</p>
-<p>So we push that out to production and we're done!</p>
-<p>"Daniel, hey Daniel"</p>
-<p>Ah, one sec</p>
+<p>Lets go back to the review</p>
 <p>[Exit left]</p>
 <hr />
 <p>[Enter right]</p>
-<p>Hi Gargi what's up?</p>
-<p>Gargi: One of our customers complained, her name is Anna but your code says that's not a palindrome.</p>
-<p>Ah, I think I know what went wrong, I'll get that fixed now.</p>
-<p>Indra: Has anyone ever told you two you sound very similar</p>
+<p>Hi Indra, how does it look now?</p>
+<p>I should have thought of this earlier, but names like Anna are also Palindromes, we should check for that.</p>
+<p>Good idea, be right back.</p>
 <p>[Looks gag?]</p>
 <p>[Exit right]</p>
 <hr />
@@ -374,11 +368,11 @@
 <p>For Test Driven Development, the main thing I want to emphasize is that at each stage:</p>
 <ul>
 <li>we think about what we want to achieve</li>
-<li>write or modify a test</li>
+<li>write or modify a test to represent that expectation</li>
 <li>then work on the functionality until the test passes</li>
 </ul>
-<h2 id="how-many-tests-should-a-good-test-writer-write-if-a-good-test-writer-could-write-good-tests"><a class="header" href="#how-many-tests-should-a-good-test-writer-write-if-a-good-test-writer-could-write-good-tests">How many tests should a good test writer write if a good test writer could write good tests?</a></h2>
-<p>The perennial of questions when it comes to testing: How many tests should you write?</p>
+<h2 id="how-many-tests"><a class="header" href="#how-many-tests">How many tests?</a></h2>
+<p>The perennial of questions when it comes to testing: How many tests should a good test writer write if a good test writer could write good tests?</p>
 <p>The important thing here is "coverage".</p>
 <p>We usually measure coverage by lines.</p>
 <p>Each time we run a test, we can look to see if a line was run, if it was we call that "covered".</p>
@@ -405,23 +399,24 @@
 <p>That means giving them the time to write tests first, giving them access to the resources they need to learn how to write the best tests, etc.</p>
 <h2 id="homework"><a class="header" href="#homework">Homework</a></h2>
 <p>We've already let on how you can solve last chapters homework</p>
-<p>We only needed one lifetime to represent the link between the input string slice and the string slice inside our vector.</p>
+<p>We only needed one lifetime to represent the link between the input string slice and the string slices inside our vector.</p>
 <hr />
 <p>For a cleaner API though you could keep our recursive function private and expose a public function that creates the
 vector for us.</p>
 <p>Because we have control of the vector in this example we can make sure we create a vector with a capacity that is at least as large as the maximum possible entries in it.</p>
 <p>This is useful as when you create a new Vector in Rust it has a default size, and any time you try to add an item to a vector that is already full, Rust will allocate the memory for a new larger vector in the background, copy the data from the old location to the new location, then free the memory in the old location.</p>
+<p>This is very time-consuming.</p>
 <hr />
-<p>For the homework in this chapter, I would like you to write the tests for, and then implement the code for the following requirements in this order:</p>
+<p>For the homework this time, I would like you to write the tests for, and then implement the code for the following requirements in this order:</p>
 <ol>
 <li>Create a function that will reverse the words in an English sentence.</li>
 <li>If the string started with a capital letter, it should still start with a capital after the words are reversed.</li>
 <li>If the string starts or ends with whitespace, it should be removed (trimmed) from the returned String.</li>
-<li>If the string contains more than one sentence, the function should return an error (though for now, that error can be the unit type <code>()</code>).</li>
+<li>If the string contains more than one sentence, the function should return an error, though for now, that error can be the unit type.</li>
 </ol>
 <hr />
 <p>Your function will need to allocate memory and should probably have a header like this.</p>
-<p>I've linked to the documentation for String and Result in the description of the video.</p>
+<p>I've linked to the documentation for String and Result in the description of the video which should help.</p>
 <h1 id="going-forward"><a class="header" href="#going-forward">Going forward</a></h1>
 <p>As I mentioned, after this chapter we will be talking about Rust differently.</p>
 <p>This will primarily be by using the assert macros to state what a value <em>should</em> be rather than printing it to the screen.</p>
