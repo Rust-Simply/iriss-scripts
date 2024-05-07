@@ -2,9 +2,9 @@
 
 Tests. Are. Awesome.
 
-They are my favourite bit of software engineering. 
+They're my favourite bit of software engineering. 
 
-I'm sure many of you can relate, but I don't tend to trust humans telling me I'm doing well at my job.
+I'm sure many of you can relate, but I don't tend to trust humans telling me I'm doing my job well.
 
 When a computer tells me I'm doing well at my job because I made a test pass though, oh that dopamine hits good.
 
@@ -20,11 +20,11 @@ Anecdotally I recently interviewed at a company where I professed my love of tes
 
 Later in the interview they admitted they were having morale issues because their engineers were constantly getting called out of hours to fix things.
 
-So, it begs the question: are you moving fast if you're writing software that doesn't work?
+So, it begs the question: are you moving fast if you have to keep going back to fix your old code?
 
 Software engineers are not paid to write software, we're paid to solve problems. 
 
-Tests are what make sure we solved the problem and by automating our tests they make sure we don't accidentally "unsolve" it further down the line.
+Tests are what make sure we solved the right problem and by automating our tests we make sure we don't accidentally "unsolve" it further down the line.
 
 ## The testing Pyramid
 
@@ -60,6 +60,8 @@ These tests are the simplest and the fastest and should make up the bulk of your
 
 These tests are so important, that it is best practice to write them before you write the code you're going to test.
 
+---
+
 For this video series, we're only going to cover Unit Tests. 
 
 That isn't to say that Integration Tests and End-to-End Tests aren't important, they absolutely are, and there are many good guides out there.
@@ -74,22 +76,32 @@ Unlike many languages, in Rust, tests live with the code that they're testing.
 
 To explain this we need to talk about how code in Rust is organised with Modules.
 
+---
+
 A Module is simply a container for other things, functions, type definitions, other modules, etc.
 
 You could think of it like a physical container, though you can nest any number of containers together.
 
 The contents of the module are private to that module unless explicitly marked as public with the `pub` keyword.
 
+Private items can only be accessed inside that module or its submodules
+
+---
+
 We define a module with the `mod` keyword and a name. There are then three ways to define what's inside that module:
 1. With a directory named the same thing as the module which contains the file `mod.rs`
 2. With a file in the same directory named the same thing as the module
 3. Inside curly brackets
+
+---
 
 If the module exposes anything publicly, you can then reference those things with the path to the module and the name of the thing you're referencing separate by double colons. 
 
 Sound familiar?
 
 It should, this is how we've been accessing Rust's standard library. For example, the `stdin` function is inside the `io` module, which itself is available inside the `std` library module.
+
+---
 
 We access that function using stud :: io:: standard in. 
 
@@ -101,11 +113,15 @@ Then we can use standard in without having to use the full path to the module ea
 
 In Rust, we typically create a test module near the code that is being tested. 
 
-Let's say we want to test some of the functions we wrote in the last video. 
+Let's say we want to test some of the split functions we wrote in the last video. 
 
-I've renamed them a bit, so we can have all of them in one file.
+---
+
+I've renamed them a bit, so we can have all of them in the same file.
 
 First we start by creating a module to test these functions in the same file as the functions exist
+
+---
 
 As long as nothing in the `tests` module is used in your main program it shouldn't appear in your final binary, however, this isn't good enough. 
 
@@ -114,6 +130,8 @@ There's a risk we might make a mistake of course, but even without that, the mod
 We only care about this module when we're running our tests and Rust provides us a way to tell the compiler that too, the configuration attribute `cfg`.
 
 Attributes are one of Rusts many meta programming tools which we'll cover more in the future at increasing difficulty levels.
+
+---
 
 For now, the `cfg` attribute allows us to tell the Rust Compiler (`rustc`) _when_ we want to compile something.
 
@@ -141,6 +159,8 @@ The first parameter which is not optional is a boolean value, or something that 
 
 If this boolean is false, then the assertion will cause a panic, and the test will fail.
 
+---
+
 The second, optional parameter allows us to annotate the assertion, which can help us more easily determine which (if any) assertion failed in a test.
 
 This is awesome when we create more thorough tests with more assertions. 
@@ -155,6 +175,8 @@ There are three main assert macros:
 - `assert` asserts value is true or panics with optional message
 - `assert_eq` asserts left is equal to right or panics with optional message
 - `assert_ne` asserts left is NOT equal to right or panics with optional message
+
+---
 
 There are a couple of restrictions with the assert macros. 
 
@@ -190,7 +212,7 @@ The idiom here is to `use super::*` as it will bring in everything that needs te
 
 ---
 
-With our test lets use "Hello world!" as the input string,
+With our test, lets use "Hello world!" as the input string,
 
 and we'll split at 3.
 
@@ -200,35 +222,45 @@ and the right side to be "lo world!"
 
 I've added some context to our asserts, so we can quickly see if anything went wrong.
 
-But when we run `cargo test`, everything passes, which is great!
+When we run `cargo test`, everything passes, which is great!
 
-But because we're working with strings, we should check strings that contain more than just ascii characters.
+---
+
+However, because we're working with strings, we should check strings that contain more than just ascii characters.
 
 Let's write another test for `split_at`. 
 
-It's exactly the same but we've used "Hello World" in Japanese... hopefully, let me know if I got it wrong in the comments.
+---
+
+This is exactly the same but we've used "Hello World" in Japanese... hopefully, let me know if I got it wrong in the comments.
 
 Now when we run the tests, this test fails.
 
-This is where testing gets really nuanced, we need to test our expectations of the behaviour, not necessarily that the code did what we programmed it to.
+---
 
-In the test, I wrote that I expect the result to be the first 3 characters, but last week, I mentioned this would return a length in bytes.
+This is where testing gets really nuanced, we need to test our expectations of the behaviour, not that the code did what we programmed it to.
 
-The Japanese character "ko" is 3 bytes in length, which is why its the only character thats returned.
+In the test, I wrote that I expect the result to be the first 3 characters, but in the last video, I mentioned this would return a length in bytes.
+
+The Japanese character "ko" is 3 bytes in length, which is why it's the only character that's returned.
 
 If we asked for two bytes instead, the split would fall inside a character and this function would panic and crash our program.
 
-Regardless, from the name `split_at` I think number of characters is the right behaviour here, so lets fix our function.
+Regardless of that though, from the name `split_at` I think number of characters is the right behaviour here, so lets fix our function.
 
-Don't worry too much about this too much yet, we're going to cover iterators in a future video but to explain the fix:
+---
+
+Don't worry too much about this yet, we're going to cover iterators in a future video but to explain the fix:
 
 `.chars()` returns an iterator over each character in the string.
 
-We then use `.take()` to only take (at most) the number of characters we wanted to split at.
+We then use `.take()` to only take (at most) the number of characters we wanted to split at from that first iterator.
 
 We then `.map()` over each character and get its size in bytes, which turns the character into a usize number.
 
-Finally we `.sum()` the iterator which adds every number in the iterator together.
+Finally, we `.sum()` the iterator which adds every number in the iterator together.
+
+---
 
 This turns the length in chars into a new length in bytes and will be correct regardless of what size in bytes those characters are.
 
@@ -262,6 +294,8 @@ The best way to achieve this is to work out what your code is supposed to do, th
 
 This is called Test Driven Development. Let's try it out!
 
+---
+
 We'll create a function that checks if a given string is a palindrome (a word that's the same forwards and backwards).
 
 We'll start by writing our test.
@@ -290,9 +324,9 @@ We can zip the two iterators together, and ccompare each element inside them.
 
 If every element in each iterator is equal to the other, then the word is the same forwards and backwards.
 
----
-
 Now when we run our tests they pass.
+
+---
 
 We can now submit our code to a colleague for review.
 
@@ -306,7 +340,7 @@ Hi Indra, sorry to interrupt, could you review my code?
 
 Looks good to me but while race car is a palindrome, its two words, not one.
 
-Ah, right you are. Thanks for that.
+Oh hey, yeah, thanks, be right back
 
 [Exit right]
 
@@ -320,15 +354,13 @@ All we need to do is add a space to race car.
 
 Now the test fails again, lets fix it.
 
-We'll update our first iterator to filter out anything thats not alphanumeric. 
+We'll update our first iterator to filter out anything that's not alphanumeric. 
 
 That'll deal with whitespace and any other punctuation too.
 
 We only need to update the forward iterator because the effect of the filter is cloned.
 
-Our tests pass again.
-
-Lets go back to the review
+Our tests pass again, so lets go back to the review
 
 [Exit left]
 
@@ -338,11 +370,9 @@ Lets go back to the review
 
 Hi Indra, how does it look now?
 
-I should have thought of this earlier, but names like Anna are also Palindromes, we should check for that.
+I should have thought of this earlier, but names like Anna are also Palindromes, you should check for that.
 
-Good idea, be right back.
-
-[Looks gag?]
+Great idea, thanks!
 
 [Exit right]
 
@@ -362,11 +392,15 @@ We can get back to an iterator of characters by using the flatten method.
 
 And our tests pass again.
 
+---
+
 This function still isn't perfect, honestly, but we're going to leave it here.
 
 If you want to keep working on it, its worth looking at diacritics as well as the difference between balanced and unbalanced palindromes.
 
 You may need to rely on external crates for more nuanced control of unicode characters.
+
+---
 
 For Test Driven Development, the main thing I want to emphasize is that at each stage:
 - we think about what we want to achieve
@@ -484,4 +518,8 @@ I'll also be setting up a Discord server in the near future so keep an eye out f
 
 And I'll see you next time.
 
+# Fuzz to outake
 
+Gargi: Who even was that?
+
+Indra: I have no idea... sounded familiar though.

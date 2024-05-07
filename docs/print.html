@@ -1623,8 +1623,8 @@ so the data that it owns on the Heap is freed...</p>
 <p>And I'll see you next time</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="tests"><a class="header" href="#tests">Tests</a></h1>
 <p>Tests. Are. Awesome.</p>
-<p>They are my favourite bit of software engineering.</p>
-<p>I'm sure many of you can relate, but I don't tend to trust humans telling me I'm doing well at my job.</p>
+<p>They're my favourite bit of software engineering.</p>
+<p>I'm sure many of you can relate, but I don't tend to trust humans telling me I'm doing my job well.</p>
 <p>When a computer tells me I'm doing well at my job because I made a test pass though, oh that dopamine hits good.</p>
 <p>A good test makes sure that the thing we're building does what we think it should do.</p>
 <p>This series has a free accompanying book, in which you can find all the details for this tutorial, check the description below.</p>
@@ -1632,9 +1632,9 @@ so the data that it owns on the Heap is freed...</p>
 <h2 id="intro-1"><a class="header" href="#intro-1">Intro</a></h2>
 <p>Anecdotally I recently interviewed at a company where I professed my love of tests, and they told me flatly they don't write tests, they "move fast".</p>
 <p>Later in the interview they admitted they were having morale issues because their engineers were constantly getting called out of hours to fix things.</p>
-<p>So, it begs the question: are you moving fast if you're writing software that doesn't work?</p>
+<p>So, it begs the question: are you moving fast if you have to keep going back to fix your old code?</p>
 <p>Software engineers are not paid to write software, we're paid to solve problems.</p>
-<p>Tests are what make sure we solved the problem and by automating our tests they make sure we don't accidentally "unsolve" it further down the line.</p>
+<p>Tests are what make sure we solved the right problem and by automating our tests we make sure we don't accidentally "unsolve" it further down the line.</p>
 <h2 id="the-testing-pyramid"><a class="header" href="#the-testing-pyramid">The testing Pyramid</a></h2>
 <p>There are many ways to test software, these largely fall into three categories that make up what we call the testing pyramid.</p>
 <p>It's a pyramid to indicate that, although all tests are important, those lower down the pyramid should be laying the foundation for the others.</p>
@@ -1652,6 +1652,7 @@ so the data that it owns on the Heap is freed...</p>
 <p>Unit tests test a single unit of functionality.</p>
 <p>These tests are the simplest and the fastest and should make up the bulk of your testing.</p>
 <p>These tests are so important, that it is best practice to write them before you write the code you're going to test.</p>
+<hr />
 <p>For this video series, we're only going to cover Unit Tests.</p>
 <p>That isn't to say that Integration Tests and End-to-End Tests aren't important, they absolutely are, and there are many good guides out there.</p>
 <p>But, it is to say, that Unit Tests are <em>so</em> important, that they significantly impact how we communicate about Rust code.</p>
@@ -1659,30 +1660,38 @@ so the data that it owns on the Heap is freed...</p>
 <h2 id="introduction-to-modules"><a class="header" href="#introduction-to-modules">Introduction to Modules</a></h2>
 <p>Unlike many languages, in Rust, tests live with the code that they're testing.</p>
 <p>To explain this we need to talk about how code in Rust is organised with Modules.</p>
+<hr />
 <p>A Module is simply a container for other things, functions, type definitions, other modules, etc.</p>
 <p>You could think of it like a physical container, though you can nest any number of containers together.</p>
 <p>The contents of the module are private to that module unless explicitly marked as public with the <code>pub</code> keyword.</p>
+<p>Private items can only be accessed inside that module or its submodules</p>
+<hr />
 <p>We define a module with the <code>mod</code> keyword and a name. There are then three ways to define what's inside that module:</p>
 <ol>
 <li>With a directory named the same thing as the module which contains the file <code>mod.rs</code></li>
 <li>With a file in the same directory named the same thing as the module</li>
 <li>Inside curly brackets</li>
 </ol>
+<hr />
 <p>If the module exposes anything publicly, you can then reference those things with the path to the module and the name of the thing you're referencing separate by double colons.</p>
 <p>Sound familiar?</p>
 <p>It should, this is how we've been accessing Rust's standard library. For example, the <code>stdin</code> function is inside the <code>io</code> module, which itself is available inside the <code>std</code> library module.</p>
+<hr />
 <p>We access that function using stud :: io:: standard in.</p>
 <p>We can also use the <code>use</code> keyword to simplify this a bit, for example, we can "use stud io standard-in"</p>
 <p>Then we can use standard in without having to use the full path to the module each time.</p>
 <h2 id="test-modules"><a class="header" href="#test-modules">Test Modules</a></h2>
 <p>In Rust, we typically create a test module near the code that is being tested.</p>
-<p>Let's say we want to test some of the functions we wrote in the last video.</p>
-<p>I've renamed them a bit, so we can have all of them in one file.</p>
+<p>Let's say we want to test some of the split functions we wrote in the last video.</p>
+<hr />
+<p>I've renamed them a bit, so we can have all of them in the same file.</p>
 <p>First we start by creating a module to test these functions in the same file as the functions exist</p>
+<hr />
 <p>As long as nothing in the <code>tests</code> module is used in your main program it shouldn't appear in your final binary, however, this isn't good enough.</p>
 <p>There's a risk we might make a mistake of course, but even without that, the module will still be processed by the compiler in order to do things like type checking.</p>
 <p>We only care about this module when we're running our tests and Rust provides us a way to tell the compiler that too, the configuration attribute <code>cfg</code>.</p>
 <p>Attributes are one of Rusts many meta programming tools which we'll cover more in the future at increasing difficulty levels.</p>
+<hr />
 <p>For now, the <code>cfg</code> attribute allows us to tell the Rust Compiler (<code>rustc</code>) <em>when</em> we want to compile something.</p>
 <p>There are many, many ways to use conditional compilation, but for tests its pretty simple, we only want the module compiled when we're building tests.</p>
 <p>The <code>cfg</code> has a "predicate" to identify this simply called <code>test</code>.</p>
@@ -1696,6 +1705,7 @@ so the data that it owns on the Heap is freed...</p>
 <p>The <code>assert!()</code> macro takes either one or two parameters.</p>
 <p>The first parameter which is not optional is a boolean value, or something that evaluates to a boolean.</p>
 <p>If this boolean is false, then the assertion will cause a panic, and the test will fail.</p>
+<hr />
 <p>The second, optional parameter allows us to annotate the assertion, which can help us more easily determine which (if any) assertion failed in a test.</p>
 <p>This is awesome when we create more thorough tests with more assertions.</p>
 <p>You will find that people don't use this as much, I'm guilty of this too, but I do recommend making an effort to describe each specific assertion.</p>
@@ -1707,6 +1717,7 @@ so the data that it owns on the Heap is freed...</p>
 <li><code>assert_eq</code> asserts left is equal to right or panics with optional message</li>
 <li><code>assert_ne</code> asserts left is NOT equal to right or panics with optional message</li>
 </ul>
+<hr />
 <p>There are a couple of restrictions with the assert macros.</p>
 <p>Values used must implement <code>PartialEq</code> and <code>Debug</code>.</p>
 <p>Most built in types already implement both, and we'll talk about how to implement them for your own types in the Traits video.</p>
@@ -1724,26 +1735,31 @@ so the data that it owns on the Heap is freed...</p>
 <p>We can either bring just the one function in, or we can bring in everything available in that scope.</p>
 <p>The idiom here is to <code>use super::*</code> as it will bring in everything that needs testing, and hopefully even if it brings in things you aren't using it won't pollute the test module too much.</p>
 <hr />
-<p>With our test lets use "Hello world!" as the input string,</p>
+<p>With our test, lets use "Hello world!" as the input string,</p>
 <p>and we'll split at 3.</p>
 <p>So we can expect the left side of the split to be "Hel",</p>
 <p>and the right side to be "lo world!"</p>
 <p>I've added some context to our asserts, so we can quickly see if anything went wrong.</p>
-<p>But when we run <code>cargo test</code>, everything passes, which is great!</p>
-<p>But because we're working with strings, we should check strings that contain more than just ascii characters.</p>
+<p>When we run <code>cargo test</code>, everything passes, which is great!</p>
+<hr />
+<p>However, because we're working with strings, we should check strings that contain more than just ascii characters.</p>
 <p>Let's write another test for <code>split_at</code>.</p>
-<p>It's exactly the same but we've used "Hello World" in Japanese... hopefully, let me know if I got it wrong in the comments.</p>
+<hr />
+<p>This is exactly the same but we've used "Hello World" in Japanese... hopefully, let me know if I got it wrong in the comments.</p>
 <p>Now when we run the tests, this test fails.</p>
-<p>This is where testing gets really nuanced, we need to test our expectations of the behaviour, not necessarily that the code did what we programmed it to.</p>
-<p>In the test, I wrote that I expect the result to be the first 3 characters, but last week, I mentioned this would return a length in bytes.</p>
-<p>The Japanese character "ko" is 3 bytes in length, which is why its the only character thats returned.</p>
+<hr />
+<p>This is where testing gets really nuanced, we need to test our expectations of the behaviour, not that the code did what we programmed it to.</p>
+<p>In the test, I wrote that I expect the result to be the first 3 characters, but in the last video, I mentioned this would return a length in bytes.</p>
+<p>The Japanese character "ko" is 3 bytes in length, which is why it's the only character that's returned.</p>
 <p>If we asked for two bytes instead, the split would fall inside a character and this function would panic and crash our program.</p>
-<p>Regardless, from the name <code>split_at</code> I think number of characters is the right behaviour here, so lets fix our function.</p>
-<p>Don't worry too much about this too much yet, we're going to cover iterators in a future video but to explain the fix:</p>
+<p>Regardless of that though, from the name <code>split_at</code> I think number of characters is the right behaviour here, so lets fix our function.</p>
+<hr />
+<p>Don't worry too much about this yet, we're going to cover iterators in a future video but to explain the fix:</p>
 <p><code>.chars()</code> returns an iterator over each character in the string.</p>
-<p>We then use <code>.take()</code> to only take (at most) the number of characters we wanted to split at.</p>
+<p>We then use <code>.take()</code> to only take (at most) the number of characters we wanted to split at from that first iterator.</p>
 <p>We then <code>.map()</code> over each character and get its size in bytes, which turns the character into a usize number.</p>
-<p>Finally we <code>.sum()</code> the iterator which adds every number in the iterator together.</p>
+<p>Finally, we <code>.sum()</code> the iterator which adds every number in the iterator together.</p>
+<hr />
 <p>This turns the length in chars into a new length in bytes and will be correct regardless of what size in bytes those characters are.</p>
 <p>This is now safe to use to create our sub slices as the byte count won't fall inside a character.</p>
 <p>We no longer need to check the bounds of <code>split_at</code> either, because the maximum size will be the full length of the string even if split_at was longer than the string.</p>
@@ -1760,6 +1776,7 @@ so the data that it owns on the Heap is freed...</p>
 <p>As our <code>split_at</code> function showed, its a good idea to decide what you think that function should do before you write it.</p>
 <p>The best way to achieve this is to work out what your code is supposed to do, then write the test, then write the code.</p>
 <p>This is called Test Driven Development. Let's try it out!</p>
+<hr />
 <p>We'll create a function that checks if a given string is a palindrome (a word that's the same forwards and backwards).</p>
 <p>We'll start by writing our test.</p>
 <p>We'll check whether the function flags "kayak" and "racecar" as palindromes, and flags "wood" as not a palindrome.</p>
@@ -1774,33 +1791,31 @@ so the data that it owns on the Heap is freed...</p>
 <p>Again, don't worry too much about the hows and whys of iterators yet, just go with it.</p>
 <p>We can zip the two iterators together, and ccompare each element inside them.</p>
 <p>If every element in each iterator is equal to the other, then the word is the same forwards and backwards.</p>
-<hr />
 <p>Now when we run our tests they pass.</p>
+<hr />
 <p>We can now submit our code to a colleague for review.</p>
 <p>[Exit left]</p>
 <hr />
 <p>[Enter right]</p>
 <p>Hi Indra, sorry to interrupt, could you review my code?</p>
 <p>Looks good to me but while race car is a palindrome, its two words, not one.</p>
-<p>Ah, right you are. Thanks for that.</p>
+<p>Oh hey, yeah, thanks, be right back</p>
 <p>[Exit right]</p>
 <hr />
 <p>[Enter left]</p>
 <p>So lets update our test.</p>
 <p>All we need to do is add a space to race car.</p>
 <p>Now the test fails again, lets fix it.</p>
-<p>We'll update our first iterator to filter out anything thats not alphanumeric.</p>
+<p>We'll update our first iterator to filter out anything that's not alphanumeric.</p>
 <p>That'll deal with whitespace and any other punctuation too.</p>
 <p>We only need to update the forward iterator because the effect of the filter is cloned.</p>
-<p>Our tests pass again.</p>
-<p>Lets go back to the review</p>
+<p>Our tests pass again, so lets go back to the review</p>
 <p>[Exit left]</p>
 <hr />
 <p>[Enter right]</p>
 <p>Hi Indra, how does it look now?</p>
-<p>I should have thought of this earlier, but names like Anna are also Palindromes, we should check for that.</p>
-<p>Good idea, be right back.</p>
-<p>[Looks gag?]</p>
+<p>I should have thought of this earlier, but names like Anna are also Palindromes, you should check for that.</p>
+<p>Great idea, thanks!</p>
 <p>[Exit right]</p>
 <hr />
 <p>[Enter left]</p>
@@ -1810,9 +1825,11 @@ so the data that it owns on the Heap is freed...</p>
 <p>This means we now have an iterator of iterators.</p>
 <p>We can get back to an iterator of characters by using the flatten method.</p>
 <p>And our tests pass again.</p>
+<hr />
 <p>This function still isn't perfect, honestly, but we're going to leave it here.</p>
 <p>If you want to keep working on it, its worth looking at diacritics as well as the difference between balanced and unbalanced palindromes.</p>
 <p>You may need to rely on external crates for more nuanced control of unicode characters.</p>
+<hr />
 <p>For Test Driven Development, the main thing I want to emphasize is that at each stage:</p>
 <ul>
 <li>we think about what we want to achieve</li>
@@ -1878,6 +1895,9 @@ vector for us.</p>
 <p>If you need any help with the homework, please do comment!</p>
 <p>I'll also be setting up a Discord server in the near future so keep an eye out for that!</p>
 <p>And I'll see you next time.</p>
+<h1 id="fuzz-to-outake"><a class="header" href="#fuzz-to-outake">Fuzz to outake</a></h1>
+<p>Gargi: Who even was that?</p>
+<p>Indra: I have no idea... sounded familiar though.</p>
 
                     </main>
 
