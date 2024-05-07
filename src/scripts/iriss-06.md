@@ -292,20 +292,202 @@ If every element in each iterator is equal to the other, then the word is the sa
 
 Now when we run our tests they pass.
 
-We can now submit our code to a colleague for review:
+We can now submit our code to a colleague for review.
+
+[Exit left]
 
 ---
+
+[Enter right]
 
 Hi Indra, sorry to interrupt, could you review my code?
 
 Looks good to me but while race car is a palindrome, its two words, not one.
 
-Ah, right you are
+Ah, right you. Thanks for that.
+
+[Exit right]
 
 ---
+
+[Enter left]
 
 So lets update our test.
 
 All we need to do is add a space to race car.
 
 Now the test fails again, lets fix it.
+
+We'll update our first iterator to filter out anything thats not alphanumeric. 
+
+That'll deal with whitespace and any other punctuation too.
+
+We only need to update the forward iterator because the effect of the filter is cloned.
+
+Our tests pass again.
+
+All good now Indra?
+
+"All good"
+
+So we push that out to production and we're done!
+
+"Daniel, hey Daniel"
+
+Ah, one sec
+
+[Exit left]
+
+---
+
+[Enter right]
+
+Hi Gargi what's up?
+
+Gargi: One of our customers complained, her name is Anna but your code says that's not a palindrome.
+
+Ah, I think I know what went wrong, I'll get that fixed now.
+
+Indra: Has anyone ever told you two you sound very similar
+
+[Looks gag?]
+
+[Exit right]
+
+---
+
+[Enter left]
+
+Lets update our test again. And again our tests fail, that's good! Lets update our code.
+
+Now the obvious thing to do here is to lowercase all of the letters BUT in some languages, an uppercase letter might have multiple lowercase variants depending on how its used.
+
+If we map over each character in the string and lowercase it, we actually get another iterator that contains each possible lowercase letter.
+
+This means we now have an iterator of iterators. 
+
+We can get back to an iterator of characters by using the flatten method.
+
+And our tests pass again.
+
+This function still isn't perfect, honestly, but we're going to leave it here.
+
+If you want to keep working on it, its worth looking at diacritics as well as the difference between balanced and unbalanced palindromes.
+
+You may need to rely on external crates for more nuanced control of unicode characters.
+
+For Test Driven Development, the main thing I want to emphasize is that at each stage:
+- we think about what we want to achieve
+- write or modify a test
+- then work on the functionality until the test passes
+
+## How many tests should a good test writer write if a good test writer could write good tests?
+
+The perennial of questions when it comes to testing: How many tests should you write?
+
+The important thing here is "coverage".
+
+We usually measure coverage by lines.
+
+Each time we run a test, we can look to see if a line was run, if it was we call that "covered".
+
+---
+
+Take for example this really silly function.
+
+If we only test this function by giving it a number greater than 0, we'll only "cover" the line first branch of the `if`, we miss the fact there is a mistake in the second branch.
+
+---
+
+So what percent coverage should you aim for?
+
+Anecdotally, when I was creating my own API framework in PHP, I decided I wanted to get 100% coverage, that is, every line should have a test that hits it. 
+
+---
+
+The very last line that was uncovered was, in it entirety, this.
+
+I wondered if it was worth the effort, decided it was.
+
+The reason this was the last uncovered line was that it was part of a nested `if`.
+
+I'd tested what happens if you went into both `if`s, what happens if you didn't go into the first, but not what happens if you went into the first, but not the second.
+
+---
+
+I wrote the test and... found a bug so severe that I had to rewrite almost a third of the framework.
+
+Should have written the tests first, right?
+
+My personal feelings are that you as an engineer should strive for 100% coverage of your code.
+
+As a manager or engineering lead though, test coverage is a terrible metric. 
+
+Test coverage doesn't tell you if the test was any good.
+
+If you make arbitrary metrics like this, you're not improving code quality, engineers will write tests that meet that metric, but don't for-fill the reason we want tests in the first place which is to answer: "does this code do what we want it to do?".
+
+As an engineer, it's a matter of pride. Get your code right now, and you won't have to deal with it later.
+
+As a leader, make sure your engineers are encouraged to be the best they can.
+
+That means giving them the time to write tests first, giving them access to the resources they need to learn how to write the best tests, etc.
+
+Homework
+--------
+
+We've already let on how you can solve last chapters homework
+
+We only needed one lifetime to represent the link between the input string slice and the string slice inside our vector.
+
+---
+
+For a cleaner API though you could keep our recursive function private and expose a public function that creates the
+vector for us. 
+
+Because we have control of the vector in this example we can make sure we create a vector with a capacity that is at least as large as the maximum possible entries in it. 
+
+This is useful as when you create a new Vector in Rust it has a default size, and any time you try to add an item to a vector that is already full, Rust will allocate the memory for a new larger vector in the background, copy the data from the old location to the new location, then free the memory in the old location.
+
+---
+
+For the homework in this chapter, I would like you to write the tests for, and then implement the code for the following requirements in this order:
+
+1. Create a function that will reverse the words in an English sentence.
+2. If the string started with a capital letter, it should still start with a capital after the words are reversed.
+3. If the string starts or ends with whitespace, it should be removed (trimmed) from the returned String.
+4. If the string contains more than one sentence, the function should return an error (though for now, that error can be the unit type `()`).
+
+---
+
+Your function will need to allocate memory and should probably have a header like this.
+
+I've linked to the documentation for String and Result in the description of the video.
+
+# Going forward
+
+As I mentioned, after this chapter we will be talking about Rust differently. 
+
+This will primarily be by using the assert macros to state what a value _should_ be rather than printing it to the screen.
+
+For example, one of our earlier code examples looks like this.
+
+We printed the values of x and y to the screen.
+
+From now on, we'll write our examples like this, which, now you've seen the assert macros is cleaner and easier to understand.
+
+# Next time
+
+This time we've covered one of my favourite Rust features, next time we're going to cover my number one favourite: Documentation.
+
+The Documentation tooling in Rust is so good, it's going to make you wish every language did the same thing!
+
+If that's exciting for you, don't forget to like and subscribe.
+
+If you need any help with the homework, please do comment! 
+
+I'll also be setting up a Discord server in the near future so keep an eye out for that!
+
+And I'll see you next time.
+
+

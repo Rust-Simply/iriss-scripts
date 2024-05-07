@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="scripts/iriss-00.html"><strong aria-hidden="true">1.</strong> Welcome to IRISS</a></li><li class="chapter-item expanded "><a href="scripts/iriss-01.html"><strong aria-hidden="true">2.</strong> Setting Up</a></li><li class="chapter-item expanded "><a href="scripts/iriss-02.html"><strong aria-hidden="true">3.</strong> Memory</a></li><li class="chapter-item expanded "><a href="scripts/iriss-03.html"><strong aria-hidden="true">4.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="scripts/iriss-04.html"><strong aria-hidden="true">5.</strong> Control Flow</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="scripts/iriss-00.html"><strong aria-hidden="true">1.</strong> Welcome to IRISS</a></li><li class="chapter-item expanded "><a href="scripts/iriss-01.html"><strong aria-hidden="true">2.</strong> Setting Up</a></li><li class="chapter-item expanded "><a href="scripts/iriss-02.html"><strong aria-hidden="true">3.</strong> Memory</a></li><li class="chapter-item expanded "><a href="scripts/iriss-03.html"><strong aria-hidden="true">4.</strong> Data Types</a></li><li class="chapter-item expanded "><a href="scripts/iriss-04.html"><strong aria-hidden="true">5.</strong> Control Flow</a></li><li class="chapter-item expanded "><a href="scripts/iriss-05.html"><strong aria-hidden="true">6.</strong> Functions</a></li><li class="chapter-item expanded "><a href="scripts/iriss-06.html"><strong aria-hidden="true">7.</strong> Tests</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -1340,6 +1340,546 @@ and lifetimes.</p>
 <p>Don't panic, I think... hope... I've got a great way to explain this one to you.</p>
 <p>If that sounds interesting, don't forget to like and subscribe</p>
 <p>And don't forget to do your homework, if you have any questions, drop me a comment!</p>
+<p>And I'll see you next time.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="functions"><a class="header" href="#functions">Functions</a></h1>
+<p>Functions are reusable blocks of code.</p>
+<p>They have inputs, usually perform some sort of process, then have an output.</p>
+<p>We've been using a function called <code>main</code> to run all of our programs and examples so far.</p>
+<p>This is a special function that is called as the program starts.</p>
+<p>We've also used a few other kinds of functions and methods (special functions attached to data types) that are built into Rust.</p>
+<p>We can make and use our own functions too though.</p>
+<p>This series has a free accompanying book, in which you can find all the details for this tutorial, check the description below.</p>
+<p>My name is Daniel, welcome to IRISS.</p>
+<h2 id="preamble-4"><a class="header" href="#preamble-4">Preamble</a></h2>
+<p>Functions can be pure, or impure.</p>
+<p>A pure function takes zero or more inputs, does some processing and returns zero or more outputs.</p>
+<p>This makes the function extremely predictable.</p>
+<p>Given the same inputs they will always produce the same outputs, and nothing else within the system will change.</p>
+<p>An impure function, might not always produce the same outputs given the same inputs, or may have side effects within the system, either changing something else in the system or having some other part of the system change what the function does.</p>
+<h2 id="a-quick-note-on-mutability"><a class="header" href="#a-quick-note-on-mutability">A Quick Note on Mutability</a></h2>
+<p>Up to now, we haven't needed to change any data once it's been created.</p>
+<p>By default, all variables in Rust are implicitly "immutable", meaning that the values inside of them can not be changed.</p>
+<p>This, for example, won't compile, we get an error that we can assign an immutable variable, but we can't change it.</p>
+<p>Immutability is good because it prevents data from being changed by mistake which, going on the name of the variable in this example, seems like it's what's happened here it doesn't seem like <code>one</code> should contain <code>2</code>.</p>
+<p>So we should try to use immutable variables as much as possible, but software is all about processing data.</p>
+<p>If we could never mutate values, we'd always have to depend on creating values, which is fine for small data but imagine we're processing large data like an image.</p>
+<p>Do we want to copy it every time we make a single pixel change?</p>
+<p>You can explicitly opt in to mutability by adding the keyword mute (M U T) in front of the variable name.</p>
+<h2 id="creating-and-calling-functions"><a class="header" href="#creating-and-calling-functions">Creating and calling functions</a></h2>
+<p>Functions are defined with the <code>fn</code> keyword (short for function), followed by a name, followed by brackets <code>()</code> which may or may not contain parameters, possibly followed by an arrow <code>-&gt;</code> and a return type.</p>
+<p>If no return type is specified the return type is the Unit Type, see our video on data types to learn more about that.</p>
+<p>This part of the function is called the "function header".</p>
+<p>The function is completed by a code block, code between curly brackets, which is also called the function body.</p>
+<p>So lets create the simplest possible function:</p>
+<p>This function is called <code>say_hello</code>, it has no parameters and does not return anything.</p>
+<p>Because it writes to the terminal, this function is considered to be impure.</p>
+<p>We can call the function using its name and empty brackets inside our main function.</p>
+<h2 id="passing-parameters"><a class="header" href="#passing-parameters">Passing Parameters</a></h2>
+<p>Let's get a little more advanced and give our function an input.</p>
+<p>Inputs to functions are called parameters, and they live between the brackets in the function header.</p>
+<p>we'll add a parameter called name, and specify that its type is a reference to a string slice.</p>
+<p>After that we can use it like it's a variable inside the function body, so we'll use it in our print line.</p>
+<p>Now we just need to update where we call our function to pass the parameter, as ever we'll use my cats name.</p>
+<p>We can have multiple parameters too.</p>
+<p>Parameters are ordered so when you call the function, you need to match the order they're specified.</p>
+<p>Let's make a new function that greets two people.</p>
+<p>In Rust, all parameters must be used when calling the function.</p>
+<h2 id="returning-from-functions"><a class="header" href="#returning-from-functions">Returning from Functions</a></h2>
+<p>Next we're going to move the side effect out of our function.</p>
+<p>Instead of directly printing to the terminal from the function, we'll return the string we want to display and move the side effect to main.</p>
+<p>We'll rename the function to reflect the change in behaviour</p>
+<p>We'll add an arrow and the return type ,in this case <code>String</code>, to the function header</p>
+<p>We'll create the String using the <code>format!</code> macro and store it in a variable <code>message</code></p>
+<p>We'll return the <code>message</code> from the function, remember the code blocks can be expressions, we don't need to explicitly write <code>return</code> (though we can), we just need to make the thing we want to return the last bit of the block and forgo the semicolon</p>
+<p>The variable isn't really necessary either, I just wanted to show you that the result of the format! macro is a String, now I've done that, lets cut the variable and return from the macro directly</p>
+<p>We'll update the call site of the function to receive the variable greeting to the result of calling the function</p>
+<p>Then we can use that variable in a print line in the main function</p>
+<p>Now we have a pure function that takes an input, processes it, and returns an output.</p>
+<h2 id="recursion"><a class="header" href="#recursion">Recursion</a></h2>
+<p>In Rust, functions can call other functions, like how our main function called our create_greeting function in the last example</p>
+<p>A function that calls itself is described as recursive.</p>
+<p>Take for example this function will find the nth number in the fibonacci sequence</p>
+<p>A quick side note, this function uses a boolean OR in the IF so the larger expression evaluates to true if either the left or right parts of the expression evaluate to true.</p>
+<p>We also use the if/else as an expression so the return value of the function is equal to the value from the if/else blocks.</p>
+<p>If the expression in the IF is true, then we return N, otherwise we return the result of calling the same function with new parameters.</p>
+<p>Because we call find_fibonacci inside of find_fibonacci, this is a recursion.</p>
+<p>Each time we call the function in this way, we add another layer on the stack.</p>
+<p>The stack is finite, so if we give the function a large enough number, it will eventually run out of space in the stack, causing a stack overflow, and you'll see something like:</p>
+<p>thread 'main' has overflowed its stack</p>
+<p>For the advanced programmers watching, Rust does support "tail recursion" which is technique for turning a recursive function into a loop at compile time.</p>
+<p>This not only minimises stack usage to effectively a single function call but is also much faster.</p>
+<p>However, I think this is an overrated feature.</p>
+<p>In any language that supports tail recursion, it's hard to guarantee the compiler will optimise in this way, and it's easy to break.</p>
+<p>My recommendation is if you need to recurse a <em>lot</em>, then consider whether you can manually rewrite your function as a loop instead of depending on a compiler optimization.</p>
+<h2 id="ownership---memory-management-primer"><a class="header" href="#ownership---memory-management-primer">Ownership - Memory Management Primer</a></h2>
+<p>Variables in Rust have to live somewhere in physical memory.</p>
+<p>This primarily comes down to the Stack, the Heap and the binary</p>
+<p>For a deeper explanation, see our video on memory</p>
+<p>The Heap, specifically, can be thought of as managed.</p>
+<p>You ask the operating system to "allocate" you a block of memory to use for writing to and reading from</p>
+<p>Once you're finished using that block of memory you "free" that block and return the memory to the operating system.</p>
+<p>In some programming languages, this process is manual.</p>
+<p>You have special commands for asking for memory to be allocated, and special commands for freeing it</p>
+<p>This leads to some problems:</p>
+<p>What happens if you try to use memory that wasn't allocated?</p>
+<p>What happens if you try to use memory that you already freed?</p>
+<p>What happens if you try to store more data than fits in the allocated block?</p>
+<p>Not only is it surprisingly easy to make mistakes here, we're all human, the consequences can be severe:</p>
+<p>around 70% of all security vulnerabilities today are caused by accidental misuse of memory.</p>
+<p>In order to get around these problems, some programming languages use an automated method of memory management called
+garbage collection.</p>
+<p>In this method, you, the software engineer, don't have to think about the actions required to allocate or free memory.</p>
+<p>Instead, as memory is allocated, the garbage collector built into the language, will monitor to see which parts of your program are actively looking at that bit of memory, through a process called reference counting.</p>
+<p>Once the number of places using that data (the reference count) has dropped to zero, the garbage collector can safely free the memory.</p>
+<p>This is much safer than manually managing the memory yourself, but comes with some of its own problems:</p>
+<p>The garbage collector requires additional resources to manage memory</p>
+<p>This includes CPU time to do the work but in some cases can also require significantly more memory</p>
+<p>Managing memory by proxy is less efficient than managing it directly, meaning its slower</p>
+<p>And you have limited to no control over what the garbage collector does or when it does it</p>
+<p>This can have big negative impacts on performance at uncontrollable times</p>
+<p>Rust's method of memory management is a little different.</p>
+<p>It's low level, giving you the speed of manual memory management, but its mechanisms are hidden behind abstractions that mitigate its risks.</p>
+<p>It's certainly not as easy to learn, but once you get your head around it, it makes a lot of sense.</p>
+<h2 id="ownership---introducing-ownership"><a class="header" href="#ownership---introducing-ownership">Ownership - Introducing Ownership</a></h2>
+<p>In Rust, all data is "owned".</p>
+<p>When the variable that "owns" the data goes out of scope, the data is dropped.</p>
+<p>This means that if the data was stored on the Heap, then that bit of memory is immediately freed.</p>
+<p>Let's have a play with this, first, lets look at the scope aspect of ownership:</p>
+<p>Here we create a variable <code>a</code> what we'll refer to as the outer scope</p>
+<p>Then we start a new code block which creates a new scope we'll call the inner scope</p>
+<p>We can use <code>a</code> in the inner scope just fine, as the inner cope is part of the outer scope</p>
+<p>We can create and use a new variable <code>b</code> in the inner scope too.</p>
+<p>However, when we close the inner scope, <code>a</code> will still work, as we're still in the outer scope but <code>b</code> is no longer available</p>
+<p>Once a variable is out of scope, it can't be used.</p>
+<p>If tried to compile this code, in the error output it tells you it "cannot find value <code>b</code> in this scope" and what
+line we tried to use it on.</p>
+<p>It tells us <em>exactly</em> what's wrong!</p>
+<p>Rust's compiler messages are generally amazing, especially when it comes to working with ownership, so it's worth getting used to how Rust presents its errors.</p>
+<p>Next, lets look at how data can only be "owned" by one thing at a time:</p>
+<p>We'll create a string and put it into  our <code>a</code> variable</p>
+<p>Then we'll assign <code>a</code> to <code>b</code></p>
+<p>We can no longer use <code>a</code>, if we try to compile we see the error "value borrowed here after move"</p>
+<p>The statement <code>let b = a</code> "moves" ownership of the string from <code>a</code> to <code>b</code>.</p>
+<p>Normally we wouldn't "move" data in this way (spoilers: this is, after all, a video on functions), but it neatly shows that the data can't be owned by multiple variables at once.</p>
+<p>What does Rust mean by "move" though?</p>
+<h2 id="ownership---move-semantics"><a class="header" href="#ownership---move-semantics">Ownership - Move Semantics</a></h2>
+<p>You might have noticed that we swapped from <code>char</code>s in the first ownership example to a <code>String</code> in the second.</p>
+<p>This is because there are two mechanisms at play: "Move" and "Copy".</p>
+<p>Let's try the same code with chars:</p>
+<p>This time we set a to a char...</p>
+<p>and the code works...</p>
+<p>why didn't the String?</p>
+<p>The reason for this is that <code>char</code> is Copy, that is to say that it has the <code>Copy</code> trait.</p>
+<p>We'll talk more about Traits in a future video, but essentially Traits provide behaviour to Data and Data Types.</p>
+<p>Things can have the <code>Copy</code> trait applied to them if they can be trivially copied and this usually (always?) means the data exists on the stack.</p>
+<p>The reason for this is all that "allocating" and "freeing" memory on the stack we talked about earlier requires a non-trivial amount of time and resources.</p>
+<p>When data has the Copy trait, instead of being moved from one variable to another, it's copied.</p>
+<p>This mechanism on data that has the Copy trait is implicit.</p>
+<p>Data that does not or can not implement Copy may still be duplicated if it implements the trait <code>Clone</code>, which provides the <code>clone</code> method.</p>
+<p>A method is a function that's attached to some data or data type, we'll talk more about methods when we talk about Traits in the future.</p>
+<p>This mechanism is explicit in that you have to call <code>clone</code> yourself.</p>
+<p>String already implements the Clone trait, so lets use that to duplicate the data in our <code>a</code> variable instead of moving it.</p>
+<p>This now works too!</p>
+<p>You'll also note that we used a full fat <code>String</code> here, not a string slice reference.</p>
+<p>Here's what that would look like:</p>
+<p>Because <code>"hello"</code> exists inside the binaries data you can not "Own" it.</p>
+<p>Ownership would imply that once its no longer used it can be freed, but as its part of the binary, that wouldn't make sense.</p>
+<p>Instead, we just get a reference to where the value exists in memory.</p>
+<p>This reference is also immutable, you can't change values in the binary.</p>
+<p>Immutable references <em>are</em> Copy though, so setting <code>b</code> to <code>a</code> is a copy instead of a move.</p>
+<p>But, what do move semantics have to do with functions?</p>
+<h2 id="ownership---functions-and-ownership"><a class="header" href="#ownership---functions-and-ownership">Ownership - Functions and Ownership</a></h2>
+<p>When we pass data into functions through the use of parameters, the data follows the rules of move semantics.</p>
+<p>Let's go back to our <code>create_greeting()</code> function.</p>
+<p>Instead of passing in a string slice reference, what would happen if we passed in a full fat String?</p>
+<p>In this example, we move ownership of the data stored in the variable <code>yuki</code> into the parameter <code>name</code>.</p>
+<p>This means after the function the variable <code>yuki</code> can no longer be used.</p>
+<p>Because the <code>format!</code> macro does not take ownership of the data in <code>name</code>, we <em>could</em> return both the message <em>and</em> the original <code>String</code> data using a tuple.</p>
+<p>Let's change the <code>create_greeting</code> function to return a tuple that includes both strings.</p>
+<p>When the function returns we destructure the tuple (see the control flow video for more on that) into two new variables, <code>message</code> and <code>yuki</code>.</p>
+<p>A quick note, this new <code>yuki</code> is a different variable from the old <code>yuki</code>, this is called "shadowing".</p>
+<p>Unless you do the inside an inner scope, like we were doing earlier, this is functionally meaningless, just interesting.</p>
+<p>Anyway, <em>this</em> is obviously a terrible way to deal with ownership.</p>
+<p>We don't want to have to pass ownership back and forth just to use functions.</p>
+<p>Going back to our original function, you can see that we are taking a reference to a string slice instead.</p>
+<p>The <code>String</code> type can be "dereferenced" into a reference to a string slice</p>
+<p>Remember the internal representation of a String is the same as a string slice</p>
+<p>So we can create a reference to our full fat <code>yuki</code> String using an ampersand.</p>
+<p>Let's say we wanted our function to modify the string instead.</p>
+<p>Ideally we'd want to avoid modifying data that's passed to a function but sometimes that's not possible, if you need to do it you can pass a mutable reference.</p>
+<p>In order to mutate greeting via a mutable reference, the variable itself must also be mutable</p>
+<p>When we pass the reference, we are explicit that we are allowing the reference to be mutable too</p>
+<p>The function takes a mutable reference to a String, not a string slice... string slices are not mutable, but Strings are.</p>
+<p>Before we move on, one last note about references: you can have as many immutable references to a value as you like, OR a single mutable reference.</p>
+<p>Immutable references are Copy, but Mutable references are not.</p>
+<h2 id="ownership---lifetimes"><a class="header" href="#ownership---lifetimes">Ownership - Lifetimes</a></h2>
+<p>So far so clear, but it turns out that keeping track of those references is actually quite hard.</p>
+<p>Let's create a function that takes a reference to a string and returns two parts to that string:</p>
+<p>We'll take a point at which we will to split the string</p>
+<p>We're going to make sure that point is never greater than the length of the string in bytes</p>
+<p>Then we'll split the string in two at that byte (starting from zero)</p>
+<p>To do this, we use a Range to take a sub slice.</p>
+<p>We discussed half open ranges last time, but this means starting from the beginning of input up to but not including the "up_to"th byte.</p>
+<p>And this means starting from the "up_to"th byte and continuing to the end of input.</p>
+<p>Also remember that because we're using bytes here there's a serious risk of splitting the string in the middle of a character... ideally, never do this.</p>
+<p>The left and right parts of the split are returned in the tuple which we immediately destructure</p>
+<p>The cool thing here is that the string isn't duplicated, the values <code>left</code> and <code>right</code> are references that point to the inside of our original input string!</p>
+<p>How does Rust know that though?</p>
+<p>Let's confuse it a bit.</p>
+<p>Instead of splitting at a particular point, we'll find a sub string inside the input string, then split around that:</p>
+<p>This example won't compile, we get the error: <code>expected named lifetime parameter</code>, what does that mean?</p>
+<p>We also get guidance from the Rust compiler on how to fix our problem, and what it suggests will work, but once you understand the problem, you'll see there's a better way to solve it.</p>
+<p>A lifetime is Rust's way of tracking reference usage.</p>
+<p>A reference needs to be tied back to its owning variable and this relationship must be understood at compile time.</p>
+<p>Let's tie what we know about ownership to what we know about the stack and heap.</p>
+<p>Some data is stored on the stack, some is stored on the heap</p>
+<p>Heap data is tied back to variables on the stack that "own" the heap data</p>
+<p>As we enter a function, all the space required for the stack data is added to the top of the stack</p>
+<p>Further functions go up the stack</p>
+<p>As functions come to an end they are removed from the top of the stack</p>
+<p>Owned data that is not returned down the stack is freed</p>
+<p>When it comes to references, we need to make sure that a reference to owned data does not out live that owned data.</p>
+<p>For example, lets create a string on the heap called <code>my_string</code>.</p>
+<p>We'll then return a reference to that string, but not the string itself.</p>
+<p>This would mean that when the function comes to an end, the variable <code>my_string</code> goes out of scope,
+so the data that it owns on the Heap is freed...</p>
+<p>What would happen if we used the returned reference now the data that it references has been freed?</p>
+<p>Luckily Rust won't let us do this</p>
+<p>In order to prevent this, Rust tracks the lifetimes of each reference and its owned data.</p>
+<p>It can often do this automatically.</p>
+<p>In the first version of our function, Rust can see that only one reference enters the function, no other references are in play, so Rust knows that the two references that are returned <em>must</em> be tied to the same data as the incoming reference.</p>
+<p>In the second version of our function, we pass two references in, now Rust is now less sure about which data the returned references should be tied to.</p>
+<p>The suggestion the Rust compiler gives us is to tie all the references to the same lifetime.</p>
+<p>This actually is a valid approach as Rust will use the shortest living bit of data to tie the references to.</p>
+<p>Let's do what it says.</p>
+<p>Rust lifetimes are annotated with generic labels, remember labels from the last video?</p>
+<p>If we're being lazy we might use a single lettered label like <code>'a</code>, though if a lot of lifetimes are at play it's definitely better to use longer, clearer labels.</p>
+<p>We'll change the header of our function to include the lifetime <code>'a</code>.</p>
+<p>First we tell Rust we want to use a lifetime by putting it inside triangle brackets after the function name.</p>
+<p>Then we mark each reference with that lifetime.</p>
+<p>You can run the above and see this example works just fine, however, it's not ideal.</p>
+<p>We've tied all the references to the same lifetime, which Rust interprets as "whatever dies first".</p>
+<p>Using a contrived inner scope again, we can create code that doesn't work.</p>
+<p>We've confined our sub string to the inner scope.</p>
+<p>When the inner scope ends, that data is freed.</p>
+<p>You and I know that the left and right references are tied to the input variable in the outer scope, but we told Rust that it should tie all the lifetimes together.</p>
+<p>Since the sub string lasts the least amount of time, that's the lifetime it used.</p>
+<p>So when we try to compile we get "borrowed value does not live long enough"</p>
+<p>To fix this problem we can either give sub_string a different lifetime annotation, for example "b" or just remove the lifetime annotation from the sub_string parameter.</p>
+<p>Now everything works as we'd expect:</p>
+<p>References and lifetimes get really tricky.</p>
+<p>Here's how I like to think about them.</p>
+<p>Imagine a person flying a kite.</p>
+<p>The person is the owner of the data, regardless of where the data is actually stored</p>
+<p>The kite is the reference, and the string (or kite line) tying them together is the lifetime.</p>
+<p>The kite can go up and down the stack freely, but it can't go below where the person is standing, that's our equivalent of the ground.</p>
+<p>Multiple people can fly their kites through the same functions, and each one has its own kite string (lifetime).</p>
+<p>Its even possible to entwine the kite lines.</p>
+<p>Imagine a function that takes two string references and returns the longest.</p>
+<p>This is like a function that accepts two kites but only the largest is returned.</p>
+<p>Because you don't know who that kite belongs to, it can't go below the person standing highest on the stack.</p>
+<p>Lifetimes can be incredibly powerful, there's no need to fear them.</p>
+<p>One amazing example is that say we have a string that contains some complex data, for example it could be a serialized format like JSON or YAML, or it could be something like an Advent of Code input string.</p>
+<p>Lifetimes mean that you bring that String into your program, allocating the memory for it once, then turn it into a complex data structure.</p>
+<p>So long as the original String exists, the data structure can need not allocate any further memory, which is incredibly efficient.</p>
+<p>Here's an example with a User struct that has two properties, both of which are references to string slices.</p>
+<p>The data for this struct is in a String.</p>
+<p>When we parse the String, it can return a new User, where the references are both tied back to the original string.</p>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<p>So here's my list of best practices when it comes to working with functions:</p>
+<p>Create a function whenever a section of code can be described in a few words</p>
+<p>The function name should describe what that code is doing</p>
+<p>Functions should only do one thing, avoid big branches inside functions</p>
+<p>Keep functions short, but not too short.</p>
+<p>Functions should be set of instructions grouped together, too few, and it may not be worth the function, too many, and it may need to be broken down into more functions</p>
+<p>Do not take ownership unless you expressly need to own the data</p>
+<p><em>Try</em> to avoid mutable parameters</p>
+<p>Be specific about your lifetimes, if using more than one or two, try naming them</p>
+<h2 id="homework-1"><a class="header" href="#homework-1">Homework</a></h2>
+<p>How did you get on with your control flow homework?</p>
+<p>Here's my Fizz Buzz program</p>
+<p>I created a Range, 1 to 100 (note the equals sign to make sure 100 is included)</p>
+<p>I used that with a For In loop</p>
+<p>I then used a match statement with match guards to check if the number was divisible by 3, 5 or both</p>
+<p>And printed the relevant output</p>
+<p>Did you manage it a different way?</p>
+<p>If so, let me know in the comments.</p>
+<p>This time I'd like you to create a function that splits our string like before, but instead of returning a left and right side it splits every part of the string.</p>
+<p>There is already a split method on string slices, but I'd like you to only use find, and create a recursive function.</p>
+<p>You'll need to use a collection type to store all the chunks created by the split, I suggest using <code>Vec</code> which is built into Rusts standard library.</p>
+<p>A Vec is a variably sized array that you can push new items on to the end of using the <code>push</code> method.</p>
+<p>To check whether your Vec contains the correct information after the program has run, use the <code>debug</code> macro (we'll talk more about how this works another time, all you need to know is it will work for a Vec of string slice references)</p>
+<p>The header of your function might look something like this... but I'm not going to tell you what the life times should be</p>
+<p>If your main function looks like this</p>
+<p>then your output should look something like this</p>
+<p>This isn't an easy task, and will require thinking about the lifetimes carefully.</p>
+<p>If you get stuck, feel free to ask for help in the comments below</p>
+<h2 id="next-time-3"><a class="header" href="#next-time-3">Next time</a></h2>
+<p>Next time we're going to look at another of my favourite Rust features, the built-in test tools.</p>
+<p>We'll also take our first little peak at modules and conditional compilation (which is I'm afraid is both way easier and way more boring than it sounds)... testing in Rust is awesome though I swear.</p>
+<p>After the next video, we're also going to change the way we talk about Rust, so don't miss out!</p>
+<p>If that sounds interesting, don't forget to like and subscribe</p>
+<p>Do let me know how you get on with the homework!</p>
+<p>And I'll see you next time</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tests"><a class="header" href="#tests">Tests</a></h1>
+<p>Tests. Are. Awesome.</p>
+<p>They are my favourite bit of software engineering.</p>
+<p>I'm sure many of you can relate, but I don't tend to trust humans telling me I'm doing well at my job.</p>
+<p>When a computer tells me I'm doing well at my job because I made a test pass though, oh that dopamine hits good.</p>
+<p>A good test makes sure that the thing we're building does what we think it should do.</p>
+<h2 id="intro-1"><a class="header" href="#intro-1">Intro</a></h2>
+<p>Anecdotally I recently interviewed at a company where I professed my love of tests, and they told me flatly they don't write tests, they "move fast".</p>
+<p>Later in the interview they admitted they were having morale issues because their engineers were constantly getting called out of hours to fix things.</p>
+<p>So, it begs the question: are you moving fast if you're writing software that doesn't work?</p>
+<p>Software engineers are not paid to write software, we're paid to solve problems.</p>
+<p>Tests are what make sure we solved the problem and by automating our tests they make sure we don't accidentally "unsolve" it further down the line.</p>
+<h2 id="the-testing-pyramid"><a class="header" href="#the-testing-pyramid">The testing Pyramid</a></h2>
+<p>There are many ways to test software, these largely fall into three categories that make up what we call the testing pyramid.</p>
+<p>It's a pyramid to indicate that, although all tests are important, those lower down the pyramid should be laying the foundation for the others.</p>
+<p>Not only should you have more of them, but they will provide the greatest feeling of safety and security.</p>
+<h3 id="end-to-end-tests"><a class="header" href="#end-to-end-tests">End-to-End Tests</a></h3>
+<p>E2E tests are designed to make sure that the user of the software you've created can complete full user journeys</p>
+<p>For example, can the user open, edit and save a file in a desktop application or can a user add an item to a shopping cart and checkout of an ecommerce store.</p>
+<p>End-to-End tests are the slowest form of test and lack depth, but they help add confidence that everything works together.</p>
+<h3 id="integration-tests"><a class="header" href="#integration-tests">Integration Tests</a></h3>
+<p>Integration tests check that the code you control works correctly with code that your program depends on that you don't control.</p>
+<p>This would include things like databases or other data stores, web apis, library apis, etc.</p>
+<p>Integration tests are also used if your software produces a public API.</p>
+<p>You write tests to check that people using your software in its more natural state.</p>
+<p>Because of the communication component to these tests, these tests are also quite slow.</p>
+<h3 id="unit-tests"><a class="header" href="#unit-tests">Unit Tests</a></h3>
+<p>Unit tests test a single unit of functionality.</p>
+<p>These tests are the simplest, fastest and should make up the bulk of your testing.</p>
+<p>These tests are so important, that it is best practice to write them before you write the code you're going to test.</p>
+<p>For this book, we're only going to cover Unit Tests.</p>
+<p>That isn't to say that Integration Tests and End-to-End Tests aren't important, they absolutely are, and there are many good guides out there.</p>
+<p>But, it is to say, that Unit Tests are <em>so</em> important, that they significantly impact how we communicate about Rust code.</p>
+<p>This is particularly important for documentation which we'll talk about in the next video.</p>
+<h2 id="introduction-to-modules"><a class="header" href="#introduction-to-modules">Introduction to Modules</a></h2>
+<p>Unlike many languages, in Rust, tests live with the code that they're testing.</p>
+<p>To explain this we need to talk about how code in Rust is organised with Modules.</p>
+<p>A Module is simply a container for other things, functions, type definitions, other modules, etc.</p>
+<p>You could think of it like a physical container, though you can nest any number of containers together.</p>
+<p>The contents of the module are private to that module unless explicitly marked as public with the <code>pub</code> keyword.</p>
+<p>We define a module with the <code>mod</code> keyword and a name. There are then three ways to define what's inside that module:</p>
+<ol>
+<li>With a directory named the same thing as the module which contains the file <code>mod.rs</code>, eg <code>my_module/mod.rs</code></li>
+<li>With a file in the same directory named the same thing as the module, eg <code>my_module.rs</code></li>
+<li>Inside curly brackets, eg <code>mod my_module { ... }</code></li>
+</ol>
+<p>If the module exposes anything publicly, you can then reference them with the path to the module and the name of the thing you're referencing separate by double colons.</p>
+<p>Sound familiar?</p>
+<p>It should, this is how we've been accessing Rust's standard library. For example, the <code>stdin</code> function is inside the <code>io</code> module, which itself is available inside the <code>std</code> library.</p>
+<p>We access that function using <code>std::io::stdin()</code>.</p>
+<p>We can also use the <code>use</code> keyword to simplify this a bit, for example, we can "use stud io standard-in"</p>
+<p>Then we can use standard in without having to use the full path to the module each time.</p>
+<h2 id="test-modules"><a class="header" href="#test-modules">Test Modules</a></h2>
+<p>In Rust, we typically create a test module near the code that is being tested.</p>
+<p>Let's say we want to test some of the functions we wrote in the last video.</p>
+<p>I've renamed them a bit, so we can have all of them in one file.</p>
+<p>First we start by creating a module to test these functions in the same file as the functions exist</p>
+<p>As long as nothing in the <code>tests</code> module is used in your main program it shouldn't appear in your final binary, however, this isn't good enough.</p>
+<p>There's a risk we might make a mistake of course, but ever without that, the module will still be processed by the compiler in order to do things like type checking.</p>
+<p>We only care about this module when we're running our tests and Rust provides us a way to tell the compiler that too, the <code>cfg</code> attribute.</p>
+<p>Attributes are one of Rusts many meta programming tools which we'll cover more in the future at increasing difficulty levels.</p>
+<p>For now, the <code>cfg</code> attribute allows us to tell the Rust Compiler (<code>rustc</code>) <em>when</em> we want to compile something.</p>
+<p>There are many, many ways to use conditional compilation, but for tests its pretty simple, we only want the module compiled when we're building tests.</p>
+<p>The <code>cfg</code> has a "predicate" to identify this simply called <code>test</code>.</p>
+<p>So by adding the <code>cfg</code> attribute with the <code>test</code> predicate, rustc will ignore the module unless its explicitly building the tests.</p>
+<h2 id="writing-tests"><a class="header" href="#writing-tests">Writing Tests</a></h2>
+<p>Now we're ready to write our first test.</p>
+<p>A test is simply a function that we mark with another attribute <code>#[test]</code>.</p>
+<p>This attribute tells Rust to run this function as part of the test suite when we run <code>cargo test</code>.</p>
+<hr />
+<p>Here's a test that won't pass.</p>
+<p>The <code>assert!()</code> macro takes either one or two parameters.</p>
+<p>The first parameter which is not optional is a boolean value, or something that evaluates to a boolean.</p>
+<p>If this boolean is false, then the assertion will cause a panic, and the test will fail (unless it's expected to panic, more on that later).</p>
+<p>The second, optional parameter allows us to annotate the assertion, which can help us more easily determine which (if any) assertion failed in a test.</p>
+<p>This is great as we create more thorough tests with more assertions.</p>
+<p>You will find that people don't use this as much, I'm guilty of this too, but I do recommend making an effort to describe each specific assertion.</p>
+<p>The people you work with, as well as future you, will appreciate the effort.</p>
+<hr />
+<p>There are three main assert macros:</p>
+<ul>
+<li><code>assert</code> asserts value is true or panics with optional message</li>
+<li><code>assert_eq</code> asserts left is equal to right or panics with optional message</li>
+<li><code>assert_ne</code> asserts left is NOT equal to right or panics with optional message</li>
+</ul>
+<p>There are a couple of restrictions with the assert macros.</p>
+<p>Values used must implement <code>PartialEq</code> and <code>Debug</code>.</p>
+<p>Most built in types already implement both, and we'll talk about how to implement them for your own types in the Traits chapter.</p>
+<p>There are more assert macros available, but these</p>
+<p>To run tests in our project we use <code>cargo test</code>. In the case of the above we should see the this</p>
+<hr />
+<p>This top bit is a summary of all the tests, then we get a breakdown of each test that failed.</p>
+<p>You can see that we get both the line where the test failed as well as our failure message.</p>
+<p>This is why a lot of people skip the message, but it can still be useful to help provide context</p>
+<h2 id="testing-our-code"><a class="header" href="#testing-our-code">Testing our code</a></h2>
+<p>Let's move on to writing our actual tests, we'll start with "split_at".</p>
+<p>Before we can write a test, <code>split_at</code> is not part of the <code>tests</code> module, so we need to make it available inside.</p>
+<p>We can do that with the <code>use</code> statement in one of two ways, either <code>use super::split_at</code> or <code>use super::*</code>.</p>
+<p>The <code>super</code> keyword simply means the module above this one, which for your unit tests should be the module to you're writing tests for.</p>
+<p>We can either bring just the one function in, or we can bring in everything available in that scope.</p>
+<p>The idiom here is to <code>use super::*</code> as it will bring in everything that needs testing, and hopefully even if it brings in things you aren't using it won't pollute the test module too much.</p>
+<hr />
+<p>With our test lets use "Hello world!" as the input string,</p>
+<p>and we'll split at 3.</p>
+<p>So we can expect the left side of the split to be "Hel",</p>
+<p>and the right side to be "lo world!"</p>
+<p>I've added some context to our asserts so we can quickly see if anything went wrong.</p>
+<p>But when we run cargo test, everything passes, which is great!</p>
+<p>But because we're working with strings, we should check strings that only contain ascii characters.</p>
+<p>Let's write another test for <code>split_at</code>.</p>
+<p>It's exactly the same but we've used "Hello World" in Japanese... hopefully, let me know if I got it wrong in the comments.</p>
+<p>Now when we run the tests, this test fails.</p>
+<p>This is where testing gets really nuanced, we need to test our expectations of the behaviour, not necessarily that the code did what we programmed it to.</p>
+<p>In the test, I wrote that I expect the result to be the first 3 characters, but last week, I mentioned this would return a length in bytes.</p>
+<p>The Japanese character "ko" is 3 bytes in length, which is why its the only character thats returned.</p>
+<p>If we asked for two bytes instead, this function would panic and crash our program.</p>
+<p>Regardless, from the name "split at" I think number of characters is the right behaviour here, so lets fix our function.</p>
+<p>Don't worry too much about this too much yet, we're going to cover iterators in a future video but to explain the fix:</p>
+<p><code>.chars()</code> returns an iterator over each character.</p>
+<p>We then use <code>.take()</code> to only take (at most) the number of of characters we wanted to split at.</p>
+<p>We then <code>.map()</code> over each character and get its size in bytes, which turns the character into a usize number.</p>
+<p>Finally we <code>.sum()</code> the iterator which adds every number in the iterator together.</p>
+<p>This turns the length in chars into a new length in bytes and will be correct regardless of what size in bytes those characters are.</p>
+<p>This is now safe to use to create our sub slices as the byte count won't fall inside a character.</p>
+<p>We no longer need to check the bounds of split_at either, because the maximum size will be the full length of the string even if split_at was longer than the string.</p>
+<p>Let's rerun our tests...and now this test works too!</p>
+<hr />
+<p>Let's quickly write the tests for <code>split_around</code> and <code>split_around_many</code>.</p>
+<p>You'll notice that these functions already work with multibyte strings.</p>
+<p>This is because we're looking for the start and end of substrings so we already know that the substrings won't happen in the middle of a character.</p>
+<p>Now all our tests are working, doesn't that feel great!</p>
+<p>But... what if I told you: we just did all of this backwards 😲</p>
+<h2 id="test-driven-development"><a class="header" href="#test-driven-development">Test Driven Development</a></h2>
+<p>Hopefully, you're eager to write a load of code and then write a load of tests, but wait!</p>
+<p>As we alluded to at the top of chapter, and again halfway through, the point of tests isn't to test that your code does what you think it does, it's to make sure it does what it's supposed to do.</p>
+<p>As our split_at function showed, its a good idea to decide what you think that function should do before you write it.</p>
+<p>The best way to achieve this is to work out what your code is supposed to do, then write the test, then write the code.</p>
+<p>This is called Test Driven Development. Let's try it out!</p>
+<p>We'll create a function that checks if a given string is a palindrome (a word that's the same forwards and backwards).</p>
+<p>We'll start by writing our test.</p>
+<p>We'll check whether the function identifies "kayak" and "racecar" are flagged as palindromes, and "wood" is not.</p>
+<p>Before we can run the test, Rusts type system won't let us compile the program without the function existing.</p>
+<p>We don't want to write the functionality yet so we'll create the function header and use the <code>todo!()</code> macro</p>
+<p><code>todo()!</code> is a handy little marker that we use to say we are intending to deal with this soon.</p>
+<p>It always panics so Rust knows our function doesn't need to return anything.</p>
+<p>We can run our tests now and see that they fail, lets write the code.</p>
+<hr />
+<p>Like earlier, we'll get an iterator for each character in the string.</p>
+<p>We'll clone this iterator and reverse it to get a second iterator that goes backwards through the string.</p>
+<p>Again, don't worry too much about the hows and whys of iterators yet, just go with it.</p>
+<p>We can zip the two iterators together, and each element inside them.</p>
+<p>If every element in each iterator is equal to the other, then the word is the same forwards and backwards.</p>
+<hr />
+<p>Now when we run our tests they pass.</p>
+<p>We can now submit our code to a colleague for review.</p>
+<p>[Exit left]</p>
+<hr />
+<p>[Enter right]</p>
+<p>Hi Indra, sorry to interrupt, could you review my code?</p>
+<p>Looks good to me but while race car is a palindrome, its two words, not one.</p>
+<p>Ah, right you. Thanks for that.</p>
+<p>[Exit right]</p>
+<hr />
+<p>[Enter left]</p>
+<p>So lets update our test.</p>
+<p>All we need to do is add a space to race car.</p>
+<p>Now the test fails again, lets fix it.</p>
+<p>We'll update our first iterator to filter out anything thats not alphanumeric.</p>
+<p>That'll deal with whitespace and any other punctuation too.</p>
+<p>We only need to update the forward iterator because the effect of the filter is cloned.</p>
+<p>Our tests pass again.</p>
+<p>All good now Indra?</p>
+<p>"All good"</p>
+<p>So we push that out to production and we're done!</p>
+<p>"Daniel, hey Daniel"</p>
+<p>Ah, one sec</p>
+<p>[Exit left]</p>
+<hr />
+<p>[Enter right]</p>
+<p>Hi Gargi what's up?</p>
+<p>Gargi: One of our customers complained, her name is Anna but your code says that's not a palindrome.</p>
+<p>Ah, I think I know what went wrong, I'll get that fixed now.</p>
+<p>Indra: Has anyone ever told you two you sound very similar</p>
+<p>[Looks gag?]</p>
+<p>[Exit right]</p>
+<hr />
+<p>[Enter left]</p>
+<p>Lets update our test again. And again our tests fail, that's good! Lets update our code.</p>
+<p>Now the obvious thing to do here is to lowercase all of the letters BUT in some languages, an uppercase letter might have multiple lowercase variants depending on how its used.</p>
+<p>If we map over each character in the string and lowercase it, we actually get another iterator that contains each possible lowercase letter.</p>
+<p>This means we now have an iterator of iterators.</p>
+<p>We can get back to an iterator of characters by using the flatten method.</p>
+<p>And our tests pass again.</p>
+<p>This function still isn't perfect, honestly, but we're going to leave it here.</p>
+<p>If you want to keep working on it, its worth looking at diacritics as well as the difference between balanced and unbalanced palindromes.</p>
+<p>You may need to rely on external crates for more nuanced control of unicode characters.</p>
+<p>For Test Driven Development, the main thing I want to emphasize is that at each stage:</p>
+<ul>
+<li>we think about what we want to achieve</li>
+<li>write or modify a test</li>
+<li>then work on the functionality until the test passes</li>
+</ul>
+<h2 id="how-many-tests-should-a-good-test-writer-write-if-a-good-test-writer-could-write-good-tests"><a class="header" href="#how-many-tests-should-a-good-test-writer-write-if-a-good-test-writer-could-write-good-tests">How many tests should a good test writer write if a good test writer could write good tests?</a></h2>
+<p>The perennial of questions when it comes to testing: How many tests should you write?</p>
+<p>The important thing here is "coverage".</p>
+<p>We usually measure coverage by lines.</p>
+<p>Each time we run a test, we can look to see if a line was run, if it was we call that "covered".</p>
+<hr />
+<p>Take for example this really silly function.</p>
+<p>If we only test this function by giving it a number greater than 0, we'll only "cover" the line first branch of the <code>if</code>, we miss the fact there is a mistake in the second branch.</p>
+<hr />
+<p>So what percent coverage should you aim for?</p>
+<p>Anecdotally, when I was creating my own API framework in PHP, I decided I wanted to get 100% coverage, that is, every line should have a test that hits it.</p>
+<hr />
+<p>The very last line that was uncovered was, in it entirety, this.</p>
+<p>I wondered if it was worth the effort, decided it was.</p>
+<p>The reason this was the last uncovered line was that it was part of a nested <code>if</code>.</p>
+<p>I'd tested what happens if you went into both <code>if</code>s, what happens if you didn't go into the first, but not what happens if you went into the first, but not the second.</p>
+<hr />
+<p>I wrote the test and... found a bug so severe that I had to rewrite almost a third of the framework.</p>
+<p>Should have written the tests first, right?</p>
+<p>My personal feelings are that you as an engineer should strive for 100% coverage of your code.</p>
+<p>As a manager or engineering lead though, test coverage is a terrible metric.</p>
+<p>Test coverage doesn't tell you if the test was any good.</p>
+<p>If you make arbitrary metrics like this, you're not improving code quality, engineers will write tests that meet that metric, but don't for-fill the reason we want tests in the first place which is to answer: "does this code do what we want it to do?".</p>
+<p>As an engineer, it's a matter of pride. Get your code right now, and you won't have to deal with it later.</p>
+<p>As a leader, make sure your engineers are encouraged to be the best they can.</p>
+<p>That means giving them the time to write tests first, giving them access to the resources they need to learn how to write the best tests, etc.</p>
+<h2 id="homework-2"><a class="header" href="#homework-2">Homework</a></h2>
+<p>We've already let on how you can solve last chapters homework</p>
+<p>We only needed one lifetime to represent the link between the input string slice and the string slice inside our vector.</p>
+<hr />
+<p>For a cleaner API though you could keep our recursive function private and expose a public function that creates the
+vector for us.</p>
+<p>Because we have control of the vector in this example we can make sure we create a vector with a capacity that is at least as large as the maximum possible entries in it.</p>
+<p>This is useful as when you create a new Vector in Rust it has a default size, and any time you try to add an item to a vector that is already full, Rust will allocate the memory for a new larger vector in the background, copy the data from the old location to the new location, then free the memory in the old location.</p>
+<hr />
+<p>For the homework in this chapter, I would like you to write the tests for, and then implement the code for the following requirements in this order:</p>
+<ol>
+<li>Create a function that will reverse the words in an English sentence.</li>
+<li>If the string started with a capital letter, it should still start with a capital after the words are reversed.</li>
+<li>If the string starts or ends with whitespace, it should be removed (trimmed) from the returned String.</li>
+<li>If the string contains more than one sentence, the function should return an error (though for now, that error can be the unit type <code>()</code>).</li>
+</ol>
+<hr />
+<p>Your function will need to allocate memory and should probably have a header like this.</p>
+<p>I've linked to the documentation for String and Result in the description of the video.</p>
+<h1 id="going-forward"><a class="header" href="#going-forward">Going forward</a></h1>
+<p>As I mentioned, after this chapter we will be talking about Rust differently.</p>
+<p>This will primarily be by using the assert macros to state what a value <em>should</em> be rather than printing it to the screen.</p>
+<p>For example, one of our earlier code examples looks like this.</p>
+<p>We printed the values of x and y to the screen.</p>
+<p>From now on, we'll write our examples like this, which, now you've seen the assert macros is cleaner and easier to understand.</p>
+<h1 id="next-time-4"><a class="header" href="#next-time-4">Next time</a></h1>
+<p>This time we've covered one of my favourite Rust features, next time we're going to cover my number one favourite: Documentation.</p>
+<p>The Documentation tooling in Rust is so good, it's going to make you wish every language did the same thing!</p>
+<p>If that's exciting for you, don't forget to like and subscribe.</p>
+<p>If you need any help with the homework, please do comment!</p>
+<p>I'll also be setting up a Discord server in the near future so keep an eye out for that!</p>
 <p>And I'll see you next time.</p>
 
                     </main>
