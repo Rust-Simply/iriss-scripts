@@ -121,3 +121,191 @@ The `cfg` has a "predicate" to identify this simply called `test`.
 
 So by adding the `cfg` attribute with the `test` predicate, rustc will ignore the module unless its explicitly building the tests.
 
+## Writing Tests
+
+Now we're ready to write our first test.
+
+A test is simply a function that we mark with another attribute `#[test]`.
+
+This attribute tells Rust to run this function as part of the test suite when we run `cargo test`.
+
+---
+
+Here's a test that won't pass.
+
+The `assert!()` macro takes either one or two parameters. 
+
+The first parameter which is not optional is a boolean value, or something that evaluates to a boolean.
+
+If this boolean is false, then the assertion will cause a panic, and the test will fail (unless it's expected to panic, more on that later).
+
+The second, optional parameter allows us to annotate the assertion, which can help us more easily determine which (if any) assertion failed in a test.
+
+This is great as we create more thorough tests with more assertions. 
+
+You will find that people don't use this as much, I'm guilty of this too, but I do recommend making an effort to describe each specific assertion. 
+
+The people you work with, as well as future you, will appreciate the effort.
+
+---
+
+There are three main assert macros:
+- `assert` asserts value is true or panics with optional message
+- `assert_eq` asserts left is equal to right or panics with optional message
+- `assert_ne` asserts left is NOT equal to right or panics with optional message
+
+There are a couple of restrictions with the assert macros. 
+
+Values used must implement `PartialEq` and `Debug`. 
+
+Most built in types already implement both, and we'll talk about how to implement them for your own types in the Traits chapter.
+
+There are more assert macros available, but these
+
+To run tests in our project we use `cargo test`. In the case of the above we should see the this
+
+----
+
+This top bit is a summary of all the tests, then we get a breakdown of each test that failed.
+
+You can see that we get both the line where the test failed as well as our failure message.
+
+This is why a lot of people skip the message, but it can still be useful to help provide context
+
+## Testing our code
+
+Let's move on to writing our actual tests, we'll start with "split_at".
+
+Before we can write a test, `split_at` is not part of the `tests` module, so we need to make it available inside.
+
+We can do that with the `use` statement in one of two ways, either `use super::split_at` or `use super::*`.
+
+The `super` keyword simply means the module above this one, which for your unit tests should be the module to you're writing tests for. 
+
+We can either bring just the one function in, or we can bring in everything available in that scope.
+
+The idiom here is to `use super::*` as it will bring in everything that needs testing, and hopefully even if it brings in things you aren't using it won't pollute the test module too much. 
+
+---
+
+With our test lets use "Hello world!" as the input string,
+
+and we'll split at 3.
+
+So we can expect the left side of the split to be "Hel",
+
+and the right side to be "lo world!"
+
+I've added some context to our asserts so we can quickly see if anything went wrong.
+
+But when we run cargo test, everything passes, which is great!
+
+But because we're working with strings, we should check strings that only contain ascii characters.
+
+Let's write another test for `split_at`. 
+
+It's exactly the same but we've used "Hello World" in Japanese... hopefully, let me know if I got it wrong in the comments.
+
+Now when we run the tests, this test fails.
+
+This is where testing gets really nuanced, we need to test our expectations of the behaviour, not necessarily that the code did what we programmed it to.
+
+In the test, I wrote that I expect the result to be the first 3 characters, but last week, I mentioned this would return a length in bytes.
+
+The Japanese character "ko" is 3 bytes in length, which is why its the only character thats returned.
+
+If we asked for two bytes instead, this function would panic and crash our program.
+
+Regardless, from the name "split at" I think number of characters is the right behaviour here, so lets fix our function.
+
+Don't worry too much about this too much yet, we're going to cover iterators in a future video but to explain the fix:
+
+`.chars()` returns an iterator over each character.
+
+We then use `.take()` to only take (at most) the number of of characters we wanted to split at.
+
+We then `.map()` over each character and get its size in bytes, which turns the character into a usize number.
+
+Finally we `.sum()` the iterator which adds every number in the iterator together.
+
+This turns the length in chars into a new length in bytes and will be correct regardless of what size in bytes those characters are.
+
+This is now safe to use to create our sub slices as the byte count won't fall inside a character.
+
+We no longer need to check the bounds of split_at either, because the maximum size will be the full length of the string even if split_at was longer than the string.
+
+Let's rerun our tests...and now this test works too!
+
+---
+
+Let's quickly write the tests for `split_around` and `split_around_many`.
+
+You'll notice that these functions already work with multibyte strings.
+
+This is because we're looking for the start and end of substrings so we already know that the substrings won't happen in the middle of a character.
+
+Now all our tests are working, doesn't that feel great!
+
+But... what if I told you: we just did all of this backwards 😲
+
+## Test Driven Development
+
+Hopefully, you're eager to write a load of code and then write a load of tests, but wait!
+
+As we alluded to at the top of chapter, and again halfway through, the point of tests isn't to test that your code does what you think it does, it's to make sure it does what it's supposed to do.
+
+As our split_at function showed, its a good idea to decide what you think that function should do before you write it.
+
+The best way to achieve this is to work out what your code is supposed to do, then write the test, then write the code.
+
+This is called Test Driven Development. Let's try it out!
+
+We'll create a function that checks if a given string is a palindrome (a word that's the same forwards and backwards).
+
+We'll start by writing our test.
+
+We'll check whether the function identifies "kayak" and "racecar" are flagged as palindromes, and "wood" is not.
+
+Before we can run the test, Rusts type system won't let us compile the program without the function existing.
+
+We don't want to write the functionality yet so we'll create the function header and use the `todo!()` macro
+
+`todo()!` is a handy little marker that we use to say we are intending to deal with this soon.
+
+It always panics so Rust knows our function doesn't need to return anything.
+
+We can run our tests now and see that they fail, lets write the code.
+
+---
+
+Like earlier, we'll get an iterator for each character in the string.
+
+We'll clone this iterator and reverse it to get a second iterator that goes backwards through the string.
+
+Again, don't worry too much about the hows and whys of iterators yet, just go with it.
+
+We can zip the two iterators together, and each element inside them.
+
+If every element in each iterator is equal to the other, then the word is the same forwards and backwards.
+
+---
+
+Now when we run our tests they pass.
+
+We can now submit our code to a colleague for review:
+
+---
+
+Hi Indra, sorry to interrupt, could you review my code?
+
+Looks good to me but while race car is a palindrome, its two words, not one.
+
+Ah, right you are
+
+---
+
+So lets update our test.
+
+All we need to do is add a space to race car.
+
+Now the test fails again, lets fix it.
