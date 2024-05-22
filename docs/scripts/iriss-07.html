@@ -183,6 +183,7 @@
 <p>You'll hear a lot of things in Software like "the code should document itself" and "the tests should document the code", and this is all true, but these aren't <em>substitutes</em> for actual documentation.</p>
 <p>Self explaining code is incredibly important when you work in a code base so that you can easily understand it and maintain it.</p>
 <p>And, as we spoke about in the last video, tests are important to show our expectations of what the code will do when used.</p>
+<hr />
 <p>But code and tests are not there primarily to teach someone how to use the code.</p>
 <p>They can do that, but its secondary, meaning that someone looking at them for the purpose of learning how to consume the code, is having to deal with a lot of information they don't need.</p>
 <p>As software engineers, a huge part of our role is communication, and good documentation conveys to others, how to use our work as quickly, and as painlessly as possible.</p>
@@ -194,36 +195,44 @@
 <p>This is particularly helpful when sharing and reusing code.</p>
 <p>We'll be talking much more about how we share code with each other when we cover the Rust ecosystem, but for now, we can leverage the power of libraries for code reuse within the same project.</p>
 <p>Let's try it out.</p>
+<hr />
 <p>First, lets make a normal program, remember you can do this with something like: <code>cargo new iriss-documentation</code></p>
-<p>In <code>main.rs</code>, we'll make a single function and our main program will just check it works.</p>
-<p>We can run this and, if it works, we expect no output!</p>
+<p>In <code>main.rs</code>, we'll make a single add function and our main function will just check it works.</p>
+<p>We can run this and, if it works, we see no output!</p>
 <p>Next, lets migrate the add function to a library.</p>
-<p>Create a new file called <code>lib.rs</code>. In the same way that <code>main.rs</code> is the entry to our binary, <code>lib.rs</code> is the entry point to our library.</p>
+<hr />
+<p>Create a new file called <code>lib.rs</code>.</p>
+<p>In the same way that <code>main.rs</code> is the entry to our binary, <code>lib.rs</code> is the entry to our library.</p>
 <p>Our library acts like any other module, and the module is named the same thing as our project.</p>
 <p>Anything public in <code>lib.rs</code> will be available to anyone using the library.</p>
 <p>We'll move our add function to the <code>lib.rs</code> and make it public so that we can access it from <code>main.rs</code>:</p>
 <p>We can now use this function in our main function via the project module (eg, <code>iriss_documentation</code>).</p>
-<p>Note that although our project name  is "iriss hyphen documentation" with a hyphen, hyphens can't be used in module names, so we get "iriss underscore documentation".</p>
-<p>If we run our program right now, you can see that it still works but... we're not really taking advantage of the library though, what's the difference between this and what we had before?</p>
+<hr />
+<p>Note that although our project name  is "iriss hyphen documentation", hyphens can't be used in module names, so we get "iriss underscore documentation".</p>
+<p>If we run our program right now, you can see that it still works but... we're not really taking advantage of the library, what's the difference between this and what we had before?</p>
+<hr />
 <p>The main way you're likely to share code is through Rusts package management system called Crates.</p>
 <p>Were we to publish this project right now then theoretically other people could use our <code>add()</code> function, pointless as it may be.</p>
 <p>But, we aren't going to cover Crates until much later in the series, after we've got the basics of the language covered.</p>
-<p>That doesn't mean this technique isn't useful though. To show how it can be useful, lets make another change to our project.</p>
+<p>That doesn't mean this technique isn't useful though.</p>
+<p>To show how it can be useful, lets make another change to our project.</p>
+<hr />
 <p>Now that we've got our <code>lib.rs</code>, lets move <code>main.rs</code> to a new folder called <code>bin</code>.</p>
 <p>The program still runs if you use <code>cargo run</code> but if you look closely there is a difference.</p>
 <p>In the last line, you'll see the name of the binary has changed from <code>iriss-documentation.exe</code> to <code>main.exe</code>.</p>
 <p>This is because when the project was a single binary file, the executable was simply named after the project.</p>
 <p>By using the <code>bin</code> directory, we're telling Rust we expect to produce multiple binaries from this project, so now it takes the name from the file name instead of the project.</p>
-<p>To fix this, rename <code>bin/main.rs</code> to <code>bin/iriss-documentation.rs</code> and cargo will go back to creating <code>iriss-documentation.exe</code>.</p>
+<p>To fix this, rename <code>main.rs</code> to <code>iriss-documentation.rs</code> and cargo will go back to creating <code>iriss-documentation.exe</code>.</p>
 <p>You can now create more binaries in this directory called different things and all of them will have access to the library we've created!</p>
-<p>Let's quickly try this out with a new bin file called five.rs, we'll simply print the output from adding 2 and 3.</p>
+<p>Let's quickly try this out with a new bin file called <code>five.rs</code>, we'll simply print the output from adding 2 and 3.</p>
 <p>Now we have more than one binary, when we use cargo run, we have to specify the binary file to use, in this case <code>cargo run --bin five</code></p>
 <h2 id="rustdoc"><a class="header" href="#rustdoc">rustdoc</a></h2>
 <p>The Rust toolset includes a program called <code>rustdoc</code> which we can run via Cargo using <code>cargo doc</code>.</p>
-<p>It's builds and combines the documentation, not only from your code, but from any libraries and crates you're using.</p>
-<p>Let's jump in and try it out with our code, when we run <code>cargo doc --open</code> it will build the documentation and then open it in our browser.</p>
+<p>It builds and combines the documentation, not only from your code, but from any libraries and crates that you're using.</p>
+<p>Let's jump in and try it out with our code...</p>
+<hr />
+<p>when we run <code>cargo doc --open</code> it will build the documentation and then open it in our browser.</p>
 <p>As you can see, without us doing anything rustdoc has figured out about our add function.</p>
-<p>You'll notice that it's only documented our library. This is because people consuming your code can't use code in the binary.</p>
 <p>If you click the <code>add</code> function, it'll take you to the documentation page for that function.</p>
 <p>Rustdoc has already worked out the header for the function, but that's all the information there is for now.</p>
 <p>So how do we actually give the consumers of our library the information they need?</p>
@@ -232,49 +241,52 @@
 <p>Comments are used to communicate information to anyone reading the source code, but are completely ignored by the compiler.</p>
 <p>We usually talk about two styles of comments:</p>
 <p>Line comments: starting at <code>//</code> and ending at the end of the line</p>
-<p>Block comments: starting at <code>/*</code> and ending at <code>*/</code></p>
+<p>Block comments: starting at <code>/*</code> and continuing until <code>*/</code></p>
+<hr />
 <p>Many languages like Java, JavaScript, PHP, Go, Elixir and many, many more, also support a special type of comment called a Doc Comment.</p>
-<p>Like comments, these are to convey information about nearby code, and are ignored by the compiler.</p>
+<p>Like comments, these are used to convey information about nearby code, and are ignored by the compiler.</p>
 <p>However, you can use documentation tooling to read them and produce the documentation for you.</p>
 <p>Rust takes this idea and turbocharges it... but we'll get to that.</p>
 <p>For now, there are two subtypes of Doc Comments in Rust:</p>
-<p>Outer Doc Comments</p>
-<p>Inner Doc Comments</p>
+<p>Outer Doc Comments and Inner Doc Comments</p>
 <p>It is possible to create these comments as either line comments or block comments <em>however</em>, the convention is to always use line comments, even if the comment spans many lines.</p>
-<p>The reason for this appears to be ambiguity in terminating block comments with */ enhanced by a desire for consistency.</p>
+<p>The reason for this appears to be ambiguity in terminating block comments with <code>*/</code> enhanced by a desire for consistency.</p>
 <p>Don't worry though, your IDE should help you deal with the line comments, and if you use a screen reader it should manage just fine too.</p>
 <p>Outer Doc Comments are placed before the thing that's being documented and use <code>///</code> for each line of the comment, and we'll use them for most things like modules, type definitions, traits and functions... like our <code>add()</code> function.</p>
-<p>We can re-run <code>cargo doc</code> and refresh the page in our browser and our <code>add</code> function now has a little explanation.</p>
+<hr />
+<p>Lets add a little description, re-run <code>cargo doc</code> and refresh the page in our browser, and our <code>add</code> function now has a little explanation.</p>
 <p>That's neat, but we could have worked that out from the name.</p>
 <p>Rust documentation uses markdown, which means we can use formatting and code snippets, as well as consecutive lines being treated as a single paragraph.</p>
 <p>Let's add some more detail and explain how to use the function using the same technique we learned in the last chapter, assertions.</p>
 <p>Doing it this way may seem odd, but all will be explained in a moment.</p>
 <p>Rebuilding our documentation now gives us the code sample too, isn't that cute!</p>
 <p>What's also cool, is that if we go back to the top level of our library where our <code>add</code> function was listed, you can see that <code>add</code> now has a nice little summary, it's the first line of our documentation.</p>
-<p>This is worth bearing in mind as you write your documentation.</p>
-<p>Try to keep this line terse but descriptive.</p>
+<p>This is worth bearing in mind as you write your documentation; try to keep this line terse but descriptive.</p>
+<hr />
 <p>Before we move on, we should also provide some documentation for our library.</p>
 <p>We can't put Outer Doc Comments before the library because the library <em>is</em> the file.</p>
 <p>Instead, we use Inner Doc Comments, which are prefixed with <code>//!</code>.</p>
-<p>We do this at the top of the file. Let's provide a little</p>
+<p>We do this at the top of the file.</p>
+<p>Let's just put some random info in for now to show off some other features.</p>
 <p>And all of this will render nicely into our documentation.</p>
 <p>It's worth pointing out that you <em>can</em> use Inner Doc Comments for all sorts of things... but you shouldn't.</p>
-<p>Again, the convention is to only use Inner Doc Comments for files, whether that's your main library file, or module files (eg, <code>my_module/mod.rs</code>, or <code>./my_module.rs</code>).</p>
+<p>Again, the convention is to only use Inner Doc Comments for files, whether that's your root library file, or module files like <code>my_module/mod.rs</code>, or <code>./my_module.rs</code>.</p>
 <h2 id="doc-tests"><a class="header" href="#doc-tests">Doc-Tests</a></h2>
 <p>Some people say tests should be the documentation, but here we say the documentation should be the tests!</p>
-<p>Well, ok, not <em>the</em> test, you absolutely should still write your unit tests, etc. 😅</p>
+<p>Well, ok, not <em>the</em> tests, you absolutely should still write your unit tests, etc. 😅</p>
 <p>But without doing anything else to our project, lets try running <code>cargo test</code>.</p>
 <p>There's a few things to notice here.</p>
-<p>First, we seem to have three suites of tests.</p>
+<p>First, we seem to have four suites of tests.</p>
 <p>Second, we have two passing tests... but we didn't write any tests, did we?</p>
-<p>The order of test suites, and individual tests you see may differ from this, but you should have one test suite for our library (<code>lib.rs</code>), one test suite for our binary (<code>iriss-documentation.rs</code>), and one for Doc-tests.</p>
-<p>The first two have no tests, but Doc-tests have two tests.</p>
+<p>The order of test suites, and individual tests you see may differ from this, but you should have one test suite for our library, two for our binaries, and one for Doc-tests.</p>
+<p>The first three have no tests, but Doc-tests have two tests.</p>
 <p>What's happened here is that <code>cargo test</code> is treating any code samples as tests (though we can ask it not to on a case by case basis).</p>
 <p>Let's quickly add a test to <code>lib.rs</code> to look more closely at the difference.</p>
 <p>Now when we run again we get some interesting comparison.</p>
 <p>In the unit test, the test name is the fully qualified path to the test function: <code>test::test_add</code>.</p>
 <p>In the doc tests, it's the file, the name of the thing being documented (unless it <em>is</em> the file) and the line of the start of the code block.</p>
-<p>This makes them slightly less useful <em>as</em> tests. So why would we do it?</p>
+<p>This makes them slightly less useful <em>as</em> tests, so why do we do it?</p>
+<hr />
 <p>Well, the main reason we end up with bad documentation, and the reason why people so often don't bother writing it to start with, is that it needs to be maintained.</p>
 <p>One of the worst things we can do in documentation is tell someone they can achieve an outcome in a particular way, then later change the code, and not the documentation, so that it no longer works as expected.</p>
 <p>Writing our documentation examples with assertions ensures that our documentation is correct, and keeping our documentation right next to the thing being documented makes it trivial to update.</p>
@@ -284,7 +296,7 @@
 <p>To paraphrase Dr Strangelove: Of course, the whole point of <strong>documentation</strong> is lost, if you keep it a secret!</p>
 <p>How do we tell the world?</p>
 <p>There's two ways documentation gets shared and neither of them require any work on your behalf.</p>
-<p>We'll go into this a further in the ecosystem section of the book, however when you're ready to share your code, we use cargo to "publish" the code to crates.io.</p>
+<p>We'll go into this further when we talk about the Rust ecosystem, however when you're ready to share your code, we use cargo to "publish" the code to crates.io.</p>
 <p>When someone downloads your code from there, they get the source code which includes your documentation.</p>
 <p>This means when they build their documentation, they can also build your documentation.</p>
 <p>The second way our documentation is shared is that when we publish to crates.io, our documentation is compiled and uploaded to another service, docs.rs.</p>
@@ -317,23 +329,23 @@
 <p>When we run the tests they obviously fail.</p>
 <p>Lets implement the code.</p>
 <p>I'm going to use our split_around_many function.</p>
-<p>If you used the built-in split function, well done, bonus points to you!</p>
+<p>If you used the built-in split function instead, well done, bonus points to you!</p>
 <p>It's actually more efficient that way, and you can in fact reduce the memory allocations down to just one.</p>
 <p>For the purposes of demonstration, I decided to go for simplicity (boy that's going to look silly in a minute).</p>
 <p>I made <code>words</code> mutable so that I could call <code>reverse</code> on it.</p>
 <p>This reverses the vector in place rather than returning a new vector.</p>
 <p>Finally, we join the vector of strings together with spaces, and return it inside an Ok.</p>
-<p>Running the tests show this technique approached.</p>
+<p>Running the tests show this technique works.</p>
 <p>The next requirement was to capitalise the first character if the first character was previously capitalised.</p>
 <p>Our initial test already checks the negative of this, so we only need to check that when there is a capital its maintained.</p>
 <p>When we run, as expected, the tests fail.</p>
 <p>Ok, again, I'm really sorry about this next bit, here we go.</p>
 <p>First we have to detect if the first character is uppercase.</p>
-<p>We'll use the chars method again to get an iterator, we'll take a single one character from it and check that its uppercase.</p>
-<p>This on its own would return true if the string was empty so, even though it doesn't matter in our use-case, lets also check that's not the case so the variable name is accurate.</p>
+<p>We'll use the chars method again to get an iterator, we'll take a single character from it and check that its uppercase.</p>
+<p>This on its own would return true if the string was empty so, even though it doesn't matter in our use-case, lets also check the string isn't empty so the variable name is accurate.</p>
 <p>Finally, after we've joined the word together, if the first letter was a capital we'll get the first character with get_mut and a range that represents a single byte.</p>
-<p>Unlike our older split function, get_mut is safe it will not split characters, instead it returns an option.</p>
-<p>If the first character is a single byte we get a mutable slice reference that character, we can now make it uppercase.</p>
+<p>Unlike how we used ranges in our old split function, get_mut is safe it will not split characters, instead it returns an option.</p>
+<p>If the first character is a single byte we get a mutable slice reference to that character in the string, we can now make it uppercase.</p>
 <p>Running the test shows us that worked.</p>
 <p>However, we've now dipped into using iterators and sub slices of the final string, now I want to know if this works on an empty string.</p>
 <p>Don't worry if you didn't do this, but I decided to add a null test, one that shouldn't change anything.</p>
@@ -343,8 +355,8 @@
 <p>When we run the test, we get our expected fail.</p>
 <p>This one's easy to fix, string slices have a trim function that returns a subslice inside the string that doesn't include any outer whitespace.</p>
 <p>We can shadow the input variable which effectively just replaces it for the rest of the function.</p>
-<p>That was all we needed to do (see this is the level of effort I'd anticipated), so now our tests pass again.</p>
-<p>The final requirement was to panic if there was more than one sentence.</p>
+<p>That was all we needed to do (see this is the level of effort I'd anticipated for the homework), so now our tests pass again.</p>
+<p>The final requirement was to return an error if there was more than one sentence.</p>
 <p>We haven't dealt with punctuation yet so let's create an assertion that an ending dot is fine, and a second assertion that one in the middle of a sentence causes an error</p>
 <p>When we run the tests now, its worth noting that the first assertion already passes and the test dies on the second!</p>
 <p>I actually wanted the first assertion to make sure I don't <em>break</em> that functionality as I fix the second assertion.</p>
@@ -352,16 +364,16 @@
 <p>If we find that we'll return an Error containing the unit type.</p>
 <p>Were we doing this properly, of course we'd use proper errors... but proper errors are for another time 😉</p>
 <hr />
-<p>This time, we'll take it much, <em>much</em> more chill 😅</p>
-<p>I'd like you to create a library that contains our split functions from the last few videos, check the book for sample code to copy if you need to.</p>
-<p>You can make library directly with no executable with <code>cargo new --lib</code> and whatever you want to call it.</p>
+<p>This time the homework is much more chill 😅</p>
+<p>I'd like you to create a library that contains our three split functions from the last few videos, check the book for sample code to copy if you need to.</p>
+<p>You can make a library directly with no executable with <code>cargo new --lib</code> and whatever you want to call it.</p>
 <p>This saves you moving things around too much.</p>
 <p>Write documentation for the functions that explains how they work with code samples and assertions.</p>
 <p>If you use the <code>split_around_many_recurse</code> function, remember that it shouldn't be public, so you won't see it in your library documentation.</p>
 <p>And that's it!</p>
 <p>I don't think we'll even need to go over this one in the next video, it's more for you to practice.</p>
 <h2 id="next-time"><a class="header" href="#next-time">Next Time</a></h2>
-<p>Next time we're going to look at two more tools that come with the rust tool suite that help us write consistent and high quality Rust code; Rust format and Clippy.</p>
+<p>Next time we're going to look at two more tools that come with the Rust tool suite that help us write consistent and high quality Rust code; Rust format and Clippy.</p>
 <p>I think these tools are really going to surprise and delight you, so if you're enjoying this series, don't forget to like and subscribe.</p>
 <p>I also have some channel news coming up that won't be part of the IRISS series, so keep an eye out for that.</p>
 <p>And I'll see you, next time.</p>

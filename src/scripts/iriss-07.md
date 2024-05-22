@@ -18,6 +18,8 @@ Self explaining code is incredibly important when you work in a code base so tha
 
 And, as we spoke about in the last video, tests are important to show our expectations of what the code will do when used.
 
+---
+
 But code and tests are not there primarily to teach someone how to use the code. 
 
 They can do that, but its secondary, meaning that someone looking at them for the purpose of learning how to consume the code, is having to deal with a lot of information they don't need.
@@ -40,15 +42,21 @@ We'll be talking much more about how we share code with each other when we cover
 
 Let's try it out. 
 
+---
+
 First, lets make a normal program, remember you can do this with something like: `cargo new iriss-documentation`
 
-In `main.rs`, we'll make a single function and our main program will just check it works.
+In `main.rs`, we'll make a single add function and our main function will just check it works.
 
-We can run this and, if it works, we expect no output!
+We can run this and, if it works, we see no output!
 
 Next, lets migrate the add function to a library. 
 
-Create a new file called `lib.rs`. In the same way that `main.rs` is the entry to our binary, `lib.rs` is the entry point to our library. 
+---
+
+Create a new file called `lib.rs`. 
+
+In the same way that `main.rs` is the entry to our binary, `lib.rs` is the entry to our library. 
 
 Our library acts like any other module, and the module is named the same thing as our project. 
 
@@ -58,9 +66,13 @@ We'll move our add function to the `lib.rs` and make it public so that we can ac
 
 We can now use this function in our main function via the project module (eg, `iriss_documentation`).
 
-Note that although our project name  is "iriss hyphen documentation" with a hyphen, hyphens can't be used in module names, so we get "iriss underscore documentation".
+---
 
-If we run our program right now, you can see that it still works but... we're not really taking advantage of the library though, what's the difference between this and what we had before?
+Note that although our project name  is "iriss hyphen documentation", hyphens can't be used in module names, so we get "iriss underscore documentation".
+
+If we run our program right now, you can see that it still works but... we're not really taking advantage of the library, what's the difference between this and what we had before?
+
+---
 
 The main way you're likely to share code is through Rusts package management system called Crates.
 
@@ -68,7 +80,11 @@ Were we to publish this project right now then theoretically other people could 
 
 But, we aren't going to cover Crates until much later in the series, after we've got the basics of the language covered.
 
-That doesn't mean this technique isn't useful though. To show how it can be useful, lets make another change to our project.
+That doesn't mean this technique isn't useful though. 
+
+To show how it can be useful, lets make another change to our project.
+
+---
 
 Now that we've got our `lib.rs`, lets move `main.rs` to a new folder called `bin`. 
 
@@ -80,11 +96,11 @@ This is because when the project was a single binary file, the executable was si
 
 By using the `bin` directory, we're telling Rust we expect to produce multiple binaries from this project, so now it takes the name from the file name instead of the project.
 
-To fix this, rename `bin/main.rs` to `bin/iriss-documentation.rs` and cargo will go back to creating `iriss-documentation.exe`.
+To fix this, rename `main.rs` to `iriss-documentation.rs` and cargo will go back to creating `iriss-documentation.exe`.
 
 You can now create more binaries in this directory called different things and all of them will have access to the library we've created!
 
-Let's quickly try this out with a new bin file called five.rs, we'll simply print the output from adding 2 and 3.
+Let's quickly try this out with a new bin file called `five.rs`, we'll simply print the output from adding 2 and 3.
 
 Now we have more than one binary, when we use cargo run, we have to specify the binary file to use, in this case `cargo run --bin five`
 
@@ -92,13 +108,15 @@ Now we have more than one binary, when we use cargo run, we have to specify the 
 
 The Rust toolset includes a program called `rustdoc` which we can run via Cargo using `cargo doc`. 
 
-It's builds and combines the documentation, not only from your code, but from any libraries and crates you're using.
+It builds and combines the documentation, not only from your code, but from any libraries and crates that you're using.
 
-Let's jump in and try it out with our code, when we run `cargo doc --open` it will build the documentation and then open it in our browser. 
+Let's jump in and try it out with our code...
+
+---
+
+when we run `cargo doc --open` it will build the documentation and then open it in our browser. 
 
 As you can see, without us doing anything rustdoc has figured out about our add function.
-
-You'll notice that it's only documented our library. This is because people consuming your code can't use code in the binary.
 
 If you click the `add` function, it'll take you to the documentation page for that function. 
 
@@ -116,11 +134,13 @@ We usually talk about two styles of comments:
 
 Line comments: starting at `//` and ending at the end of the line 
 
-Block comments: starting at `/*` and ending at `*/`
+Block comments: starting at `/*` and continuing until `*/`
+
+---
 
 Many languages like Java, JavaScript, PHP, Go, Elixir and many, many more, also support a special type of comment called a Doc Comment.
 
-Like comments, these are to convey information about nearby code, and are ignored by the compiler.
+Like comments, these are used to convey information about nearby code, and are ignored by the compiler.
 
 However, you can use documentation tooling to read them and produce the documentation for you.
 
@@ -128,19 +148,19 @@ Rust takes this idea and turbocharges it... but we'll get to that.
 
 For now, there are two subtypes of Doc Comments in Rust:
 
-Outer Doc Comments 
-
-Inner Doc Comments
+Outer Doc Comments and Inner Doc Comments
 
 It is possible to create these comments as either line comments or block comments _however_, the convention is to always use line comments, even if the comment spans many lines. 
 
-The reason for this appears to be ambiguity in terminating block comments with */ enhanced by a desire for consistency.
+The reason for this appears to be ambiguity in terminating block comments with `*/` enhanced by a desire for consistency.
 
 Don't worry though, your IDE should help you deal with the line comments, and if you use a screen reader it should manage just fine too.
 
 Outer Doc Comments are placed before the thing that's being documented and use `///` for each line of the comment, and we'll use them for most things like modules, type definitions, traits and functions... like our `add()` function.
 
-We can re-run `cargo doc` and refresh the page in our browser and our `add` function now has a little explanation.
+---
+
+Lets add a little description, re-run `cargo doc` and refresh the page in our browser, and our `add` function now has a little explanation.
 
 That's neat, but we could have worked that out from the name. 
 
@@ -154,9 +174,9 @@ Rebuilding our documentation now gives us the code sample too, isn't that cute!
 
 What's also cool, is that if we go back to the top level of our library where our `add` function was listed, you can see that `add` now has a nice little summary, it's the first line of our documentation.
 
-This is worth bearing in mind as you write your documentation.
+This is worth bearing in mind as you write your documentation; try to keep this line terse but descriptive.
 
-Try to keep this line terse but descriptive.
+---
 
 Before we move on, we should also provide some documentation for our library.
 
@@ -164,31 +184,33 @@ We can't put Outer Doc Comments before the library because the library _is_ the 
 
 Instead, we use Inner Doc Comments, which are prefixed with `//!`.
 
-We do this at the top of the file. Let's provide a little
+We do this at the top of the file. 
+
+Let's just put some random info in for now to show off some other features.
 
 And all of this will render nicely into our documentation.
 
 It's worth pointing out that you _can_ use Inner Doc Comments for all sorts of things... but you shouldn't. 
 
-Again, the convention is to only use Inner Doc Comments for files, whether that's your main library file, or module files (eg, `my_module/mod.rs`, or `./my_module.rs`).
+Again, the convention is to only use Inner Doc Comments for files, whether that's your root library file, or module files like `my_module/mod.rs`, or `./my_module.rs`.
 
 ## Doc-Tests
 
 Some people say tests should be the documentation, but here we say the documentation should be the tests!
 
-Well, ok, not _the_ test, you absolutely should still write your unit tests, etc. 😅
+Well, ok, not _the_ tests, you absolutely should still write your unit tests, etc. 😅
 
 But without doing anything else to our project, lets try running `cargo test`.
 
 There's a few things to notice here.
 
-First, we seem to have three suites of tests. 
+First, we seem to have four suites of tests. 
 
 Second, we have two passing tests... but we didn't write any tests, did we?
 
-The order of test suites, and individual tests you see may differ from this, but you should have one test suite for our library (`lib.rs`), one test suite for our binary (`iriss-documentation.rs`), and one for Doc-tests.
+The order of test suites, and individual tests you see may differ from this, but you should have one test suite for our library, two for our binaries, and one for Doc-tests.
 
-The first two have no tests, but Doc-tests have two tests.
+The first three have no tests, but Doc-tests have two tests.
 
 What's happened here is that `cargo test` is treating any code samples as tests (though we can ask it not to on a case by case basis).
 
@@ -200,7 +222,9 @@ In the unit test, the test name is the fully qualified path to the test function
 
 In the doc tests, it's the file, the name of the thing being documented (unless it _is_ the file) and the line of the start of the code block.
 
-This makes them slightly less useful _as_ tests. So why would we do it?
+This makes them slightly less useful _as_ tests, so why do we do it?
+
+---
 
 Well, the main reason we end up with bad documentation, and the reason why people so often don't bother writing it to start with, is that it needs to be maintained.
 
@@ -220,7 +244,7 @@ How do we tell the world?
 
 There's two ways documentation gets shared and neither of them require any work on your behalf.
 
-We'll go into this a further in the ecosystem section of the book, however when you're ready to share your code, we use cargo to "publish" the code to crates.io. 
+We'll go into this further when we talk about the Rust ecosystem, however when you're ready to share your code, we use cargo to "publish" the code to crates.io. 
 
 When someone downloads your code from there, they get the source code which includes your documentation.
 
@@ -270,7 +294,7 @@ Lets implement the code.
 
 I'm going to use our split_around_many function.
 
-If you used the built-in split function, well done, bonus points to you!
+If you used the built-in split function instead, well done, bonus points to you!
 
 It's actually more efficient that way, and you can in fact reduce the memory allocations down to just one.
 
@@ -282,7 +306,7 @@ This reverses the vector in place rather than returning a new vector.
 
 Finally, we join the vector of strings together with spaces, and return it inside an Ok.
 
-Running the tests show this technique approached.
+Running the tests show this technique works.
 
 The next requirement was to capitalise the first character if the first character was previously capitalised.
 
@@ -294,15 +318,15 @@ Ok, again, I'm really sorry about this next bit, here we go.
 
 First we have to detect if the first character is uppercase.
 
-We'll use the chars method again to get an iterator, we'll take a single one character from it and check that its uppercase.
+We'll use the chars method again to get an iterator, we'll take a single character from it and check that its uppercase.
 
-This on its own would return true if the string was empty so, even though it doesn't matter in our use-case, lets also check that's not the case so the variable name is accurate.
+This on its own would return true if the string was empty so, even though it doesn't matter in our use-case, lets also check the string isn't empty so the variable name is accurate.
 
 Finally, after we've joined the word together, if the first letter was a capital we'll get the first character with get_mut and a range that represents a single byte.
 
-Unlike our older split function, get_mut is safe it will not split characters, instead it returns an option.
+Unlike how we used ranges in our old split function, get_mut is safe it will not split characters, instead it returns an option.
 
-If the first character is a single byte we get a mutable slice reference that character, we can now make it uppercase.
+If the first character is a single byte we get a mutable slice reference to that character in the string, we can now make it uppercase.
 
 Running the test shows us that worked.
 
@@ -322,9 +346,9 @@ This one's easy to fix, string slices have a trim function that returns a subsli
 
 We can shadow the input variable which effectively just replaces it for the rest of the function.
 
-That was all we needed to do (see this is the level of effort I'd anticipated), so now our tests pass again.
+That was all we needed to do (see this is the level of effort I'd anticipated for the homework), so now our tests pass again.
 
-The final requirement was to panic if there was more than one sentence.
+The final requirement was to return an error if there was more than one sentence.
 
 We haven't dealt with punctuation yet so let's create an assertion that an ending dot is fine, and a second assertion that one in the middle of a sentence causes an error
 
@@ -340,11 +364,11 @@ Were we doing this properly, of course we'd use proper errors... but proper erro
 
 ---
 
-This time, we'll take it much, _much_ more chill 😅
+This time the homework is much more chill 😅
 
-I'd like you to create a library that contains our split functions from the last few videos, check the book for sample code to copy if you need to.
+I'd like you to create a library that contains our three split functions from the last few videos, check the book for sample code to copy if you need to.
 
-You can make library directly with no executable with `cargo new --lib` and whatever you want to call it. 
+You can make a library directly with no executable with `cargo new --lib` and whatever you want to call it. 
 
 This saves you moving things around too much.
 
@@ -358,7 +382,7 @@ I don't think we'll even need to go over this one in the next video, it's more f
 
 ## Next Time
 
-Next time we're going to look at two more tools that come with the rust tool suite that help us write consistent and high quality Rust code; Rust format and Clippy.
+Next time we're going to look at two more tools that come with the Rust tool suite that help us write consistent and high quality Rust code; Rust format and Clippy.
 
 I think these tools are really going to surprise and delight you, so if you're enjoying this series, don't forget to like and subscribe.
 
