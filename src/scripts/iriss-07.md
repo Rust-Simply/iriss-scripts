@@ -172,68 +172,61 @@ It's worth pointing out that you _can_ use Inner Doc Comments for all sorts of t
 
 Again, the convention is to only use Inner Doc Comments for files, whether that's your main library file, or module files (eg, `my_module/mod.rs`, or `./my_module.rs`).
 
-## Doc-Tests HERE
+## Doc-Tests
 
 Some people say tests should be the documentation, but here we say the documentation should be the tests!
 
 Well, ok, not _the_ test, you absolutely should still write your unit tests, etc. 😅
 
-But without doing anything else to our project, try running `cargo test`.
-
-![Doc-Tests](documentation/doc-tests.png)
+But without doing anything else to our project, lets try running `cargo test`.
 
 There's a few things to notice here.
 
-First, we seem to be getting three sets of tests. Second, we have two passing tests... but we didn't write any tests, did we?
+First, we seem to have three suites of tests. 
 
-The order of test suites, and individual tests you see may differ from the above, but you should have one test suite for our library (`lib.rs`), one test suite for our binary (`iriss-documentation.rs`), and one for Doc-tests.
+Second, we have two passing tests... but we didn't write any tests, did we?
+
+The order of test suites, and individual tests you see may differ from this, but you should have one test suite for our library (`lib.rs`), one test suite for our binary (`iriss-documentation.rs`), and one for Doc-tests.
 
 The first two have no tests, but Doc-tests have two tests.
 
-What's happened here is that `cargo test` is treating any code samples as tests (unless we ask it not to).
+What's happened here is that `cargo test` is treating any code samples as tests (though we can ask it not to on a case by case basis).
 
 Let's quickly add a test to `lib.rs` to look more closely at the difference.
 
 Now when we run again we get some interesting comparison.
 
-Unit Tests:
+In the unit test, the test name is the fully qualified path to the test function: `test::test_add`.
 
-![Unit Tests](documentation/doc-tests-comparison-unit.png)
-
-Doc Tests:
-
-![Doc Tests](documentation/doc-tests-comparison-doc.png)
-
-In the unit test, the test name is the fully qualified path to the test function (`test::test_add`)
-
-In the doc tests, it's the file, the name of the thing being documented (unless it _is_ the file) and the line of the
-start of the code block.
+In the doc tests, it's the file, the name of the thing being documented (unless it _is_ the file) and the line of the start of the code block.
 
 This makes them slightly less useful _as_ tests. So why would we do it?
 
-Well, the leading cause of bad documentation, and the reason why people so often don't bother writing it to start with is that it needs to be maintained.
+Well, the main reason we end up with bad documentation, and the reason why people so often don't bother writing it to start with, is that it needs to be maintained.
 
-One of the worst things we can do in documentation is tell someone they can achieve an outcome in a particular way, then change the code so that particular way no longer works as expected.
+One of the worst things we can do in documentation is tell someone they can achieve an outcome in a particular way, then later change the code, and not the documentation, so that it no longer works as expected.
 
-Writing our documentation as test ensures that our documentation is correct, and keeping our documentation right next to the thing being documented makes it trivial to update. 
+Writing our documentation examples with assertions ensures that our documentation is correct, and keeping our documentation right next to the thing being documented makes it trivial to update. 
 
-Rust guarantees that if you said the code works in a particular way, so long as you also wrote an example with assertions, then the documentation is correct!
+Rust guarantees that if you said the code works in a particular way, so long as you also wrote an example with assertions that demonstrates that, then the documentation is correct!
+
+Why don't we do this in every language!
 
 ## Sharing Documentation
 
 To paraphrase Dr Strangelove: Of course, the whole point of **documentation** is lost, if you keep it a secret!
 
-How do we tell people about our documentation?
+How do we tell the world?
 
 There's two ways documentation gets shared and neither of them require any work on your behalf.
 
-We'll go into this a further in the ecosystem section of the book, however when you're ready to share your code, we use cargo to "publish" the code to [crates.io](https://crates.io). 
+We'll go into this a further in the ecosystem section of the book, however when you're ready to share your code, we use cargo to "publish" the code to crates.io. 
 
 When someone downloads your code from there, they get the source code which includes your documentation.
 
 This means when they build their documentation, they can also build your documentation.
 
-The second way our documentation is shared is that when we publish to crates.io, our documentation is compiled and uploaded to another service, [docs.rs](https://docs.rs). 
+The second way our documentation is shared is that when we publish to crates.io, our documentation is compiled and uploaded to another service, docs.rs. 
 
 On this service you can find every version of API documentation for every crate (library) ever published!
 
@@ -243,10 +236,136 @@ So Rust documentation has some really compelling things going on:
 
 1. Documentation tooling comes with the rust tool suite
 
-2. Documentation is written with code, not separately from it
+2. Documentation is written with code, right next to the thing being documented, not separately from it, making it trivial to maintain
 
 3. Code examples are run with tests, meaning it's very hard to produce documentation that's wrong
 
-Because the prescribed method of writing documentation is so good, everyone ends up using the same tools and the same conventions, which means Rust documentation will always feel somewhat familiar, significantly reducing the burden of learning.
+Furthermore, because the prescribed method of writing documentation is so good, everyone ends up using the same tools and the same conventions.
+
+This means Rust documentation will always feel somewhat familiar, significantly reducing the burden of learning.
 
 It's one of the many examples of how the Rust community feeds into itself, helping us all be better software engineers.
+
+## Homework
+
+Last time I asked you to do fours things, one at a time, starting with the test and then writing the implementation.
+
+I mucked up, and all I can say is I'm sorry.
+
+Literally the second requirement was far harder than I expected. I've taken it out of the book, and mentioned it in the erratum of the last video.
+
+However... let's do this.
+
+I'm going to move fast so pause the video if you need a closer look at something.
+
+First thing we need to do is create a dummy function and use the todo macro so that it panics.
+
+We then create our first test.
+
+Our first requirement doesn't tell us too much, so we'll keep it simple; all lowercase, no punctuation.
+
+When we run the tests they obviously fail. 
+
+Lets implement the code.
+
+I'm going to use our split_around_many function.
+
+If you used the built-in split function, well done, bonus points to you!
+
+It's actually more efficient that way, and you can in fact reduce the memory allocations down to just one.
+
+For the purposes of demonstration, I decided to go for simplicity (boy that's going to look silly in a minute).
+
+I made `words` mutable so that I could call `reverse` on it.
+
+This reverses the vector in place rather than returning a new vector.
+
+Finally, we join the vector of strings together with spaces, and return it inside an Ok.
+
+Running the tests show this technique approached.
+
+The next requirement was to capitalise the first character if the first character was previously capitalised.
+
+Our initial test already checks the negative of this, so we only need to check that when there is a capital its maintained.
+
+When we run, as expected, the tests fail.
+
+Ok, again, I'm really sorry about this next bit, here we go.
+
+First we have to detect if the first character is uppercase.
+
+We'll use the chars method again to get an iterator, we'll take a single one character from it and check that its uppercase.
+
+This on its own would return true if the string was empty so, even though it doesn't matter in our use-case, lets also check that's not the case so the variable name is accurate.
+
+Finally, after we've joined the word together, if the first letter was a capital we'll get the first character with get_mut and a range that represents a single byte.
+
+Unlike our older split function, get_mut is safe it will not split characters, instead it returns an option.
+
+If the first character is a single byte we get a mutable slice reference that character, we can now make it uppercase.
+
+Running the test shows us that worked.
+
+However, we've now dipped into using iterators and sub slices of the final string, now I want to know if this works on an empty string.
+
+Don't worry if you didn't do this, but I decided to add a null test, one that shouldn't change anything.
+
+Even though we only just added this test, we can see it already passes, phew!
+
+Next lets look at trimming the string.
+
+In the requirements I did say "any whitespace" so lets test with a space on one end and a tab on the other.
+
+When we run the test, we get our expected fail.
+
+This one's easy to fix, string slices have a trim function that returns a subslice inside the string that doesn't include any outer whitespace.
+
+We can shadow the input variable which effectively just replaces it for the rest of the function.
+
+That was all we needed to do (see this is the level of effort I'd anticipated), so now our tests pass again.
+
+The final requirement was to panic if there was more than one sentence.
+
+We haven't dealt with punctuation yet so let's create an assertion that an ending dot is fine, and a second assertion that one in the middle of a sentence causes an error
+
+When we run the tests now, its worth noting that the first assertion already passes and the test dies on the second!
+
+I actually wanted the first assertion to make sure I don't _break_ that functionality as I fix the second assertion.
+
+To do this, I'm going to go through the words vector and take all but the last element. If any of these words end in a dot, then we can assume that's the end of a sentence.
+
+If we find that we'll return an Error containing the unit type.
+
+Were we doing this properly, of course we'd use proper errors... but proper errors are for another time 😉
+
+---
+
+This time, we'll take it much, _much_ more chill 😅
+
+I'd like you to create a library that contains our split functions from the last few videos, check the book for sample code to copy if you need to.
+
+You can make library directly with no executable with `cargo new --lib` and whatever you want to call it. 
+
+This saves you moving things around too much.
+
+Write documentation for the functions that explains how they work with code samples and assertions.
+
+If you use the `split_around_many_recurse` function, remember that it shouldn't be public, so you won't see it in your library documentation.
+
+And that's it!
+
+I don't think we'll even need to go over this one in the next video, it's more for you to practice.
+
+## Next Time
+
+Next time we're going to look at two more tools that come with the rust tool suite that help us write consistent and high quality Rust code; Rust format and Clippy.
+
+I think these tools are really going to surprise and delight you, so if you're enjoying this series, don't forget to like and subscribe.
+
+I also have some channel news coming up that won't be part of the IRISS series, so keep an eye out for that.
+
+And I'll see you, next time.
+
+## Outro
+
+The whole point of documentation is lost IF YOU KEEP IT A SECRET, WHY DIDN'T YOU TELL THE WORLD EH?

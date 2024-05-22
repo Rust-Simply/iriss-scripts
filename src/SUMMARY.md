@@ -7,3 +7,4 @@
 - [Control Flow](scripts/iriss-04.md)
 - [Functions](scripts/iriss-05.md)
 - [Tests](scripts/iriss-06.md)
+- [Tests](scripts/iriss-07.md)
