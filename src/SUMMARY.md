@@ -1,10 +1,16 @@
 # Summary
 
-- [Welcome to IRISS](./scripts/000-iriss)
-- [Setting Up](./scripts/001-iriss)
-- [Memory](scripts/002-iriss)
-- [Data Types](scripts/003-iriss)
-- [Control Flow](scripts/004-iriss)
-- [Functions](scripts/005-iriss)
-- [Tests](scripts/006-iriss)
-- [Documentation](scripts/007-iriss)
+# IRISS
+ 
+- [Welcome to IRISS](iriss/000-iriss.md)
+- [Setting Up](iriss/001-iriss.md)
+- [Memory](iriss/002-iriss.md)
+- [Data Types](iriss/003-iriss.md)
+- [Control Flow](iriss/004-iriss.md)
+- [Functions](iriss/005-iriss.md)
+- [Tests](iriss/006-iriss.md)
+- [Documentation](iriss/007-iriss.md)
+
+# Channel Labs
+
+- [Long Live Fio's Quest](channel-news/001-fios-quest.md)
